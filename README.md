@@ -6,7 +6,7 @@ This repository contains the public FTC SDK for the Ultimate Goal (2020-2021) co
 
 Formerly this software project was hosted [here](https://github.com/FIRST-Tech-Challenge/Skystone).  Teams who are competing in the Ultimate Goal Challenge should use this new [FtcRobotController repository](https://github.com/FIRST-Tech-Challenge/FtcRobotController) instead of last season's (no longer updated) Skystone repository.
 
-## Welcome!!
+## Welcome!!!
 This GitHub repository contains the source code that is used to build an Android app to control a *FIRST* Tech Challenge competition robot.  To use this SDK, download/clone the entire project to your local computer.
 
 ## Getting Started
