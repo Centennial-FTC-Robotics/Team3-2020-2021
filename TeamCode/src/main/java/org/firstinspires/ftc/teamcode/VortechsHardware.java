@@ -12,6 +12,9 @@ public class VortechsHardware extends LinearOpMode {
     protected DcMotorEx frontLeft;
     protected DcMotorEx backRight;
     protected DcMotorEx backLeft;
+    protected DcMotorEx leftOutTake;
+    protected DcMotorEx rightOutTake;
+    protected DcMotorEx intakeWheel;
 
 
     @Override
@@ -21,6 +24,10 @@ public class VortechsHardware extends LinearOpMode {
         frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
         backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
+        leftOutTake = hardwareMap.get(DcMotorEx.class, "leftOutTake");
+        rightOutTake = hardwareMap.get(DcMotorEx.class, "rightOutTake");
+        intakeWheel = hardwareMap.get(DcMotorEx.class, "intakeWheel");
+
 
     }
 }
