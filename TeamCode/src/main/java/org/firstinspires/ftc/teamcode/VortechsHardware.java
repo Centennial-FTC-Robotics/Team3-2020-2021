@@ -4,6 +4,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
 
 public class VortechsHardware extends LinearOpMode {
 
@@ -15,6 +21,7 @@ public class VortechsHardware extends LinearOpMode {
     protected DcMotorEx leftOutTake;
     protected DcMotorEx rightOutTake;
     protected DcMotorEx intakeWheel;
+    protected BNO055IMU IMU;
 
 
     @Override
@@ -27,6 +34,7 @@ public class VortechsHardware extends LinearOpMode {
         leftOutTake = hardwareMap.get(DcMotorEx.class, "leftOutTake");
         rightOutTake = hardwareMap.get(DcMotorEx.class, "rightOutTake");
         intakeWheel = hardwareMap.get(DcMotorEx.class, "intakeWheel");
+
 
 
     }
