@@ -52,7 +52,7 @@ class VortechsMethods extends VortechsHardware {
             prevTimer = timer;
             double frontRightPower = (P * yProportion + I * yIntegral - D * yDerivative) + 
                     (P * xProportion + I * xIntegral + D * xDerivative);
-            double frontLeftPower = (P * yProportion + I * yIntegral - D * yDerivative) +
+            double frontLeftPower = (P * yProportion + I * yIntegral - D * yDerivative) -
                     (P * xProportion + I * xIntegral + D * xDerivative);
                     
             frontRight.setPower(frontRightPower);
