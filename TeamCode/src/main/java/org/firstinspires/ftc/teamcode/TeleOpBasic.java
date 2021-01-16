@@ -11,9 +11,6 @@ public class TeleOpBasic extends VortechsHardware{
 
     public void runOpMode(){
 
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection((DcMotor.Direction.REVERSE));
-
         waitForStart();
 
         while(opModeIsActive())

@@ -20,6 +20,7 @@ class VortechsMethods extends VortechsHardware {
     protected static final double TILE_LENGTH = 24;
     private final DcMotorEx[] driveMotors = {frontLeft, frontRight, backLeft, backRight};
 
+
     public double XPos, YPos, currentAngle, XTarget, YTarget, angleTarget, initialHeading;
 
     public void launch(double power, long seconds) throws InterruptedException {
@@ -34,16 +35,13 @@ class VortechsMethods extends VortechsHardware {
     }
 
     public void moveRelative(double sideways, double forward){
-        moveAndTurn(forward - XPos, forward - YPos,0);
+        moveAndTurn(sideways - XPos, forward - YPos,0);
     }
     public void turnRelative(double degrees) {
         moveAndTurn(0,0,degrees - currentAngle);
     }
     public void turn(double degrees) {
         moveAndTurn(0,0,degrees);
-    }
-    public void moveTo(double XTarget, double YTarget) {
-        moveAndTurn(XTarget, YTarget, 0);
     }
     public void moveAndTurn(double XTarget, double YTarget, double angleTarget) {
         for(DcMotorEx motor : driveMotors) {
@@ -58,13 +56,15 @@ class VortechsMethods extends VortechsHardware {
         double angleI = 0.0;
         double angleD = 0.0;
 
-        double yError, xError, angleError;    //the distance from the target
+        double yError = 0.0;
+        double xError = 0.0;
+
+        double angleError;    //the distance from the target
         double prevYError = 0.0, prevXError = 0.0, prevAngleError = 0.0;
         ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         ElapsedTime prevTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         while(opModeIsActive()) {
-            yError = YTarget - YPos;
-            xError = XTarget - XPos;
+
             angleError = angleTarget - currentAngle;
 
             double yProportion = P * yError;
@@ -92,19 +92,17 @@ class VortechsMethods extends VortechsHardware {
             double rightTurn = angleP * aProportion + angleI * aIntegral - angleD * aDerivative;
             double leftTurn = -angleP * aProportion - angleI * aIntegral + angleD * aDerivative;
 
-            frontRight.setPower(frontRightPower + rightTurn);
-            backLeft.setPower(frontRightPower + leftTurn);
+            frontRight.setPower(Range.clip(frontRightPower + rightTurn, 0, 1));
+            backLeft.setPower(Range.clip(frontRightPower + leftTurn,0,1));
 
-            frontLeft.setPower(frontLeftPower + leftTurn);
-            backRight.setPower(frontLeftPower + rightTurn);
+            frontLeft.setPower(Range.clip(frontLeftPower + leftTurn,0,1));
+            backRight.setPower(Range.clip(frontLeftPower + rightTurn,0,1));
         }
     }
     public double ticksToInches(int ticks) {
         return ticks/TICKS_PER_INCH;
     }
     public void update() {
-    YPos = ticksToInches(frontLeft.getCurrentPosition());
-    XPos = ticksToInches(frontRight.getCurrentPosition());
     orientation = IMU.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
     currentAngle = AngleUnit.normalizeDegrees(orientation.firstAngle - initialHeading);
     }
@@ -131,5 +129,8 @@ class VortechsMethods extends VortechsHardware {
         this.XPos = XPos;
         this.YPos = YPos;
     }
+
+
+
 }
 

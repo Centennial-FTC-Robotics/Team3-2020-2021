@@ -35,7 +35,8 @@ public class VortechsHardware extends LinearOpMode {
         rightOutTake = hardwareMap.get(DcMotorEx.class, "rightOutTake");
         intakeWheel = hardwareMap.get(DcMotorEx.class, "intakeWheel");
 
-
+        frontLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        backLeft.setDirection(DcMotorEx.Direction.REVERSE);
 
     }
 }
