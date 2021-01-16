@@ -22,6 +22,10 @@ class VortechsMethods extends VortechsHardware {
 
 
     public double XPos, YPos, currentAngle, XTarget, YTarget, angleTarget, initialHeading;
+    public void runOpMode() throws InterruptedException {
+        super.runOpMode();
+        initializeIMU();
+    }
 
     public void launch(double power, long seconds) throws InterruptedException {
         leftOutTake.setPower(power);
