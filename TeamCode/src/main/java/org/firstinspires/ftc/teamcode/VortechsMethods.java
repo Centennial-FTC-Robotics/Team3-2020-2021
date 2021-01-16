@@ -102,7 +102,7 @@ class VortechsMethods extends VortechsHardware {
     public double ticksToInches(int ticks) {
         return ticks/TICKS_PER_INCH;
     }
-    public void update() {
+    public void updateIMU() {
     orientation = IMU.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
     currentAngle = AngleUnit.normalizeDegrees(orientation.firstAngle - initialHeading);
     }
@@ -115,7 +115,6 @@ class VortechsMethods extends VortechsHardware {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-
         parameters.calibrationDataFile = "AdafruitIMUCalibration.json";
         parameters.loggingEnabled = true;
         parameters.loggingTag = "IMU";
