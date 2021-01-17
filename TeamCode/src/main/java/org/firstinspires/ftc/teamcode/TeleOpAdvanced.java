@@ -1,20 +1,22 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-
+@TeleOp(name = "Teleop Advanced", group = "Tests")
 public class TeleOpAdvanced extends VortechsMethods {
     //This code is based on the "Controls" spreadsheet we made in the Google Drive
 
 
-    double y, x, rotation, speed;
+    double rotation, speed;
 
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
+        super.runOpMode();
 
         waitForStart();
 
         while (opModeIsActive()) {
-            y = gamepad1.left_stick_y;
-            x = -gamepad1.left_stick_x; //flipped
+            double y = gamepad1.left_stick_y;
+            double x = -gamepad1.left_stick_x; //flipped
 
 
             //slow rotation using triggers

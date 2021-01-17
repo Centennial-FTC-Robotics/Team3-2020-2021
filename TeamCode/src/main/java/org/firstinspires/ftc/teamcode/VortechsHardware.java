@@ -14,14 +14,16 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 public class VortechsHardware extends LinearOpMode {
 
     //initialize motors and servos here
-    protected DcMotorEx frontRight;
-    protected DcMotorEx frontLeft;
-    protected DcMotorEx backRight;
-    protected DcMotorEx backLeft;
-    protected DcMotorEx leftOutTake;
-    protected DcMotorEx rightOutTake;
-    protected DcMotorEx intakeWheel;
-    protected BNO055IMU IMU;
+    public DcMotorEx frontRight = null;
+    public DcMotorEx frontLeft = null;
+    public DcMotorEx backRight = null;
+    public DcMotorEx backLeft = null;
+    public DcMotorEx leftOutTake = null;
+    public DcMotorEx rightOutTake = null;
+    public DcMotorEx intakeWheel = null;
+   // public Servo conveyor;
+   // public Servo grabberArm;
+    public BNO055IMU imu;
 
 
     @Override
@@ -34,7 +36,9 @@ public class VortechsHardware extends LinearOpMode {
         leftOutTake = hardwareMap.get(DcMotorEx.class, "leftOutTake");
         rightOutTake = hardwareMap.get(DcMotorEx.class, "rightOutTake");
         intakeWheel = hardwareMap.get(DcMotorEx.class, "intakeWheel");
-        IMU = hardwareMap.get(BNO055IMU.class, "IMU");
+       // conveyor = hardwareMap.get(Servo.class, "conveyor");
+      //  grabberArm = hardwareMap.get(Servo.class, "grabberArm");
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
 
         frontLeft.setDirection(DcMotorEx.Direction.REVERSE);
         backLeft.setDirection(DcMotorEx.Direction.REVERSE);

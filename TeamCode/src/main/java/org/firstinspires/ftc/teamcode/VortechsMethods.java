@@ -107,7 +107,7 @@ class VortechsMethods extends VortechsHardware {
         return ticks/TICKS_PER_INCH;
     }
     public void updateIMU() {
-    orientation = IMU.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+    orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
     currentAngle = AngleUnit.normalizeDegrees(orientation.firstAngle - initialHeading);
     }
     public boolean motorsBusy() {
@@ -121,9 +121,9 @@ class VortechsMethods extends VortechsHardware {
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "AdafruitIMUCalibration.json";
         parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
+        parameters.loggingTag = "imu";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-        IMU.initialize(parameters);
+        imu.initialize(parameters);
     }
     private void resetOrientation(){
         initialHeading = orientation.firstAngle;

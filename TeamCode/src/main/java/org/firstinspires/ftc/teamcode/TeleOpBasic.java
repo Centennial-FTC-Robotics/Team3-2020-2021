@@ -1,15 +1,17 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+@TeleOp(name = "Teleop Basic", group = "Tests")
 public class TeleOpBasic extends VortechsHardware{
 
-    double MotorPower;
-    double Steering;
-    double RightPower;
-    double LeftPower;
+    double MotorPower = 0.0;
+    double Steering = 0.0;
+    double RightPower = 0.0;
+    double LeftPower = 0.0;
 
-    public void runOpMode(){
+    public void runOpMode() throws InterruptedException{
+        super.runOpMode();
 
         waitForStart();
 
