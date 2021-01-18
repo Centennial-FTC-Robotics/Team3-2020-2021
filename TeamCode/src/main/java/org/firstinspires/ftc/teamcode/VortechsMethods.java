@@ -18,8 +18,6 @@ class VortechsMethods extends VortechsHardware {
 
     protected static final double TICKS_PER_INCH = (1120.0 / (100.0 * Math.PI)) * 25.4;
     protected static final double TILE_LENGTH = 24;
-    private final DcMotorEx[] driveMotors = {frontLeft, frontRight, backLeft, backRight};
-
 
     public double XPos, YPos, currentAngle, XTarget, YTarget, angleTarget, initialHeading;
     public void runOpMode() throws InterruptedException {
@@ -48,16 +46,13 @@ class VortechsMethods extends VortechsHardware {
         moveAndTurn(0,0,degrees);
     }
     public void moveAndTurn(double XTarget, double YTarget, double angleTarget) {
-        for(DcMotorEx motor : driveMotors) {
-            motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-            motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        }//tune the PID here
-        double P = 0.5;
-        double I = 0.0;
-        double D = 0.0;
+    //tune the PID here
+        double P = 0.00005;
+        double I = 0.00000035;
+        double D = 0.000014;
 
-        double angleP = 0.5;
-        double angleI = 0.0;
+        double angleP = 0.02;
+        double angleI = 0.01;
         double angleD = 0.0;
 
         double yError = 0.0;
@@ -101,6 +96,13 @@ class VortechsMethods extends VortechsHardware {
 
             frontLeft.setPower(Range.clip(frontLeftPower + leftTurn,0,1));
             backRight.setPower(Range.clip(frontLeftPower + rightTurn,0,1));
+
+            telemetry.addData("P-value:", P);
+            telemetry.addData("I-value:", I);
+            telemetry.addData("D-value:", D);
+            telemetry.addData("xError", xError);
+            telemetry.addData("yError", yError);
+            telemetry.update();
         }
     }
     public double ticksToInches(int ticks) {

@@ -20,9 +20,9 @@ public class TeleOpAdvanced extends VortechsMethods {
 
 
             //slow rotation using triggers
-            if (gamepad1.left_trigger > 0.0) {
+            if (gamepad1.left_trigger > 0.05) {
                 rotation = -gamepad1.left_trigger;
-            } else if (gamepad1.right_trigger > 0.0) {
+            } else if (gamepad1.right_trigger > 0.05) {
                 rotation = gamepad1.right_trigger;
             }
             if (gamepad1.dpad_left) {
@@ -33,15 +33,28 @@ public class TeleOpAdvanced extends VortechsMethods {
 
             //the x button slows down speed
             if (gamepad1.x) {
-                speed = 0.5;
-            } else {
                 speed = 1.0;
+            } else {
+                speed = 0.25;
+            }
+            if(gamepad2.left_bumper) {
+                leftOutTake.setPower(-1 * speed);
+            } else {
+                leftOutTake.setPower(0);
+            }
+            if (gamepad2.right_bumper) {
+                rightOutTake.setPower(1 * speed);
+            } else {
+                rightOutTake.setPower(0);
+            }
+            if(gamepad2.a) {
+                launch(0.5,1);
             }
 
             frontLeft.setPower((y + x + rotation) * speed);
-            frontRight.setPower((y - x - rotation) * speed);
+            frontRight.setPower((y + x - rotation) * speed);
             backLeft.setPower((y - x + rotation) * speed);
-            backRight.setPower((y + x - rotation) * speed);
+            backRight.setPower((y - x - rotation) * speed);
 
             idle();
 

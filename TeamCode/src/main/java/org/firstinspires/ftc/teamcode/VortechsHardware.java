@@ -40,8 +40,16 @@ public class VortechsHardware extends LinearOpMode {
       //  grabberArm = hardwareMap.get(Servo.class, "grabberArm");
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 
-        frontLeft.setDirection(DcMotorEx.Direction.REVERSE);
-        backLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        frontRight.setDirection(DcMotorEx.Direction.REVERSE);
+        backRight.setDirection(DcMotorEx.Direction.REVERSE);
+
+        final DcMotorEx[] driveMotors = {frontLeft, frontRight, backLeft, backRight};
+        for(DcMotorEx motor : driveMotors) {
+            motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+            motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        }
+        leftOutTake.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        rightOutTake.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
 
     }
