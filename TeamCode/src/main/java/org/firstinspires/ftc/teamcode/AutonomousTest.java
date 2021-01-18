@@ -1,5 +1,5 @@
 /*
-This is a test of the PID system that moves the robot forward exactly 10 inches.
+This is a test of the autonomous system that moves the robot forward exactly 10 inches.
  */
 package org.firstinspires.ftc.teamcode;
 

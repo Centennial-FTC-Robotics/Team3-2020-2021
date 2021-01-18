@@ -24,6 +24,8 @@ public class TeleOpAdvanced extends VortechsMethods {
                 rotation = -gamepad1.left_trigger;
             } else if (gamepad1.right_trigger > 0.05) {
                 rotation = gamepad1.right_trigger;
+            } else {
+                rotation = 0.0;
             }
             if (gamepad1.dpad_left) {
                 turnRelative(-90);
@@ -37,6 +39,7 @@ public class TeleOpAdvanced extends VortechsMethods {
             } else {
                 speed = 0.25;
             }
+
             if(gamepad2.left_bumper) {
                 leftOutTake.setPower(-1 * speed);
             } else {

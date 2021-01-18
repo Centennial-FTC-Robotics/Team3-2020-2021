@@ -20,6 +20,7 @@ class VortechsMethods extends VortechsHardware {
     protected static final double TILE_LENGTH = 24;
 
     public double XPos, YPos, currentAngle, XTarget, YTarget, angleTarget, initialHeading;
+    public double tolerance = 0.3;
     public void runOpMode() throws InterruptedException {
         super.runOpMode();
         initializeIMU();
@@ -37,7 +38,7 @@ class VortechsMethods extends VortechsHardware {
     }
 
     public void moveRelative(double sideways, double forward){
-        moveAndTurn(sideways - XPos, forward - YPos,0);
+        moveAndTurn(sideways, forward,0);
     }
     public void turnRelative(double degrees) {
         moveAndTurn(0,0,degrees - currentAngle);
@@ -45,34 +46,28 @@ class VortechsMethods extends VortechsHardware {
     public void turn(double degrees) {
         moveAndTurn(0,0,degrees);
     }
-    public void moveAndTurn(double XTarget, double YTarget, double angleTarget) {
+    public void moveAndTurn(double xError, double yError, double angleError) {
     //tune the PID here
-        double P = 0.00005;
-        double I = 0.00000035;
-        double D = 0.000014;
+        double P = 0.05;
+        double I = 0.035;
+        double D = 0.0014;
 
         double angleP = 0.02;
         double angleI = 0.01;
         double angleD = 0.0;
 
-        double yError = 0.0;
-        double xError = 0.0;
-
-        double angleError;    //the distance from the target
         double prevYError = 0.0, prevXError = 0.0, prevAngleError = 0.0;
         ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         ElapsedTime prevTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-        while(opModeIsActive()) {
-
-            angleError = angleTarget - currentAngle;
+        while(opModeIsActive() && (yError > tolerance || xError > tolerance || angleError > tolerance)) {
 
             double yProportion = P * yError;
             double xProportion = P * xError;
-            double aIntegral = angleP * angleError;
+            double aProportion = angleP * angleError;
 
             double yIntegral =+ I * (yError * (timer.milliseconds() - prevTimer.milliseconds()));
             double xIntegral =+ I * (xError * (timer.milliseconds() - prevTimer.milliseconds()));
-            double aProportion =+ angleI * (angleError * (timer.milliseconds() - prevTimer.milliseconds()));
+            double aIntegral =+ angleI * (angleError * (timer.milliseconds() - prevTimer.milliseconds()));
             
             double yDerivative = D * (yError - prevYError) / (timer.milliseconds() - prevTimer.milliseconds());
             double xDerivative = D * (xError - prevXError) / (timer.milliseconds() - prevTimer.milliseconds());
@@ -91,23 +86,29 @@ class VortechsMethods extends VortechsHardware {
             double rightTurn = angleP * aProportion + angleI * aIntegral - angleD * aDerivative;
             double leftTurn = -angleP * aProportion - angleI * aIntegral + angleD * aDerivative;
 
-            frontRight.setPower(Range.clip(frontRightPower + rightTurn, 0, 1));
-            backLeft.setPower(Range.clip(frontRightPower + leftTurn,0,1));
+            frontRight.setPower(frontRightPower + rightTurn);
+            backLeft.setPower(frontRightPower + leftTurn);
 
-            frontLeft.setPower(Range.clip(frontLeftPower + leftTurn,0,1));
-            backRight.setPower(Range.clip(frontLeftPower + rightTurn,0,1));
+            frontLeft.setPower(frontLeftPower + leftTurn);
+            backRight.setPower(frontLeftPower + rightTurn);
 
             telemetry.addData("P-value:", P);
             telemetry.addData("I-value:", I);
             telemetry.addData("D-value:", D);
             telemetry.addData("xError", xError);
             telemetry.addData("yError", yError);
+            telemetry.addData("frontRightPower", frontRightPower);
+            telemetry.addData("frontLeftPower", frontLeftPower);
+            telemetry.addData("rightTurn", rightTurn);
+            telemetry.addData("leftTurn", leftTurn);
             telemetry.update();
+            updateIMU();
         }
     }
     public double ticksToInches(int ticks) {
         return ticks/TICKS_PER_INCH;
     }
+
     public void updateIMU() {
     orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
     currentAngle = AngleUnit.normalizeDegrees(orientation.firstAngle - initialHeading);

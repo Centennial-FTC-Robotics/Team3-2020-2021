@@ -12,10 +12,10 @@ public class GamepadTest extends VortechsMethods{
             super.runOpMode();
             waitForStart();
             while(opModeIsActive()) {
-                double y = gamepad1.left_stick_y;
-                double x = gamepad1.left_stick_x;
-                telemetry.addData("Y:",y);
-                telemetry.addData("X:",x);
+                telemetry.addData("Y:",gamepad1.left_stick_y);
+                telemetry.addData("X:",gamepad1.left_stick_x);
+                telemetry.addData("Left Trigger:",gamepad1.left_trigger);
+                telemetry.addData("Right Trigger:",gamepad1.right_trigger);
                 telemetry.update();
             }
         }
