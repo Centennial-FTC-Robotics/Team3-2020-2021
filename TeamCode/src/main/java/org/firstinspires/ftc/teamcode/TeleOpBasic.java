@@ -17,7 +17,7 @@ public class TeleOpBasic extends VortechsHardware{
 
         while(opModeIsActive())
         {
-            MotorPower = gamepad1.left_stick_y;
+            MotorPower = -gamepad1.left_stick_y;
             Steering = gamepad1.left_stick_x;
             RightPower = MotorPower - Steering;
             LeftPower = MotorPower + Steering;
@@ -26,6 +26,11 @@ public class TeleOpBasic extends VortechsHardware{
             backLeft.setPower(LeftPower);
             frontRight.setPower(RightPower);
             backRight.setPower((RightPower));
+
+            if (this.gamepad1.right_trigger > 0) {    //slowmode
+                RightPower = RightPower/2.0;
+                LeftPower = LeftPower/2.0;
+            }
 
             idle();
         }
