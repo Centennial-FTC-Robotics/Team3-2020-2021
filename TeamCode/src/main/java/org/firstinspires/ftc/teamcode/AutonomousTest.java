@@ -12,6 +12,6 @@ public class AutonomousTest extends VortechsMethods{
             waitForStart();
             driveStraight(1,10);
             rotate(90);
-            
+
         }
     }
