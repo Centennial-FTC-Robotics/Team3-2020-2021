@@ -41,12 +41,12 @@ public class TeleOpAdvanced extends VortechsMethods {
             }
 
             if(gamepad2.left_bumper) {
-                leftOutTake.setPower(-1 * speed);
+                leftOutTake.setPower(1 * speed);
             } else {
                 leftOutTake.setPower(0);
             }
             if (gamepad2.right_bumper) {
-                rightOutTake.setPower(1 * speed);
+                rightOutTake.setPower(-1 * speed);
             } else {
                 rightOutTake.setPower(0);
             }
@@ -60,6 +60,17 @@ public class TeleOpAdvanced extends VortechsMethods {
             backRight.setPower((y - x - rotation) * speed);
 
             idle();
+
+            if(gamepad2.x) {
+                intakeWheel.setPower(0.2);
+            } else {
+                intakeWheel.setPower(0.0);
+            }
+            if(gamepad2.b){
+                conveyor.setPower(0.5);
+            } else {
+                conveyor.setPower(0.0);
+            }
 
         }
     }

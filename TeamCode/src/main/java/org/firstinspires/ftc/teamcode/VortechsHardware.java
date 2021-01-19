@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -21,8 +22,8 @@ public class VortechsHardware extends LinearOpMode {
     public DcMotorEx leftOutTake = null;
     public DcMotorEx rightOutTake = null;
     public DcMotorEx intakeWheel = null;
-   // public Servo conveyor;
-   // public Servo grabberArm;
+    public CRServo conveyor;
+    public CRServo grabberArm;
     public BNO055IMU imu;
 
 
@@ -36,8 +37,8 @@ public class VortechsHardware extends LinearOpMode {
         leftOutTake = hardwareMap.get(DcMotorEx.class, "leftOutTake");
         rightOutTake = hardwareMap.get(DcMotorEx.class, "rightOutTake");
         intakeWheel = hardwareMap.get(DcMotorEx.class, "intakeWheel");
-       // conveyor = hardwareMap.get(Servo.class, "conveyor");
-      //  grabberArm = hardwareMap.get(Servo.class, "grabberArm");
+        conveyor = hardwareMap.get(CRServo.class, "conveyor");
+        grabberArm = hardwareMap.get(CRServo.class, "grabberArm");
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 
         frontRight.setDirection(DcMotorEx.Direction.REVERSE);

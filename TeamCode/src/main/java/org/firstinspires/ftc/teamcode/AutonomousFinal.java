@@ -9,6 +9,5 @@ public class AutonomousFinal extends VortechsMethods {
         super.runOpMode();
         waitForStart();
         moveRelative(0,24);
-        TensorFlow.runOpMode();
     }
 }
