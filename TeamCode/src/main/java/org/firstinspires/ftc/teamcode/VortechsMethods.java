@@ -136,6 +136,44 @@ class VortechsMethods extends VortechsHardware {
         this.YPos = YPos;
     }
 
+    public void resetDriveMotors(){
+        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void driveStraight(double inches, double power){ resetOrientation();
+        int ticks = (int)(TICKS_PER_INCH*inches);
+
+        resetDriveMotors();
+
+        backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        backLeft.setTargetPosition(ticks);
+        backRight.setTargetPosition(ticks);
+        frontLeft.setTargetPosition(ticks);
+        backRight.setTargetPosition(ticks);
+
+        backLeft.setPower(power);
+        backRight.setPower(power);
+        frontLeft.setPower(power);
+        frontRight.setPower(power);
+
+    }
+
+    public void rotate(double degrees){
+        double factor = degrees*(TICKS_PER_INCH/180);
+
+        backLeft.setTargetPosition((int) factor);
+        backRight.setTargetPosition(-(int) factor);
+        frontLeft.setTargetPosition((int) factor);
+        frontRight.setTargetPosition(-(int) factor);
+    }
+
 
 
 }
