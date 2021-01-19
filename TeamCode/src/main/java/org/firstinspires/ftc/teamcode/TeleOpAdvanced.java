@@ -21,9 +21,9 @@ public class TeleOpAdvanced extends VortechsMethods {
 
             //slow rotation using triggers
             if (gamepad1.left_trigger > 0.05) {
-                rotation = -gamepad1.left_trigger;
+                rotation = gamepad1.left_trigger;
             } else if (gamepad1.right_trigger > 0.05) {
-                rotation = gamepad1.right_trigger;
+                rotation = -gamepad1.right_trigger;
             } else {
                 rotation = 0.0;
             }
