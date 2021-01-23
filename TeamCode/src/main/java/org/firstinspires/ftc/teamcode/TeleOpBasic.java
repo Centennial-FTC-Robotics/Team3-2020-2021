@@ -58,8 +58,9 @@ public class TeleOpBasic extends VortechsHardware{
             leftOutTake.setPower(0.0);
             rightOutTake.setPower(0.0);
             }
-
-            
+            if (this.gamepad2.right_trigger>0){
+            OtherPower = OtherPower/2.0;
+            }
             idle();
         }
     }
