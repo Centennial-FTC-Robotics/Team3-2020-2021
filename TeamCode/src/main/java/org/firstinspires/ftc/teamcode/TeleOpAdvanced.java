@@ -1,7 +1,19 @@
+/*
+
+
+
+Disabled this one, use Teleop Basic instead
+
+
+
+ */
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+
+@Disabled
 @TeleOp(name = "Teleop Advanced", group = "Tests")
 public class TeleOpAdvanced extends VortechsMethods {
     //This code is based on the "Controls" spreadsheet we made in the Google Drive
@@ -62,7 +74,7 @@ public class TeleOpAdvanced extends VortechsMethods {
             idle();
 
             if(gamepad2.x) {
-                intakeWheel.setPower(0.2);
+                intakeWheel.setPower(1.0);
             } else {
                 intakeWheel.setPower(0.0);
             }

@@ -46,7 +46,12 @@ class VortechsMethods extends VortechsHardware {
     public void turn(double degrees) {
         moveAndTurn(0,0,degrees);
     }
-    public void moveAndTurn(double xError, double yError, double angleError) {
+    public void moveAndTurn(double xTarget, double yTarget, double angleError) {
+        resetEncoders();
+        double xError = inchesToTicks(xTarget);
+        double prevXError = inchesToTicks(xTarget);
+        double yError = inchesToTicks(yTarget);
+        double prevYError = inchesToTicks(yTarget);
     //tune the PID here
         double P = 0.05;
         double I = 0.035;
@@ -56,7 +61,7 @@ class VortechsMethods extends VortechsHardware {
         double angleI = 0.01;
         double angleD = 0.0;
 
-        double prevYError = 0.0, prevXError = 0.0, prevAngleError = 0.0;
+        double prevAngleError = 0.0;
         ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         ElapsedTime prevTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         while(opModeIsActive() && (yError > tolerance || xError > tolerance || angleError > tolerance)) {
@@ -106,10 +111,13 @@ class VortechsMethods extends VortechsHardware {
         }
     }
     public double ticksToInches(int ticks) {
-        return ticks/TICKS_PER_INCH;
+        return ticks / TICKS_PER_INCH;
+    }
+    public double inchesToTicks(double inches) {
+        return Math.round(inches * TICKS_PER_INCH);
     }
 
-    public void updateIMU() {
+        public void updateIMU() {
     orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
     currentAngle = AngleUnit.normalizeDegrees(orientation.firstAngle - initialHeading);
     }
@@ -136,12 +144,7 @@ class VortechsMethods extends VortechsHardware {
         this.YPos = YPos;
     }
 
-    public void resetDriveMotors(){
-        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    }
+
 
     public void driveStraight(double inches, double power){ resetOrientation();
         int ticks = (int)(TICKS_PER_INCH*inches);

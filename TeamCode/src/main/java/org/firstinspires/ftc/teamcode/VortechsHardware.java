@@ -44,14 +44,20 @@ public class VortechsHardware extends LinearOpMode {
         frontRight.setDirection(DcMotorEx.Direction.REVERSE);
         backRight.setDirection(DcMotorEx.Direction.REVERSE);
 
+        leftOutTake.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        rightOutTake.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+    }
+    public void resetEncoders() {
         final DcMotorEx[] driveMotors = {frontLeft, frontRight, backLeft, backRight};
         for(DcMotorEx motor : driveMotors) {
             motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
             motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         }
-        leftOutTake.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        rightOutTake.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-
-
+    }
+    public void resetDriveMotors(){
+        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }
