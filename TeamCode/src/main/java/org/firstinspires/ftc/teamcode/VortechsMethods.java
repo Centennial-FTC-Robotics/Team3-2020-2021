@@ -111,6 +111,10 @@ class VortechsMethods extends VortechsHardware {
             telemetry.addData("D-value:", D);
             telemetry.addData("xError", xError);
             telemetry.addData("yError", yError);
+            telemetry.addData("prevXError", prevXError);
+            telemetry.addData("prevYError", prevYError);
+            telemetry.addData("current x pos", currentXPos);
+            telemetry.addData("current y pos", currentYPos);
             telemetry.addData("frontRightPower", frontRightPower);
             telemetry.addData("frontLeftPower", frontLeftPower);
             telemetry.addData("rightTurn", rightTurn);
