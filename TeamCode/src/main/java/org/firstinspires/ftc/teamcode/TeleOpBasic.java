@@ -32,6 +32,18 @@ public class TeleOpBasic extends VortechsHardware{
                 LeftPower = LeftPower/2.0;
             }
 
+            if (this.gamepad2.left_trigger>1){
+            intakeWheel.setPower(2);
+            }
+
+            conveyor.setPower(this.gamepad2.left_stick_y);
+            grabberArm.setPower(this.gamepad2.left_stick_x);
+
+            if (this.gamepad2.right_trigger>1){
+            leftOutTake.setPower(2);
+            rightOutTake.setPower(2);
+            }
+
             idle();
         }
     }
