@@ -37,7 +37,7 @@ public class TeleOpBasic extends VortechsHardware{
             frontRight.setPower(TurnThrottle-Turn);
             backRight.setPower(TurnThrottle-Turn);
 
-            if (this.gamepad1.right_trigger > 0) {    //slowmode
+            while (this.gamepad1.right_trigger > 0) {    //slowmode
                 RightPower = RightPower/2.0;
                 LeftPower = LeftPower/2.0;
             }
@@ -60,8 +60,10 @@ public class TeleOpBasic extends VortechsHardware{
             leftOutTake.setPower(0.0);
             rightOutTake.setPower(0.0);
             }
-            if (this.gamepad2.right_trigger>0){
-            OtherPower = OtherPower/2.0;
+            if (this.gamepad2.right_bumper){
+            OtherPower = 0.5;
+            }
+            else{ OtherPower = 1.0;
             }
             idle();
         }
