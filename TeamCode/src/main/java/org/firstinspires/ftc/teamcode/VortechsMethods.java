@@ -97,6 +97,15 @@ class VortechsMethods extends VortechsHardware {
             frontLeft.setPower(frontLeftPower + leftTurn);
             backRight.setPower(frontLeftPower + rightTurn);
 
+            double negTarget = yTarget - xTarget;
+            double posTarget = yTarget + xTarget;
+
+            double currentYPos = frontLeft.getCurrentPosition();
+            double currentXPos = frontRight.getCurrentPosition();
+
+            yError = negTarget - currentYPos;
+            xError = posTarget - currentXPos;
+
             telemetry.addData("P-value:", P);
             telemetry.addData("I-value:", I);
             telemetry.addData("D-value:", D);
