@@ -7,6 +7,7 @@ public class TeleOpBasic extends VortechsHardware{
 
     double MotorPower = 0.0;
     double Steering = 0.0;
+    double Turn = 0.0;
     double RightPower = 0.0;
     double LeftPower = 0.0;
 
@@ -19,6 +20,7 @@ public class TeleOpBasic extends VortechsHardware{
         {
             MotorPower = -gamepad1.left_stick_y;
             Steering = gamepad1.left_stick_x;
+            Turn = gamepad2.left_stick_x;
             RightPower = MotorPower - Steering;
             LeftPower = MotorPower + Steering;
 
