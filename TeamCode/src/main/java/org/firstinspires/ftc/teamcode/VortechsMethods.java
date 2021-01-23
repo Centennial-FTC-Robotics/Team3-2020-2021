@@ -53,9 +53,9 @@ class VortechsMethods extends VortechsHardware {
         double yError = inchesToTicks(yTarget);
         double prevYError = inchesToTicks(yTarget);
     //tune the PID here
-        double P = 0.05;
-        double I = 0.035;
-        double D = 0.0014;
+        double P = 0.005;
+        double I = 0.0035;
+        double D = 0.00014;
 
         double angleP = 0.02;
         double angleI = 0.01;
@@ -150,11 +150,7 @@ class VortechsMethods extends VortechsHardware {
         int ticks = (int)(TICKS_PER_INCH * inches);
 
         resetDriveMotors();
-
-        backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        setRunToPosition();
 
         backLeft.setTargetPosition(ticks);
         backRight.setTargetPosition(ticks);
