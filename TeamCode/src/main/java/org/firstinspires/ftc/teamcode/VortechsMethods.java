@@ -147,7 +147,7 @@ class VortechsMethods extends VortechsHardware {
 
 
     public void driveStraight(double inches, double power){ resetOrientation();
-        int ticks = (int)(TICKS_PER_INCH*inches);
+        int ticks = (int)(TICKS_PER_INCH * inches);
 
         resetDriveMotors();
 
@@ -161,10 +161,12 @@ class VortechsMethods extends VortechsHardware {
         frontLeft.setTargetPosition(ticks);
         backRight.setTargetPosition(ticks);
 
-        backLeft.setPower(power);
-        backRight.setPower(power);
-        frontLeft.setPower(power);
-        frontRight.setPower(power);
+        double drivePower = Range.clip(power,0,1);
+
+        backLeft.setPower(drivePower);
+        backRight.setPower(drivePower);
+        frontLeft.setPower(drivePower);
+        frontRight.setPower(drivePower);
 
     }
 
