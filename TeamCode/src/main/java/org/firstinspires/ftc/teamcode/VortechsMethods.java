@@ -8,26 +8,41 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 import java.util.List;
 
-class VortechsMethods extends VortechsHardware {
+public class VortechsMethods extends VortechsHardware {
 
     protected static final double TICKS_PER_INCH = (1120.0 / (100.0 * Math.PI)) * 25.4;
     public TFObjectDetector tfod;
+    private VuforiaLocalizer vuforia;
 
     public double XPos, YPos, currentAngle, XTarget, YTarget, angleTarget, initialHeading;
     public double tolerance = 0.3;
 
-    // add constants here for distances/lengths on the field
-    // so we can multiply everything by -1 to mirror the red auto path onto the blue auto path
+    protected static final double TARGET_A = 0;
+    protected static final double TARGET_B = 1;
+    protected static final double TARGET_C = 2;
+
+    private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
+    private static final String LABEL_FIRST_ELEMENT = "Quad";
+    private static final String LABEL_SECOND_ELEMENT = "Single";
+
+    private static final String VUFORIA_KEY =
+            "AaE18sD/////AAABmZ7zTjrwDEwgoUUd9Hg/fVNlCi1mnUJCizFmysoKuVPPNnIEWJmK9SlpRppNs0SV9sDdCFc6nySaX1KM3CimlwDwzEcmZs016lHBxh3A0S5hVFPPHWzE34TCYgA90g9nrKrwRIFolSSO6p9YmDLzi4fFHcOe85nuiYRfFZwaYlCnTZnwU3czaUue9uFiq3Q9e9Hytr3EtxJrvKISSdNah+WP+43QaqrLcQR7NfOkYQ5AY+omdtZ76KfgooK5dtO4lgYwxAWkVVAYt60zLcrpd4ZHC9Nu+6xkhLF5QhJDbfSUD0/Kep5MhZqugCpguNDzvcBQ5HtCVYvjGYO6pe7Gy6JwRiB1E2gAatjyS0Prc2pV";
+
+    // hardcode constants for distances/lengths on the field here
+    // this will make it easier to mirror the red and blue auto paths
+
     protected static final double TILE_LENGTH = 24;
 
     public void runOpMode() throws InterruptedException {
@@ -211,10 +226,10 @@ class VortechsMethods extends VortechsHardware {
         setRunToPosition();
     }
 
-    // Autonomous Methods
+    // AUTONOMOUS METHODS
 
     // returns which target zone to go to
-    public int detectRings(String color) {
+    public int detectRings() {
         int targetZone = 0;
 
         if (tfod != null) {
@@ -240,7 +255,7 @@ class VortechsMethods extends VortechsHardware {
                                 // empty list.  no objects recognized.
                                 telemetry.addData("TFOD", "No items detected.");
                                 telemetry.addData("Target Zone", "A");
-                                targetZone = 0;
+                                targetZone = (int) TARGET_A;
                             } else {
                                 // list is not empty.
                                 // step through the list of recognitions and display boundary info.
@@ -255,10 +270,10 @@ class VortechsMethods extends VortechsHardware {
                                     // check label to see which target zone to go after.
                                     if (recognition.getLabel().equals("Single")) {
                                         telemetry.addData("Target Zone", "B");
-                                        targetZone = 1;
+                                        targetZone = (int) TARGET_B;
                                     } else if (recognition.getLabel().equals("Quad")) {
                                         telemetry.addData("Target Zone", "C");
-                                        targetZone = 2;
+                                        targetZone = (int) TARGET_C;
                                     } else {
                                         telemetry.addData("Target Zone", "UNKNOWN");
                                     }
@@ -271,7 +286,109 @@ class VortechsMethods extends VortechsHardware {
                 }
             }
         }
+
+        if (tfod != null) {
+            tfod.shutdown();
+        }
+
         return targetZone;
+    }
+
+    public void moveToTargetALeft(String color) throws InterruptedException {
+        waitForStart();
+        moveRelative(0, 70); //Move towards square A
+        turnRelative(-30); //Turn facing square A
+        moveRelative(0, 15); //Move into square A
+        turnRelative(-330); //Turn shooter towards ring goal
+        moveRelative(0, 80); //Move back behind white line
+        launch(2, 3); //Shoot rings
+        moveRelative(0, -5); //Back into white line
+    }
+
+    public void moveToTargetBLeft(String color) throws InterruptedException {
+        waitForStart();
+        moveRelative(0, 30); //Moves forward into white line
+        turnRelative(30); //Turn towards square B
+        moveRelative(0, 20); //Moves into square B
+        turnRelative(330); //Turn so back is facing ring Goal
+        moveRelative(0, 20); //Head back behind white line
+        launch(2, 3); //Shoot rings
+        moveRelative(0, -10); //Park onto white line
+    }
+
+    public void moveToTargetCLeft(String color) throws InterruptedException {
+        moveRelative(0, 40); //Move towards square C
+        turnRelative(-30); //Turn towards square C
+        moveRelative(0, 10); //Move into square C
+        turnRelative(-330); //Turn shooter towards ring goal
+        moveRelative(0, 10); //Move behind white line
+        launch(2, 3); //Shoot the rings
+        moveRelative(0, -5); //Park on white line
+    }
+
+    // robot starts on right side
+
+    public void moveToTargetARight(String color) throws InterruptedException {
+        waitForStart();
+        moveRelative(0, 70); //Move towards square A
+        turnRelative(-45); //Turn facing square A
+        moveRelative(0, 15); //Move into square A
+        turnRelative(-315); //Turn shooter towards ring goal
+        moveRelative(0, 80); //Move back behind white line
+        launch(2, 3); //Shoot rings
+        moveRelative(0, -5); //Back into white line
+    }
+
+    public void moveToTargetBRight(String color) throws InterruptedException {
+        waitForStart();
+        moveRelative(0, 30); //Moves forward into white line
+        turnRelative(-30); //Turn towards square B
+        moveRelative(0, 20); //Moves into square B
+        turnRelative(-330); //Turn so back is facing ring Goal
+        moveRelative(0, 20); //Head back behind white line
+        launch(2, 3); //Shoot rings
+        moveRelative(0, -10); //Park onto white line
+    }
+
+    public void moveToTargetCRight(String color) throws InterruptedException {
+        moveRelative(0, 40); //Move towards square C
+        moveRelative(0, 40); //Move towards square C
+        turnRelative(-45); //Turn towards square C
+        moveRelative(0, 17); //Move into square C
+        turnRelative(-315); //Turn shooter towards ring goal
+        moveRelative(0, 10); //Move behind white line
+        launch(2, 3); //Shoot the rings
+        moveRelative(0, -5); //Park on white line
+    }
+
+    /**
+     * Initialize the Vuforia localization engine.
+     */
+    private void initVuforia() {
+        /*
+         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
+         */
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+
+        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+
+        //  Instantiate the Vuforia engine
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+        // Loading trackables is not necessary for the TensorFlow Object Detection engine.
+    }
+
+    /**
+     * Initialize the TensorFlow Object Detection engine.
+     */
+    private void initTfod() {
+        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfodParameters.minResultConfidence = 0.8f;
+        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
 }
 
