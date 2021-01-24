@@ -232,6 +232,9 @@ public class VortechsMethods extends VortechsHardware {
     public int detectRings() {
         int targetZone = 0;
 
+        initTfod();
+        initVuforia();
+
         if (tfod != null) {
             tfod.activate();
         }
