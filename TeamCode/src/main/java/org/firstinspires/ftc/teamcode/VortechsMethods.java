@@ -198,6 +198,13 @@ public class VortechsMethods extends VortechsHardware {
         this.XPos = XPos;
         this.YPos = YPos;
     }
+    public void driveStraightBasic(double power, long seconds) throws InterruptedException{
+        frontLeft.setPower(power);
+        frontRight.setPower(power);
+        backLeft.setPower(power);
+        backRight.setPower(power);
+        Thread.sleep(seconds*1000);
+    }
 
 
     public void driveStraight(double inches, double power) {
