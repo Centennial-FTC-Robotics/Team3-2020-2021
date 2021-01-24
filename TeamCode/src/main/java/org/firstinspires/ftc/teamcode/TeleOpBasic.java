@@ -13,6 +13,8 @@ public class TeleOpBasic extends VortechsHardware{
     double LeftPower = 0.0;
     double OtherPower = 1.0;
     boolean intakeOn = false;
+    boolean toggle = false;
+    int counter;
 
     public void runOpMode() throws InterruptedException{
         super.runOpMode();
@@ -61,15 +63,28 @@ public class TeleOpBasic extends VortechsHardware{
                 LeftPower = LeftPower/2.0;
             }
 
-            if (gamepad2.a){
-            intakeOn = !intakeOn;
-             while (intakeOn = true){
-             intakeWheel.setPower(2);
-             }
+            // toggle intake
+            boolean pressed = gamepad2.a;
+
+            if(pressed && !toggle){
+                intakeWheel.setPower(2);
+                telemetry.addData("pressed", pressed);
+                telemetry.addData("toggle", toggle);
+            }
+            toggle = pressed;
+            intakeWheel.setPower(0);
+            telemetry.update();
+
+/*            if (gamepad2.a && !intakeOn){
+                intakeWheel.setPower(2);
+            //intakeOn = !intakeOn;
+             //while (intakeOn = true){
+             //intakeWheel.setPower(2);
+            // }
             }
             else {
             intakeOn = false;
-            }
+            }*/
             
          /*   boolean intakeOn = false;
             if (gamepad2.a){
