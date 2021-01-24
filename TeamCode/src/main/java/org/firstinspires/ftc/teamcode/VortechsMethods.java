@@ -89,6 +89,9 @@ public class VortechsMethods extends VortechsHardware {
         double angleD = 0.0;
 
         double prevAngleError = 0.0;
+        double yIntegral = 0.0;
+        double xIntegral = 0.0;
+        double aIntegral = 0.0;
         ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         ElapsedTime prevTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         while (opModeIsActive() && (yError > tolerance || xError > tolerance || angleError > tolerance)) {
@@ -97,9 +100,9 @@ public class VortechsMethods extends VortechsHardware {
             double xProportion = P * xError;
             double aProportion = angleP * angleError;
 
-            double yIntegral = +I * (yError * (timer.milliseconds() - prevTimer.milliseconds()));
-            double xIntegral = +I * (xError * (timer.milliseconds() - prevTimer.milliseconds()));
-            double aIntegral = +angleI * (angleError * (timer.milliseconds() - prevTimer.milliseconds()));
+            yIntegral += I * (yError * (timer.milliseconds() - prevTimer.milliseconds()));
+            xIntegral += I * (xError * (timer.milliseconds() - prevTimer.milliseconds()));
+            aIntegral += angleI * (angleError * (timer.milliseconds() - prevTimer.milliseconds()));
 
             double yDerivative = D * (yError - prevYError) / (timer.milliseconds() - prevTimer.milliseconds());
             double xDerivative = D * (xError - prevXError) / (timer.milliseconds() - prevTimer.milliseconds());
