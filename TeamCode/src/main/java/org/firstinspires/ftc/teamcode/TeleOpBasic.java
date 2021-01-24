@@ -47,7 +47,7 @@ public class TeleOpBasic extends VortechsHardware{
             backLeft.setPower(1);
             backRight.setPower(-1);
             }
-
+            
         /*  frontLeft.setPower(LeftPower);         //strafe controlled by left stick
             backLeft.setPower(RightPower);
             frontRight.setPower(RightPower);
@@ -64,7 +64,7 @@ public class TeleOpBasic extends VortechsHardware{
             }
 
             // toggle intake
-            boolean pressed = gamepad2.a;
+          /*  boolean pressed = gamepad2.a;
 
             if(pressed && !toggle){
                 intakeWheel.setPower(2);
@@ -73,7 +73,18 @@ public class TeleOpBasic extends VortechsHardware{
             }
             toggle = pressed;
    //         intakeWheel.setPower(0);
-            telemetry.update();
+            telemetry.update();  */
+
+            int num = 0;                    //another intake toggle system
+            if (gamepad2.a){
+            num = num+1;
+                if (num%2 == 1){
+                    intakeWheel.setPower(1);
+                }
+                else if (num%2 == 0){
+                    intakeWheel.setPower(0);
+                }
+            }
 
             if (gamepad2.x){
                 intakeWheel.setPower(2);
