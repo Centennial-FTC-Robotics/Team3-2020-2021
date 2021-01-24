@@ -65,9 +65,9 @@ class VortechsMethods extends VortechsHardware {
         double yError = inchesToTicks(yTarget);
         double prevYError = inchesToTicks(yTarget);
         //tune the PID here
-        double P = 0.005;
-        double I = 0.0035;
-        double D = 0.00014;
+        double P = 0.05;
+        double I = 0.035;
+        double D = 0.014;
 
         double angleP = 0.02;
         double angleI = 0.01;
@@ -182,20 +182,23 @@ class VortechsMethods extends VortechsHardware {
         int ticks = (int) (TICKS_PER_INCH * inches);
 
         resetDriveMotors();
-        setRunToPosition();
 
         backLeft.setTargetPosition(ticks);
         backRight.setTargetPosition(ticks);
         frontLeft.setTargetPosition(ticks);
         backRight.setTargetPosition(ticks);
+        setRunToPosition();
+        while(opModeIsActive()) {
 
-        double drivePower = Range.clip(power, 0, 1);
+            double drivePower = Range.clip(power, 0, 1);
 
-        backLeft.setPower(drivePower);
-        backRight.setPower(drivePower);
-        frontLeft.setPower(drivePower);
-        frontRight.setPower(drivePower);
-
+            backLeft.setPower(drivePower);
+            backRight.setPower(drivePower);
+            frontLeft.setPower(drivePower);
+            frontRight.setPower(drivePower);
+            telemetry.addData("Target position:", ticks);
+            telemetry.update();
+        }
     }
 
     public void rotate(double degrees) {
@@ -205,6 +208,7 @@ class VortechsMethods extends VortechsHardware {
         backRight.setTargetPosition(-(int) factor);
         frontLeft.setTargetPosition((int) factor);
         frontRight.setTargetPosition(-(int) factor);
+        setRunToPosition();
     }
 
     // Autonomous Methods

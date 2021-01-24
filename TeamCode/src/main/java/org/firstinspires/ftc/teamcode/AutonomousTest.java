@@ -10,7 +10,7 @@ public class AutonomousTest extends VortechsMethods{
         public void runOpMode() throws InterruptedException {
             super.runOpMode();
             waitForStart();
-            driveStraight(10,1);
+            driveStraight(10,0.5);
             rotate(90);
 
         }
