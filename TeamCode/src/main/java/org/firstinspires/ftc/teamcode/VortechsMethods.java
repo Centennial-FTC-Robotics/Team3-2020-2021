@@ -56,6 +56,11 @@ public class VortechsMethods extends VortechsHardware {
         Thread.sleep(seconds * 1000);
     }
 
+    public void conveyor(double power, long seconds) throws InterruptedException {
+        conveyor.setPower(power);
+        Thread.sleep(seconds*1000);
+    }
+
     public void intake(long seconds) throws InterruptedException {
         intakeWheel.setPower(1);
         Thread.sleep(seconds * 1000);
