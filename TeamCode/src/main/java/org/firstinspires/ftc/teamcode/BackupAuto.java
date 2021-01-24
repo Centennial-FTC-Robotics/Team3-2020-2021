@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.VortechsMethods;
 
-@Autonomous(group = "Autonomous", name = "BlueLeftAuto")
+@Autonomous(group = "Autonomous", name = "BackupAuto")
 public class BackupAuto extends VortechsMethods {
     // robot parks at launch line and
     public void runOpMode() throws InterruptedException {
