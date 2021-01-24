@@ -72,8 +72,15 @@ public class TeleOpBasic extends VortechsHardware{
                 telemetry.addData("toggle", toggle);
             }
             toggle = pressed;
-            intakeWheel.setPower(0);
+   //         intakeWheel.setPower(0);
             telemetry.update();
+
+            if (gamepad2.x){
+                intakeWheel.setPower(2);
+            }
+            else {
+                intakeWheel.setPower(0);
+            }
 
 /*            if (gamepad2.a && !intakeOn){
                 intakeWheel.setPower(2);
