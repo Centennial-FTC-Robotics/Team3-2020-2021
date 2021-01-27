@@ -15,6 +15,7 @@ public class TeleOpBasic extends VortechsHardware{
     boolean intakeOn = false;
     boolean toggle = false;
     int counter;
+    double speed = 1.0;
 
     public void runOpMode() throws InterruptedException{
         super.runOpMode();
@@ -30,22 +31,28 @@ public class TeleOpBasic extends VortechsHardware{
             RightPower = y - x;
             LeftPower = y + x;
 
-            frontLeft.setPower(LeftPower);
-            frontRight.setPower(RightPower);
-            backLeft.setPower(LeftPower);
-            backRight.setPower(RightPower);
+            if(gamepad1.right_trigger > 0.05) {
+                speed = 0.5;        //slowmode
+            } else {
+                speed = 1.0;
+            }
+
+            frontLeft.setPower(LeftPower * speed);
+            frontRight.setPower(RightPower * speed);
+            backLeft.setPower(LeftPower * speed);
+            backRight.setPower(RightPower * speed);
 
             if (gamepad1.right_bumper){         //right strafe controlled by right bumper
-            frontLeft.setPower(1);
-            frontRight.setPower(-1);
-            backLeft.setPower(-1);
-            backRight.setPower(1);
+            frontLeft.setPower(1 * speed);
+            frontRight.setPower(-1 * speed);
+            backLeft.setPower(-1 * speed);
+            backRight.setPower(1 * speed);
             }
             if (gamepad1.left_bumper){         //left strafe controlled by left bumper
-            frontLeft.setPower(-1);
-            frontRight.setPower(1);
-            backLeft.setPower(1);
-            backRight.setPower(-1);
+            frontLeft.setPower(-1 * speed);
+            frontRight.setPower(1 * speed);
+            backLeft.setPower(1 * speed);
+            backRight.setPower(-1 * speed);
             }
             
         /*  frontLeft.setPower(LeftPower);         //strafe controlled by left stick
@@ -58,13 +65,10 @@ public class TeleOpBasic extends VortechsHardware{
             frontRight.setPower(yr-xr);
             backRight.setPower(yr-xr);    */
 
-            while (gamepad1.right_trigger > 0) {    //slowmode
-                RightPower = RightPower/2.0;
-                LeftPower = LeftPower/2.0;
-            }
-
             // toggle intake
           /*  boolean pressed = gamepad2.a;
+
+          //removed a while loop here (for slowmode) since it kept getting stuck
 
             if(pressed && !toggle){
                 intakeWheel.setPower(2);
@@ -128,9 +132,9 @@ public class TeleOpBasic extends VortechsHardware{
             rightOutTake.setPower(0.0);
             }
             if (gamepad2.right_bumper){
-            OtherPower = 0.5;
+            OtherPower = 1.0;
             }
-            else{ OtherPower = 1.0;
+            else{ OtherPower = 0.5;
             }
             idle();
         }

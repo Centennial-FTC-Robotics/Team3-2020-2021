@@ -198,6 +198,12 @@ public class VortechsMethods extends VortechsHardware {
         this.XPos = XPos;
         this.YPos = YPos;
     }
+    public void setBasicTolerance(int ticks) {
+        backLeft.setTargetPositionTolerance(ticks);
+        backRight.setTargetPositionTolerance(ticks);
+        frontLeft.setTargetPositionTolerance(ticks);
+        frontRight.setTargetPositionTolerance(ticks);
+    }
     public void driveStraightBasic(double power, long seconds) throws InterruptedException{
         frontLeft.setPower(power);
         frontRight.setPower(power);
@@ -205,20 +211,19 @@ public class VortechsMethods extends VortechsHardware {
         backRight.setPower(power);
         Thread.sleep(seconds*1000);
     }
-
-
     public void driveStraight(double inches, double power) {
         resetOrientation();
         int ticks = (int) (TICKS_PER_INCH * inches);
 
         resetDriveMotors();
 
-        backLeft.setTargetPosition(ticks);
-        backRight.setTargetPosition(ticks);
-        frontLeft.setTargetPosition(ticks);
-        backRight.setTargetPosition(ticks);
+        backLeft.setTargetPosition(-ticks);
+        backRight.setTargetPosition(-ticks);
+        frontLeft.setTargetPosition(-ticks);
+        backRight.setTargetPosition(-ticks);
+        setBasicTolerance(4);
         setRunToPosition();
-        while(opModeIsActive()) {
+        while(opModeIsActive() && motorsBusy()) {
 
             double drivePower = Range.clip(power, 0, 1);
 
@@ -226,9 +231,10 @@ public class VortechsMethods extends VortechsHardware {
             backRight.setPower(drivePower);
             frontLeft.setPower(drivePower);
             frontRight.setPower(drivePower);
-            telemetry.addData("Target position:", ticks);
+            telemetry.addData("Target position:", frontLeft.getTargetPositionTolerance());
             telemetry.update();
         }
+        resetEncoders();
     }
 
     public void rotate(double degrees) {
@@ -238,175 +244,184 @@ public class VortechsMethods extends VortechsHardware {
         backRight.setTargetPosition(-(int) factor);
         frontLeft.setTargetPosition((int) factor);
         frontRight.setTargetPosition(-(int) factor);
+        setBasicTolerance(4);
         setRunToPosition();
-    }
-
-    // AUTONOMOUS METHODS
-
-    // returns which target zone to go to
-    public int detectRings() {
-        int targetZone = 0;
-
-        initTfod();
-        initVuforia();
-
-        if (tfod != null) {
-            tfod.activate();
+        while (opModeIsActive() && motorsBusy()) {
+            backLeft.setPower(1);
+            backRight.setPower(1);
+            frontLeft.setPower(1);
+            frontRight.setPower(1);
+            telemetry.addData("Target position:", frontLeft.getTargetPositionTolerance());
+            telemetry.update();
         }
+        resetEncoders();
+    }
+        // AUTONOMOUS METHODS
 
-        waitForStart();
+        // returns which target zone to go to
+        public int detectRings () {
+            int targetZone = 0;
 
-        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-        timer.reset();
+            initTfod();
+            initVuforia();
 
-        if (opModeIsActive()) {
-            while (opModeIsActive()) {
-                if (tfod != null) {
-                    // getUpdatedRecognitions() will return null if no new information is available since
-                    // the last time that call was made.
-                    List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            if (tfod != null) {
+                tfod.activate();
+            }
 
-                    while (timer.time() < 3000) {
-                        if (updatedRecognitions != null) {
-                            telemetry.addData("# Object Detected", updatedRecognitions.size());
-                            if (updatedRecognitions.size() == 0) {
-                                // empty list.  no objects recognized.
-                                telemetry.addData("TFOD", "No items detected.");
-                                telemetry.addData("Target Zone", "A");
-                                targetZone = (int) TARGET_A;
-                            } else {
-                                // list is not empty.
-                                // step through the list of recognitions and display boundary info.
-                                int i = 0;
-                                for (Recognition recognition : updatedRecognitions) {
-                                    telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                                    telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                                            recognition.getLeft(), recognition.getTop());
-                                    telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                                            recognition.getRight(), recognition.getBottom());
+            waitForStart();
 
-                                    // check label to see which target zone to go after.
-                                    if (recognition.getLabel().equals("Single")) {
-                                        telemetry.addData("Target Zone", "B");
-                                        targetZone = (int) TARGET_B;
-                                    } else if (recognition.getLabel().equals("Quad")) {
-                                        telemetry.addData("Target Zone", "C");
-                                        targetZone = (int) TARGET_C;
-                                    } else {
-                                        telemetry.addData("Target Zone", "UNKNOWN");
+            ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+            timer.reset();
+
+            if (opModeIsActive()) {
+                while (opModeIsActive()) {
+                    if (tfod != null) {
+                        // getUpdatedRecognitions() will return null if no new information is available since
+                        // the last time that call was made.
+                        List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+
+                        while (timer.time() < 3000) {
+                            if (updatedRecognitions != null) {
+                                telemetry.addData("# Object Detected", updatedRecognitions.size());
+                                if (updatedRecognitions.size() == 0) {
+                                    // empty list.  no objects recognized.
+                                    telemetry.addData("TFOD", "No items detected.");
+                                    telemetry.addData("Target Zone", "A");
+                                    targetZone = (int) TARGET_A;
+                                } else {
+                                    // list is not empty.
+                                    // step through the list of recognitions and display boundary info.
+                                    int i = 0;
+                                    for (Recognition recognition : updatedRecognitions) {
+                                        telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                                        telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                                                recognition.getLeft(), recognition.getTop());
+                                        telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                                                recognition.getRight(), recognition.getBottom());
+
+                                        // check label to see which target zone to go after.
+                                        if (recognition.getLabel().equals("Single")) {
+                                            telemetry.addData("Target Zone", "B");
+                                            targetZone = (int) TARGET_B;
+                                        } else if (recognition.getLabel().equals("Quad")) {
+                                            telemetry.addData("Target Zone", "C");
+                                            targetZone = (int) TARGET_C;
+                                        } else {
+                                            telemetry.addData("Target Zone", "UNKNOWN");
+                                        }
                                     }
                                 }
+                                telemetry.update();
                             }
-                            telemetry.update();
                         }
+                        timer.reset();
                     }
-                    timer.reset();
                 }
             }
+
+            if (tfod != null) {
+                tfod.shutdown();
+            }
+
+            return targetZone;
         }
 
-        if (tfod != null) {
-            tfod.shutdown();
+        public void moveToTargetALeft (String color) throws InterruptedException {
+            waitForStart();
+            moveRelative(0, 70); //Move towards square A
+            turnRelative(-30); //Turn facing square A
+            moveRelative(0, 15); //Move into square A
+            turnRelative(-330); //Turn shooter towards ring goal
+            moveRelative(0, 80); //Move back behind white line
+            launch(2, 3); //Shoot rings
+            moveRelative(0, -5); //Back into white line
         }
 
-        return targetZone;
-    }
+        public void moveToTargetBLeft (String color) throws InterruptedException {
+            waitForStart();
+            moveRelative(0, 30); //Moves forward into white line
+            turnRelative(30); //Turn towards square B
+            moveRelative(0, 20); //Moves into square B
+            turnRelative(330); //Turn so back is facing ring Goal
+            moveRelative(0, 20); //Head back behind white line
+            launch(2, 3); //Shoot rings
+            moveRelative(0, -10); //Park onto white line
+        }
 
-    public void moveToTargetALeft(String color) throws InterruptedException {
-        waitForStart();
-        moveRelative(0, 70); //Move towards square A
-        turnRelative(-30); //Turn facing square A
-        moveRelative(0, 15); //Move into square A
-        turnRelative(-330); //Turn shooter towards ring goal
-        moveRelative(0, 80); //Move back behind white line
-        launch(2, 3); //Shoot rings
-        moveRelative(0, -5); //Back into white line
-    }
+        public void moveToTargetCLeft (String color) throws InterruptedException {
+            moveRelative(0, 40); //Move towards square C
+            turnRelative(-30); //Turn towards square C
+            moveRelative(0, 10); //Move into square C
+            turnRelative(-330); //Turn shooter towards ring goal
+            moveRelative(0, 10); //Move behind white line
+            launch(2, 3); //Shoot the rings
+            moveRelative(0, -5); //Park on white line
+        }
 
-    public void moveToTargetBLeft(String color) throws InterruptedException {
-        waitForStart();
-        moveRelative(0, 30); //Moves forward into white line
-        turnRelative(30); //Turn towards square B
-        moveRelative(0, 20); //Moves into square B
-        turnRelative(330); //Turn so back is facing ring Goal
-        moveRelative(0, 20); //Head back behind white line
-        launch(2, 3); //Shoot rings
-        moveRelative(0, -10); //Park onto white line
-    }
+        // robot starts on right side
+        public void moveToTargetARight (String color) throws InterruptedException {
+            waitForStart();
+            moveRelative(0, 70); //Move towards square A
+            turnRelative(-45); //Turn facing square A
+            moveRelative(0, 15); //Move into square A
+            turnRelative(-315); //Turn shooter towards ring goal
+            moveRelative(0, 80); //Move back behind white line
+            launch(2, 3); //Shoot rings
+            moveRelative(0, -5); //Back into white line
+        }
 
-    public void moveToTargetCLeft(String color) throws InterruptedException {
-        moveRelative(0, 40); //Move towards square C
-        turnRelative(-30); //Turn towards square C
-        moveRelative(0, 10); //Move into square C
-        turnRelative(-330); //Turn shooter towards ring goal
-        moveRelative(0, 10); //Move behind white line
-        launch(2, 3); //Shoot the rings
-        moveRelative(0, -5); //Park on white line
-    }
+        public void moveToTargetBRight (String color) throws InterruptedException {
+            waitForStart();
+            moveRelative(0, 30); //Moves forward into white line
+            turnRelative(-30); //Turn towards square B
+            moveRelative(0, 20); //Moves into square B
+            turnRelative(-330); //Turn so back is facing ring Goal
+            moveRelative(0, 20); //Head back behind white line
+            launch(2, 3); //Shoot rings
+            moveRelative(0, -10); //Park onto white line
+        }
 
-    // robot starts on right side
+        public void moveToTargetCRight (String color) throws InterruptedException {
+            moveRelative(0, 40); //Move towards square C
+            moveRelative(0, 40); //Move towards square C
+            turnRelative(-45); //Turn towards square C
+            moveRelative(0, 17); //Move into square C
+            turnRelative(-315); //Turn shooter towards ring goal
+            moveRelative(0, 10); //Move behind white line
+            launch(2, 3); //Shoot the rings
+            moveRelative(0, -5); //Park on white line
+        }
 
-    public void moveToTargetARight(String color) throws InterruptedException {
-        waitForStart();
-        moveRelative(0, 70); //Move towards square A
-        turnRelative(-45); //Turn facing square A
-        moveRelative(0, 15); //Move into square A
-        turnRelative(-315); //Turn shooter towards ring goal
-        moveRelative(0, 80); //Move back behind white line
-        launch(2, 3); //Shoot rings
-        moveRelative(0, -5); //Back into white line
-    }
-
-    public void moveToTargetBRight(String color) throws InterruptedException {
-        waitForStart();
-        moveRelative(0, 30); //Moves forward into white line
-        turnRelative(-30); //Turn towards square B
-        moveRelative(0, 20); //Moves into square B
-        turnRelative(-330); //Turn so back is facing ring Goal
-        moveRelative(0, 20); //Head back behind white line
-        launch(2, 3); //Shoot rings
-        moveRelative(0, -10); //Park onto white line
-    }
-
-    public void moveToTargetCRight(String color) throws InterruptedException {
-        moveRelative(0, 40); //Move towards square C
-        moveRelative(0, 40); //Move towards square C
-        turnRelative(-45); //Turn towards square C
-        moveRelative(0, 17); //Move into square C
-        turnRelative(-315); //Turn shooter towards ring goal
-        moveRelative(0, 10); //Move behind white line
-        launch(2, 3); //Shoot the rings
-        moveRelative(0, -5); //Park on white line
-    }
-
-    /**
-     * Initialize the Vuforia localization engine.
-     */
-    private void initVuforia() {
-        /*
-         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
+        /**
+         * Initialize the Vuforia localization engine.
          */
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+        private void initVuforia () {
+            /*
+             * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
+             */
+            VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
-        parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+            parameters.vuforiaLicenseKey = VUFORIA_KEY;
+            parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
 
-        //  Instantiate the Vuforia engine
-        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+            //  Instantiate the Vuforia engine
+            vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
-        // Loading trackables is not necessary for the TensorFlow Object Detection engine.
+            // Loading trackables is not necessary for the TensorFlow Object Detection engine.
+        }
+
+        /**
+         * Initialize the TensorFlow Object Detection engine.
+         */
+        private void initTfod () {
+            int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                    "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+            TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+            tfodParameters.minResultConfidence = 0.8f;
+            tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+            tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
+        }
     }
 
-    /**
-     * Initialize the TensorFlow Object Detection engine.
-     */
-    private void initTfod() {
-        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.8f;
-        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
-        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
-    }
-}
 
