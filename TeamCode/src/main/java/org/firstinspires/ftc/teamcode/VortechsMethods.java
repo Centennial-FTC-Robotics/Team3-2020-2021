@@ -263,6 +263,7 @@ public class VortechsMethods extends VortechsHardware {
         // AUTONOMOUS METHODS
 
         // returns which target zone to go to
+
         public int detectRings () {
             int targetZone = 0;
 
