@@ -114,7 +114,7 @@ public class TeleOpBasic extends VortechsHardware{
             intakeWheel.setPower(0);
             } //This is so A doesn't have to be held for the outtake to turn on   */
 
-            conveyor.setPower(gamepad2.left_stick_y);
+            conveyor.setPower(gamepad2.left_stick_y*OtherPower);
             grabberArm.setPower(gamepad2.left_stick_x);
 
             OtherPower = Range.clip(OtherPower, -0.75,0.75);
