@@ -47,9 +47,9 @@ public class TeleOpBasic extends VortechsHardware{
             backRight.setPower(RightPower * speed);
 
             if (gamepad1.right_bumper){         //right strafe controlled by right bumper
-            frontLeft.setPower(1 * speed);
+            frontLeft.setPower(-1 * speed);
             frontRight.setPower(-1 * speed);
-            backLeft.setPower(-1 * speed);
+            backLeft.setPower(1 * speed);
             backRight.setPower(1 * speed);
             }
             if (gamepad1.left_bumper){         //left strafe controlled by left bumper
@@ -114,14 +114,18 @@ public class TeleOpBasic extends VortechsHardware{
             intakeWheel.setPower(0);
             } //This is so A doesn't have to be held for the outtake to turn on   */
 
-            conveyor.setPower(gamepad2.left_stick_y*OtherPower);
+            if (gamepad2.left_bumper){
+            conveyor.setPower(OtherPower);
+            }
+            else {conveyor.setPower(0.0); }
+            
             grabberArm.setPower(gamepad2.left_stick_x);
 
             OtherPower = Range.clip(OtherPower, -0.75,0.75);
 
             if (gamepad2.y){
-            leftOutTake.setPower(OtherPower);
-            rightOutTake.setPower(-OtherPower);
+            leftOutTake.setPower(-OtherPower);
+            rightOutTake.setPower(OtherPower);
             }
             else {
             leftOutTake.setPower(0.0);
