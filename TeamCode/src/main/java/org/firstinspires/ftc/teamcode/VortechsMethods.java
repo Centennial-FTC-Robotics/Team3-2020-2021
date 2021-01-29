@@ -211,9 +211,13 @@ public class VortechsMethods extends VortechsHardware {
         backRight.setPower(power);
         Thread.sleep(seconds*1000);
     }
-    public void driveStraight(double inches, double power) {
+    public void driveStraight(double sideways, double forward) {
+        driveStraight(sideways,forward,1);
+    }
+    //sideways strafing doesn't work yet
+    public void driveStraight(double sideways, double forward, double power) {
         resetOrientation();
-        int ticks = (int) (TICKS_PER_INCH * inches);
+        int ticks = (int) (TICKS_PER_INCH * forward);
 
         resetDriveMotors();
 
