@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name = "Teleop Basic", group = "Tests")
 public class TeleOpBasic extends VortechsHardware{
@@ -36,6 +37,9 @@ public class TeleOpBasic extends VortechsHardware{
             } else {
                 speed = 1.0;
             }
+
+            LeftPower = Range.clip(LeftPower, -1,0.8);
+            RightPower = Range.clip(RightPower, -1,0.8);
 
             frontLeft.setPower(LeftPower * speed);
             frontRight.setPower(RightPower * speed);
@@ -97,16 +101,6 @@ public class TeleOpBasic extends VortechsHardware{
                 intakeWheel.setPower(0);
             }
 
-/*            if (gamepad2.a && !intakeOn){
-                intakeWheel.setPower(2);
-            //intakeOn = !intakeOn;
-             //while (intakeOn = true){
-             //intakeWheel.setPower(2);
-            // }
-            }
-            else {
-            intakeOn = false;
-            }*/
             
          /*   boolean intakeOn = false;
             if (gamepad2.a){
@@ -123,7 +117,9 @@ public class TeleOpBasic extends VortechsHardware{
             conveyor.setPower(gamepad2.left_stick_y);
             grabberArm.setPower(gamepad2.left_stick_x);
 
-            if (gamepad2.left_trigger>0){
+            OtherPower = Range.clip(OtherPower, -0.75,0.75);
+
+            if (gamepad2.y){
             leftOutTake.setPower(OtherPower);
             rightOutTake.setPower(-OtherPower);
             }
