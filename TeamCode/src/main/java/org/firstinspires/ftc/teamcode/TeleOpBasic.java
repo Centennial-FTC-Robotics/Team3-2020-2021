@@ -25,7 +25,7 @@ public class TeleOpBasic extends VortechsHardware{
 
         while(opModeIsActive())
         {
-            y = -gamepad1.left_stick_y;
+            y = gamepad1.left_stick_y;
             x = gamepad1.left_stick_x;
             xr = gamepad1.right_stick_x;
             yr = gamepad1.right_stick_y;
@@ -94,7 +94,7 @@ public class TeleOpBasic extends VortechsHardware{
                 }
             }
 
-            if (gamepad2.x){
+            if (gamepad2.x || gamepad1.x){
                 intakeWheel.setPower(2);
             }
             else {
