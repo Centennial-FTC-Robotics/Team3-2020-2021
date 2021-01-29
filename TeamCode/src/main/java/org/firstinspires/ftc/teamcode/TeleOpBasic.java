@@ -130,7 +130,7 @@ public class TeleOpBasic extends VortechsHardware{
             if (gamepad2.right_bumper){
             OtherPower = 1.0;
             }
-            else{ OtherPower = 0.5;
+            else{ OtherPower = 0.75;
             }
             idle();
         }

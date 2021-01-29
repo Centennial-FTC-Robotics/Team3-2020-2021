@@ -55,6 +55,10 @@ public class VortechsMethods extends VortechsHardware {
         rightOutTake.setPower(-power);
         Thread.sleep(seconds * 1000);
     }
+    public void conveyorLaunch(double power, long seconds) throws InterruptedException {
+        conveyor(1,seconds);
+        launch(power,seconds);
+    }
 
     public void conveyor(double power, long seconds) throws InterruptedException {
         conveyor.setPower(power);
@@ -211,9 +215,13 @@ public class VortechsMethods extends VortechsHardware {
         backRight.setPower(power);
         Thread.sleep(seconds*1000);
     }
-    public void driveStraight(double inches, double power) {
+    public void driveStraight(double sideways, double forward) {
+        driveStraight(sideways,forward,1);
+    }
+    //sideways strafing doesn't work yet
+    public void driveStraight(double sideways, double forward, double power) {
         resetOrientation();
-        int ticks = (int) (TICKS_PER_INCH * inches);
+        int ticks = (int) (TICKS_PER_INCH * forward);
 
         resetDriveMotors();
 
@@ -259,6 +267,7 @@ public class VortechsMethods extends VortechsHardware {
         // AUTONOMOUS METHODS
 
         // returns which target zone to go to
+
         public int detectRings () {
             int targetZone = 0;
 
