@@ -55,6 +55,10 @@ public class VortechsMethods extends VortechsHardware {
         rightOutTake.setPower(-power);
         Thread.sleep(seconds * 1000);
     }
+    public void conveyorLaunch(double power, long seconds) throws InterruptedException {
+        conveyor(1,seconds);
+        launch(power,seconds);
+    }
 
     public void conveyor(double power, long seconds) throws InterruptedException {
         conveyor.setPower(power);
