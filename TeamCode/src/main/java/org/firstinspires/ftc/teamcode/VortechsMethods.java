@@ -109,10 +109,11 @@ public class VortechsMethods extends VortechsHardware {
         double prevXError = inchesToTicks(xTarget);
         double yError = inchesToTicks(yTarget);
         double prevYError = inchesToTicks(yTarget);
-        //tune the PID here
+        //tune the PID and tolerance here
         double P = 0.05;
         double I = 0.035;
         double D = 0.014;
+        double tolerance = 4; //(ticks)
 
         double angleP = 0.02;
         double angleI = 0.01;
@@ -124,15 +125,15 @@ public class VortechsMethods extends VortechsHardware {
         double aIntegral = 0.0;
         ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         ElapsedTime prevTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-        while (opModeIsActive() && (yError > tolerance || xError > tolerance || angleError > tolerance)) {
+        while (opModeIsActive() && (Math.abs(yError) > tolerance || Math.abs(xError) > tolerance)) {
 
             double yProportion = P * yError;
             double xProportion = P * xError;
             double aProportion = angleP * angleError;
 
-            yIntegral += I * (yError * (timer.milliseconds() - prevTimer.milliseconds()));
-            xIntegral += I * (xError * (timer.milliseconds() - prevTimer.milliseconds()));
-            aIntegral += angleI * (angleError * (timer.milliseconds() - prevTimer.milliseconds()));
+            yIntegral += yError;
+            xIntegral += xError;
+            aIntegral += angleError;
 
             double yDerivative = D * (yError - prevYError) / (timer.milliseconds() - prevTimer.milliseconds());
             double xDerivative = D * (xError - prevXError) / (timer.milliseconds() - prevTimer.milliseconds());
@@ -182,6 +183,7 @@ public class VortechsMethods extends VortechsHardware {
             telemetry.update();
             updateIMU();
         }
+        stopDriveMotors();
     }
 
     public double ticksToInches(int ticks) {
