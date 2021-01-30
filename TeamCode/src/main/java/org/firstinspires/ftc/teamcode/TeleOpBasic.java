@@ -120,10 +120,7 @@ public class TeleOpBasic extends VortechsHardware{
             rightOutTake.setPower(OtherPower);
             }
 
-            if (gamepad2.left_bumper){
-            conveyor.setPower(OtherPower);
-            }
-            else {conveyor.setPower(0.0); }
+            conveyor.setPower(gamepad2.left_stick_y);
 
             grabberArm.setPower(gamepad2.left_stick_x);
 
