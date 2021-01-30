@@ -62,17 +62,17 @@ public class VortechsMethods extends VortechsHardware {
     }
 
     public void launch(double power, long seconds) throws InterruptedException {
-        leftOutTake.setPower(power);
+        leftOutTake.setPower(-power);
         rightOutTake.setPower(-power);
         Thread.sleep(seconds * 1000);
     }
     public void conveyorLaunch(double power, long seconds) throws InterruptedException {
-        conveyor(1,seconds);
         launch(power,seconds);
+        conveyor(1,seconds);
     }
 
     public void conveyor(double power, long seconds) throws InterruptedException {
-        conveyor.setPower(power);
+        conveyor.setPower(-power);
         Thread.sleep(seconds*1000);
     }
 
@@ -237,7 +237,7 @@ public class VortechsMethods extends VortechsHardware {
         frontLeft.setTargetPosition(-ticks);
         backRight.setTargetPosition(-ticks);
         setBasicTolerance(4);
-        setRunToPosition();
+        setRunToPosition();waitForStart();
         while(opModeIsActive() && motorsBusy()) {
 
             double drivePower = Range.clip(power, 0, 1);
