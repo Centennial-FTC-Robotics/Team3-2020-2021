@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 @Autonomous
 public class EncodersTest extends VortechsMethods {
     public void runOpMode() throws InterruptedException {
+        super.runOpMode();
         resetDriveMotors();
         setBasicTolerance(4);
 

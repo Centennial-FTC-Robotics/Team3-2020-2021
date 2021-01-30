@@ -131,9 +131,9 @@ public class VortechsMethods extends VortechsHardware {
             double xProportion = P * xError;
             double aProportion = angleP * angleError;
 
-            yIntegral += yError;
-            xIntegral += xError;
-            aIntegral += angleError;
+            yIntegral += I * (yError * (timer.milliseconds() - prevTimer.milliseconds()));
+            xIntegral += I * (xError * (timer.milliseconds() - prevTimer.milliseconds()));
+            aIntegral += angleI * (angleError * (timer.milliseconds() - prevTimer.milliseconds()));
 
             double yDerivative = D * (yError - prevYError) / (timer.milliseconds() - prevTimer.milliseconds());
             double xDerivative = D * (xError - prevXError) / (timer.milliseconds() - prevTimer.milliseconds());
