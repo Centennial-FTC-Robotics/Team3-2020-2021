@@ -31,6 +31,8 @@ import java.util.List;
 
 public class VortechsMethods extends VortechsHardware {
 
+    public boolean toggle = false;
+
     protected static final double TICKS_PER_INCH = (1120.0 / (100.0 * Math.PI)) * 25.4;
 
     private TFObjectDetector tfod;
@@ -59,6 +61,14 @@ public class VortechsMethods extends VortechsHardware {
     public void runOpMode() throws InterruptedException {
         super.runOpMode();
         initializeIMU();
+    }
+    public void Toggle(){
+        if (toggle = true){
+            toggle = false;
+        }
+        else if (toggle = false){
+            toggle = true;
+        }
     }
 
     public void launch(double power, long seconds) throws InterruptedException {

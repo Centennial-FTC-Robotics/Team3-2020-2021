@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name = "Teleop Basic", group = "Tests")
-public class TeleOpBasic extends VortechsHardware{
+public class TeleOpBasic extends VortechsMethods{
 
     double y = 0.0;   //throttle forward/back
     double x = 0.0;   //throttle left/right
@@ -14,7 +14,6 @@ public class TeleOpBasic extends VortechsHardware{
     double LeftPower = 0.0;
     double OtherPower = 1.0;
     boolean intakeOn = false;
-    boolean toggle = false;
     int counter;
     double speed = 1.0;
     boolean outTakeOn = false;
@@ -41,17 +40,17 @@ public class TeleOpBasic extends VortechsHardware{
                 speed = 1.0;
             }
 
-            if (gamepad1.left_trigger>0.5){
-                frontLeft.setPower(-0.25);
-                backLeft.setPower(-0.25);
-                frontRight.setPower(0.25);
-                backRight.setPower(0.25);
+            if (gamepad1.left_trigger>0){
+                frontLeft.setPower(-gamepad1.left_trigger/2);
+                backLeft.setPower(-gamepad1.left_trigger/2);
+                frontRight.setPower(gamepad1.left_trigger/2);
+                backRight.setPower(gamepad1.left_trigger/2);
             }
-            if (gamepad1.right_trigger>0.5){
-                frontLeft.setPower(0.25);
-                backLeft.setPower(0.25);
-                frontRight.setPower(-0.25);
-                backRight.setPower(-0.25);
+            if (gamepad1.right_trigger>0){
+                frontLeft.setPower(gamepad1.right_trigger/2);
+                backLeft.setPower(gamepad1.right_trigger/2);
+                frontRight.setPower(-gamepad1.right_trigger/2);
+                backRight.setPower(-gamepad1.right_trigger/2);
             }
 
             LeftPower = Range.clip(LeftPower, -1,0.8);
@@ -100,7 +99,7 @@ public class TeleOpBasic extends VortechsHardware{
    //         intakeWheel.setPower(0);
             telemetry.update();  */
 
-            int num = 0;                    //another intake toggle system
+          /*  int num = 0;                    //another intake toggle system
             if (gamepad2.a){
             num = num+1;
             }
@@ -109,7 +108,16 @@ public class TeleOpBasic extends VortechsHardware{
             }
             else if (num%2 == 0){
                 intakeWheel.setPower(0);
+            }  */
+          if (gamepad2.y){
+            Toggle();
+            if (toggle = true){
+                leftOutTake.setPower(1);
             }
+            else if (toggle = false){
+                leftOutTake.setPower(0);
+            }
+          }
 
             if (gamepad2.x || gamepad1.x){
                 intakeWheel.setPower(2);
@@ -142,7 +150,7 @@ public class TeleOpBasic extends VortechsHardware{
             grabberArm.setPower(gamepad2.right_stick_y);
 
             OtherPower = Range.clip(OtherPower, -0.75,0.75);
-
+/*
             if (gamepad2.y){
             leftOutTake.setPower(-OtherPower);
             rightOutTake.setPower(OtherPower);
@@ -150,7 +158,7 @@ public class TeleOpBasic extends VortechsHardware{
             else {
             leftOutTake.setPower(0.0);
             rightOutTake.setPower(0.0);
-            }
+            } */
             if (gamepad2.right_bumper){
             OtherPower = 1.0;
             }
