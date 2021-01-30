@@ -1,4 +1,6 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.tests;
+
+import org.firstinspires.ftc.teamcode.VortechsMethods;
 
 public class OuttakeTest extends VortechsMethods {
     public void runOpMode() throws InterruptedException {

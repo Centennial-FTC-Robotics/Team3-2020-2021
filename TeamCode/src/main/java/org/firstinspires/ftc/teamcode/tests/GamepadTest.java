@@ -1,9 +1,11 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.VortechsMethods;
+
 @TeleOp
-public class GamepadTest extends VortechsMethods{
+public class GamepadTest extends VortechsMethods {
 
         @Override
         public void runOpMode() throws InterruptedException {
