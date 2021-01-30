@@ -8,6 +8,10 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -17,13 +21,19 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
 import java.util.List;
 
 public class VortechsMethods extends VortechsHardware {
 
     protected static final double TICKS_PER_INCH = (1120.0 / (100.0 * Math.PI)) * 25.4;
-    public TFObjectDetector tfod;
+
+    private TFObjectDetector tfod;
     private VuforiaLocalizer vuforia;
 
     public double XPos, YPos, currentAngle, XTarget, YTarget, angleTarget, initialHeading;
@@ -45,6 +55,7 @@ public class VortechsMethods extends VortechsHardware {
 
     protected static final double TILE_LENGTH = 24;
 
+    @Override
     public void runOpMode() throws InterruptedException {
         super.runOpMode();
         initializeIMU();
@@ -215,13 +226,9 @@ public class VortechsMethods extends VortechsHardware {
         backRight.setPower(power);
         Thread.sleep(seconds*1000);
     }
-    public void driveStraight(double sideways, double forward) {
-        driveStraight(sideways,forward,1);
-    }
-    //sideways strafing doesn't work yet
-    public void driveStraight(double sideways, double forward, double power) {
+    public void driveStraight(double inches, double power) {
         resetOrientation();
-        int ticks = (int) (TICKS_PER_INCH * forward);
+        int ticks = (int) (TICKS_PER_INCH * inches);
 
         resetDriveMotors();
 
@@ -268,16 +275,29 @@ public class VortechsMethods extends VortechsHardware {
 
         // returns which target zone to go to
 
-        public int detectRings () {
+        public int detectRings (){
+
             int targetZone = 0;
 
-            initTfod();
-            initVuforia();
+            try {
+                initTfod();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+            try {
+                initVuforia();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+ /*           initTfod();
+            initVuforia();*/
 
             if (tfod != null) {
                 tfod.activate();
             }
 
+            telemetry.update();
             waitForStart();
 
             ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);

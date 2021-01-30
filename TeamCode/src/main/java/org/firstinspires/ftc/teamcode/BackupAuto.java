@@ -9,7 +9,8 @@ public class BackupAuto extends VortechsMethods {
     // robot parks at launch line and launches rings at high goal
     public void runOpMode() throws InterruptedException {
         super.runOpMode();
-        moveRelative(0, 80); //Park on launch line
-        launch(2,3); //Shoot rings
+        driveStraight(80,0.5);
+        //moveRelative(0, 80); //Park on launch line
+        conveyorLaunch(2,3); //Shoot rings
     }
 }

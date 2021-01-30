@@ -22,7 +22,7 @@ public class VortechsHardware extends LinearOpMode {
     public DcMotorEx leftOutTake = null;
     public DcMotorEx rightOutTake = null;
     public DcMotorEx intakeWheel = null;
-    public DcMotorEx conveyor;
+    public DcMotorEx conveyor = null;
     public CRServo grabberArm;
     public BNO055IMU imu;
 

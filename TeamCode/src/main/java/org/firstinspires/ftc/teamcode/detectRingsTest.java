@@ -9,6 +9,7 @@ import java.util.Timer;
 public class detectRingsTest extends VortechsMethods {
     @Override
     public void runOpMode() throws InterruptedException {
+        super.runOpMode();
         ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
         while(timer.seconds() < 5) {
             telemetry.addData("rings:", super.detectRings());
