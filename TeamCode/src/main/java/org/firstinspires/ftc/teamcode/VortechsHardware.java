@@ -31,9 +31,9 @@ public class VortechsHardware extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
-        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
+        frontLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
-        backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
+        backLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
         leftOutTake = hardwareMap.get(DcMotorEx.class, "leftOutTake");
         rightOutTake = hardwareMap.get(DcMotorEx.class, "rightOutTake");
         intakeWheel = hardwareMap.get(DcMotorEx.class, "intakeWheel");

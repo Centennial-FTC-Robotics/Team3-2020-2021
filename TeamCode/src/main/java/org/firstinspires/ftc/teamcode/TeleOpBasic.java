@@ -47,9 +47,9 @@ public class TeleOpBasic extends VortechsHardware{
             backRight.setPower(RightPower * speed);
 
             if (gamepad1.right_bumper){         //right strafe controlled by right bumper
-            frontLeft.setPower(-1 * speed);
+            frontLeft.setPower(1 * speed);
             frontRight.setPower(-1 * speed);
-            backLeft.setPower(1 * speed);
+            backLeft.setPower(-1 * speed);
             backRight.setPower(1 * speed);
             }
             if (gamepad1.left_bumper){         //left strafe controlled by left bumper
@@ -78,6 +78,7 @@ public class TeleOpBasic extends VortechsHardware{
                 intakeWheel.setPower(2);
                 telemetry.addData("pressed", pressed);
                 telemetry.addData("toggle", toggle);
+
             }
             toggle = pressed;
    //         intakeWheel.setPower(0);

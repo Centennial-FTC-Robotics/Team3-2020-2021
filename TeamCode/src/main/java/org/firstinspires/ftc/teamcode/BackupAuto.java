@@ -8,9 +8,11 @@ import org.firstinspires.ftc.teamcode.VortechsMethods;
 public class BackupAuto extends VortechsMethods {
     // robot parks at launch line and launches rings at high goal
     public void runOpMode() throws InterruptedException {
+        waitForStart();
         super.runOpMode();
-        driveStraight(80,0.5);
-        //moveRelative(0, 80); //Park on launch line
+        //driveStraight(10,0.5);
+        //moveRelative(0, 10); //Park on launch line
+        driveStraight(20,1);
         conveyorLaunch(2,3); //Shoot rings
     }
 }
