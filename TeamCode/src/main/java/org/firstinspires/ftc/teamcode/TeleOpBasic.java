@@ -17,7 +17,7 @@ public class TeleOpBasic extends VortechsMethods{
     int counter;
     double speed = 1.0;
     boolean outTakeOn = false;
-    boolean aPressed = false;
+    boolean yPressed = false;
     boolean aPressedLast = false;
 
     public void runOpMode() throws InterruptedException{
@@ -111,13 +111,29 @@ public class TeleOpBasic extends VortechsMethods{
             }  */
           if (gamepad2.y){
             Toggle();
-            if (toggle = true){
-                leftOutTake.setPower(1);
+            telemetry.addData("Boolean", toggle);
+            telemetry.update();
+            if (toggle == true){
+                if (leftOutTake.getPower() == 0){
+                    leftOutTake.setPower(-0.5);
+                }
             }
-            else if (toggle = false){
+            else if (toggle == false){
                 leftOutTake.setPower(0);
             }
-          }
+           /* if (yPressed == false && gamepad2.y == true){
+                if (leftOutTake.getPower() == 0){
+                    leftOutTake.setPower(0.5);
+                }
+                else{
+                    leftOutTake.setPower(0);
+                }
+            }
+            else {
+                leftOutTake.setPower(0);
+            }
+            yPressed = gamepad2.y;  */
+            }
 
             if (gamepad2.x || gamepad1.x){
                 intakeWheel.setPower(2);
@@ -140,9 +156,9 @@ public class TeleOpBasic extends VortechsMethods{
             } //This is so A doesn't have to be held for the outtake to turn on   */
 
             if (gamepad2.b){
-            conveyor.setPower(1);
-            leftOutTake.setPower(-OtherPower);
-            rightOutTake.setPower(OtherPower);
+            conveyor.setPower(-1);
+           // leftOutTake.setPower(-OtherPower);
+           // rightOutTake.setPower(OtherPower);
             }
 
             conveyor.setPower(gamepad2.left_stick_y);
