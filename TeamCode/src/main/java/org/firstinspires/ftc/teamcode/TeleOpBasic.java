@@ -17,6 +17,9 @@ public class TeleOpBasic extends VortechsHardware{
     boolean toggle = false;
     int counter;
     double speed = 1.0;
+    boolean outTakeOn = false;
+    boolean aPressed = false;
+    boolean aPressedLast = false;
 
     public void runOpMode() throws InterruptedException{
         super.runOpMode();
@@ -32,10 +35,23 @@ public class TeleOpBasic extends VortechsHardware{
             RightPower = y - x;
             LeftPower = y + x;
 
-            if(gamepad1.right_trigger > 0.05) {
+            if(gamepad1.a) {
                 speed = 0.5;        //slowmode
             } else {
                 speed = 1.0;
+            }
+
+            if (gamepad1.left_trigger>0.5){
+                frontLeft.setPower(-0.25);
+                backLeft.setPower(-0.25);
+                frontRight.setPower(0.25);
+                backRight.setPower(0.25);
+            }
+            if (gamepad1.right_trigger>0.5){
+                frontLeft.setPower(0.25);
+                backLeft.setPower(0.25);
+                frontRight.setPower(-0.25);
+                backRight.setPower(-0.25);
             }
 
             LeftPower = Range.clip(LeftPower, -1,0.8);
@@ -76,7 +92,7 @@ public class TeleOpBasic extends VortechsHardware{
 
             if(pressed && !toggle){
                 intakeWheel.setPower(2);
-                telemetry.addData("pressed", pressed);
+                telemetry.ad0dData("pressed", pressed);
                 telemetry.addData("toggle", toggle);
 
             }
@@ -87,12 +103,12 @@ public class TeleOpBasic extends VortechsHardware{
             int num = 0;                    //another intake toggle system
             if (gamepad2.a){
             num = num+1;
-                if (num%2 == 1){
-                    intakeWheel.setPower(1);
-                }
-                else if (num%2 == 0){
-                    intakeWheel.setPower(0);
-                }
+            }
+            if (num%2 == 1){
+                intakeWheel.setPower(1);
+            }
+            else if (num%2 == 0){
+                intakeWheel.setPower(0);
             }
 
             if (gamepad2.x || gamepad1.x){
@@ -123,7 +139,7 @@ public class TeleOpBasic extends VortechsHardware{
 
             conveyor.setPower(gamepad2.left_stick_y);
 
-            grabberArm.setPower(gamepad2.left_stick_x);
+            grabberArm.setPower(gamepad2.right_stick_y);
 
             OtherPower = Range.clip(OtherPower, -0.75,0.75);
 
@@ -138,7 +154,7 @@ public class TeleOpBasic extends VortechsHardware{
             if (gamepad2.right_bumper){
             OtherPower = 1.0;
             }
-            else{ OtherPower = 0.75;
+            else{ OtherPower = 0.65;
             }
             idle();
         }

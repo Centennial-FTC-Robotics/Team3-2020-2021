@@ -24,6 +24,7 @@ public class VortechsHardware extends LinearOpMode {
     public DcMotorEx intakeWheel = null;
     public DcMotorEx conveyor = null;
     public CRServo grabberArm;
+    public Servo grabberHand;
     public BNO055IMU imu;
 
 
@@ -39,6 +40,7 @@ public class VortechsHardware extends LinearOpMode {
         intakeWheel = hardwareMap.get(DcMotorEx.class, "intakeWheel");
         conveyor = hardwareMap.get(DcMotorEx.class, "conveyor");
         grabberArm = hardwareMap.get(CRServo.class, "grabberArm");
+        grabberHand = hardwareMap.get(Servo.class, "grabberHand");
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 
         frontRight.setDirection(DcMotorEx.Direction.REVERSE);
