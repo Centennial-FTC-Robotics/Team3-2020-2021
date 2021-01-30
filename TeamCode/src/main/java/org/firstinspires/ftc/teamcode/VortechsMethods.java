@@ -104,7 +104,7 @@ public class VortechsMethods extends VortechsHardware {
     }
 
     public void moveAndTurn(double xTarget, double yTarget, double angleError) {
-        resetEncoders();
+        resetDriveMotors();
         double xError = inchesToTicks(xTarget);
         double prevXError = inchesToTicks(xTarget);
         double yError = inchesToTicks(yTarget);
@@ -259,7 +259,7 @@ public class VortechsMethods extends VortechsHardware {
             telemetry.addData("Target position:", frontLeft.getTargetPositionTolerance());
             telemetry.update();
         }
-        resetEncoders();
+        resetDriveMotors();
     }
 
     public void rotate(double degrees) {
@@ -279,7 +279,7 @@ public class VortechsMethods extends VortechsHardware {
             telemetry.addData("Target position:", frontLeft.getTargetPositionTolerance());
             telemetry.update();
         }
-        resetEncoders();
+        resetDriveMotors();
     }
         // AUTONOMOUS METHODS
 
