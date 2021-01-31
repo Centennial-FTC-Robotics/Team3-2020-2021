@@ -33,7 +33,7 @@ public class VortechsMethods extends VortechsHardware {
 
     public boolean toggle = false;
 
-    protected static final double TICKS_PER_INCH = 25; //(1120.0 / (100.0 * Math.PI)) * 25.4;
+    protected static final double TICKS_PER_INCH = 30; //(1120.0 / (100.0 * Math.PI)) * 25.4;
 
     private TFObjectDetector tfod;
     private VuforiaLocalizer vuforia;
@@ -273,15 +273,14 @@ public class VortechsMethods extends VortechsHardware {
         backRight.setTargetPosition(ticks+backRight.getCurrentPosition());
         frontLeft.setTargetPosition(ticks+frontLeft.getCurrentPosition());
         frontRight.setTargetPosition(ticks+frontRight.getCurrentPosition());
-
-        backLeft.setPower(power);
-        backRight.setPower(power);
-        frontLeft.setPower(power);
-        frontRight.setPower(power);
-
         while(motorsBusy()) {
 
+            backLeft.setPower(power);
+            backRight.setPower(power);
+            frontLeft.setPower(power);
+            frontRight.setPower(power);
         }
+
         resetDriveMotors();
     }
 

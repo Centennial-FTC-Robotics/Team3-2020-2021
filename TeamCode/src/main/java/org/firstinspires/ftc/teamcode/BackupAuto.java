@@ -10,11 +10,11 @@ public class BackupAuto extends VortechsMethods {
     public void runOpMode() throws InterruptedException {
         waitForStart();
         super.runOpMode();
-        driveStraight(10,0.5);
+        driveStraight(20,0.5);
         //moveRelative(0, 10); //Park on launch line
         //driveStraightBasic(0.5,2);
         //driveStraightBasic(0.5,2);
-        conveyorLaunch(0.5,2); //Shoot rings
+        //conveyorLaunch(0.5,2); //Shoot rings
         //driveStraight(1,0.5); //park at line
         telemetry.addData("Front left power:", frontLeft.getPower());
         telemetry.addData("Back left power:", backLeft.getPower());
