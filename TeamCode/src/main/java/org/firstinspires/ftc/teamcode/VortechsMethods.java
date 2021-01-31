@@ -63,12 +63,7 @@ public class VortechsMethods extends VortechsHardware {
         initializeIMU();
     }
     public void Toggle(){
-        if (toggle = true){
-            toggle = false;
-        }
-        else if (toggle = false){
-            toggle = true;
-        }
+        toggle = !toggle;
     }
 
     public void launch(double power, long seconds) throws InterruptedException {
@@ -260,28 +255,30 @@ public class VortechsMethods extends VortechsHardware {
         Thread.sleep(seconds*1000);
     }
     public void driveStraight(double inches, double power) {
-        resetOrientation();
-        int ticks = (int) (TICKS_PER_INCH * inches);
+        frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         resetDriveMotors();
+
+        frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        int ticks = (int) (TICKS_PER_INCH * inches);
 
         backLeft.setTargetPosition(-ticks);
         backRight.setTargetPosition(-ticks);
         frontLeft.setTargetPosition(-ticks);
-        backRight.setTargetPosition(-ticks);
-        setBasicTolerance(4);
-        setRunToPosition();waitForStart();
-        while(opModeIsActive() && motorsBusy()) {
+        frontRight.setTargetPosition(-ticks);
 
-            double drivePower = Range.clip(power, 0, 1);
+        backLeft.setPower(power);
+        backRight.setPower(power);
+        frontLeft.setPower(power);
+        frontRight.setPower(power);
 
-            backLeft.setPower(drivePower);
-            backRight.setPower(drivePower);
-            frontLeft.setPower(drivePower);
-            frontRight.setPower(drivePower);
-            telemetry.addData("Target position:", frontLeft.getTargetPositionTolerance());
-            telemetry.update();
-        }
         resetDriveMotors();
     }
 

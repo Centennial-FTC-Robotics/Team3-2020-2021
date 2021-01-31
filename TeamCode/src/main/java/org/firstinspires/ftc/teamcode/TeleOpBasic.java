@@ -114,8 +114,8 @@ public class TeleOpBasic extends VortechsMethods{
             telemetry.addData("Boolean", toggle);
             telemetry.update();
             if (toggle == true){
-                if (leftOutTake.getPower() == 0){
-                    leftOutTake.setPower(-0.5);
+                if (leftOutTake.getPower() < 0.05){
+                    leftOutTake.setPower(-0.65);
                 }
             }
             else if (toggle == false){
