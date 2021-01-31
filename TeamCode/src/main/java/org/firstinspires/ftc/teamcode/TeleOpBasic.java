@@ -27,7 +27,7 @@ public class TeleOpBasic extends VortechsMethods{
 
         while(opModeIsActive())
         {
-            y = gamepad1.left_stick_y;
+            y = -gamepad1.left_stick_y;
             x = gamepad1.left_stick_x;
             xr = gamepad1.right_stick_x;
             yr = gamepad1.right_stick_y;
@@ -115,7 +115,7 @@ public class TeleOpBasic extends VortechsMethods{
             telemetry.update();
             if (toggle == true){
                 if (leftOutTake.getPower() < 0.05){
-                    leftOutTake.setPower(-0.65);
+                    leftOutTake.setPower(-0.7);
                 }
             }
             else if (toggle == false){
