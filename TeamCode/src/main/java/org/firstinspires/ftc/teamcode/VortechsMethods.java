@@ -269,16 +269,19 @@ public class VortechsMethods extends VortechsHardware {
 
         int ticks = (int) (TICKS_PER_INCH * inches);
 
-        backLeft.setTargetPosition(-ticks);
-        backRight.setTargetPosition(-ticks);
-        frontLeft.setTargetPosition(-ticks);
-        frontRight.setTargetPosition(-ticks);
+        backLeft.setTargetPosition(ticks+backLeft.getCurrentPosition());
+        backRight.setTargetPosition(ticks+backRight.getCurrentPosition());
+        frontLeft.setTargetPosition(ticks+frontLeft.getCurrentPosition());
+        frontRight.setTargetPosition(ticks+frontRight.getCurrentPosition());
 
         backLeft.setPower(power);
         backRight.setPower(power);
         frontLeft.setPower(power);
         frontRight.setPower(power);
 
+        while(motorsBusy()) {
+
+        }
         resetDriveMotors();
     }
 
