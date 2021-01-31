@@ -46,21 +46,19 @@ import java.util.List;
 /**
  * This 2020-2021 OpMode illustrates the basics of using the TensorFlow Object Detection API to
  * determine the position of the Ultimate Goal game elements.
- *
+ * <p>
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled lsine to add this opmode to the Driver Station OpMode list.
- *
+ * <p>
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@Autonomous(name = "Tensorflow Auto", group = "Concept")
+@Autonomous(name = "Tensorflow Auto", group = "Autonomous")
 
 public class TensorFlow extends VortechsMethods {
     private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Quad";
     private static final String LABEL_SECOND_ELEMENT = "Single";
-
-    //VortechsMethods v = new VortechsMethods();
 
     private static final String VUFORIA_KEY =
             "AaE18sD/////AAABmZ7zTjrwDEwgoUUd9Hg/fVNlCi1mnUJCizFmysoKuVPPNnIEWJmK9SlpRppNs0SV9sDdCFc6nySaX1KM3CimlwDwzEcmZs016lHBxh3A0S5hVFPPHWzE34TCYgA90g9nrKrwRIFolSSO6p9YmDLzi4fFHcOe85nuiYRfFZwaYlCnTZnwU3czaUue9uFiq3Q9e9Hytr3EtxJrvKISSdNah+WP+43QaqrLcQR7NfOkYQ5AY+omdtZ76KfgooK5dtO4lgYwxAWkVVAYt60zLcrpd4ZHC9Nu+6xkhLF5QhJDbfSUD0/Kep5MhZqugCpguNDzvcBQ5HtCVYvjGYO6pe7Gy6JwRiB1E2gAatjyS0Prc2pV";
@@ -155,16 +153,6 @@ public class TensorFlow extends VortechsMethods {
                                     // check label to see which target zone to go after.
                                     if (recognition.getLabel().equals("Single")) {
                                         telemetry.addData("Target Zone", "B");
-                                        waitForStart();
-                                        driveStraight(10,0.5);
-                                        /*moveRelative(0, 30); //Moves forward into white line
-                                        turnRelative(-30); //Turn towards square B
-                                        moveRelative(0, 20); //Moves into square B
-                                        turnRelative(-330); //Turn so back is facing ring Goal
-                                        moveRelative(0, 20); //Head back behind white line
-                                        launch(2, 3); //Shoot rings
-                                        moveRelative(0, -10); //Park onto white line
-                                        turnRelative(30);*/
                                     } else if (recognition.getLabel().equals("Quad")) {
                                         telemetry.addData("Target Zone", "C");
                                     } else {
@@ -183,7 +171,10 @@ public class TensorFlow extends VortechsMethods {
         if (tfod != null) {
             tfod.shutdown();
         }
+
     }
+
+    //}
 
     /**
      * Initialize the Vuforia localization engine.
@@ -208,7 +199,7 @@ public class TensorFlow extends VortechsMethods {
      */
     private void initTfod() {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-            "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfodParameters.minResultConfidence = 0.8f;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
