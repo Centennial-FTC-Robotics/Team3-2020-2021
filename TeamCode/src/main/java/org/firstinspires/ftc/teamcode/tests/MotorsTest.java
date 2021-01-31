@@ -8,19 +8,22 @@ import org.firstinspires.ftc.teamcode.VortechsMethods;
 @TeleOp
 public class MotorsTest extends VortechsMethods {
 
-        @Override
-        public void runOpMode() throws InterruptedException {
-            super.runOpMode();
-            if(gamepad1.left_bumper)
+    @Override
+    public void runOpMode() throws InterruptedException {
+        super.runOpMode();
+        waitForStart();
+        while (opModeIsActive()) {
+            if (gamepad1.left_bumper)
                 frontLeft.setPower(0.1);
-            if(gamepad1.right_bumper)
+            if (gamepad1.right_bumper)
                 frontRight.setPower(0.1);
-            if(gamepad1.right_trigger > 0.05)
+            if (gamepad1.right_trigger > 0.05)
                 backRight.setPower(0.1);
-            if(gamepad1.left_trigger > 0.05)
+            if (gamepad1.left_trigger > 0.05)
                 backLeft.setPower(0.1);
 
-            }
         }
+    }
+}
 
-        
+
