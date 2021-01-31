@@ -85,30 +85,7 @@ public class TeleOpBasic extends VortechsMethods{
             backRight.setPower(yr-xr);    */
 
             // toggle intake
-          /*  boolean pressed = gamepad2.a;
 
-          //removed a while loop here (for slowmode) since it kept getting stuck
-
-            if(pressed && !toggle){
-                intakeWheel.setPower(2);
-                telemetry.ad0dData("pressed", pressed);
-                telemetry.addData("toggle", toggle);
-
-            }
-            toggle = pressed;
-   //         intakeWheel.setPower(0);
-            telemetry.update();  */
-
-          /*  int num = 0;                    //another intake toggle system
-            if (gamepad2.a){
-            num = num+1;
-            }
-            if (num%2 == 1){
-                intakeWheel.setPower(1);
-            }
-            else if (num%2 == 0){
-                intakeWheel.setPower(0);
-            }  */
           if (gamepad2.y){
             Toggle();
             telemetry.addData("Boolean", toggle);
@@ -121,18 +98,6 @@ public class TeleOpBasic extends VortechsMethods{
             else if (toggle == false){
                 leftOutTake.setPower(0);
             }
-           /* if (yPressed == false && gamepad2.y == true){
-                if (leftOutTake.getPower() == 0){
-                    leftOutTake.setPower(0.5);
-                }
-                else{
-                    leftOutTake.setPower(0);
-                }
-            }
-            else {
-                leftOutTake.setPower(0);
-            }
-            yPressed = gamepad2.y;  */
             }
 
             if (gamepad2.x || gamepad1.x){
@@ -142,18 +107,6 @@ public class TeleOpBasic extends VortechsMethods{
                 intakeWheel.setPower(0);
             }
 
-            
-         /*   boolean intakeOn = false;
-            if (gamepad2.a){
-                if(intakeOn){
-                    intakeOn = false;
-                } else {
-                    intakeWheel.setPower(2*OtherPower);
-                    intakeOn = true;
-                }
-            } else {
-            intakeWheel.setPower(0);
-            } //This is so A doesn't have to be held for the outtake to turn on   */
 
             if (gamepad2.b){
             conveyor.setPower(-1);
@@ -166,15 +119,7 @@ public class TeleOpBasic extends VortechsMethods{
             grabberArm.setPower(gamepad2.right_stick_y);
 
             OtherPower = Range.clip(OtherPower, -0.75,0.75);
-/*
-            if (gamepad2.y){
-            leftOutTake.setPower(-OtherPower);
-            rightOutTake.setPower(OtherPower);
-            }
-            else {
-            leftOutTake.setPower(0.0);
-            rightOutTake.setPower(0.0);
-            } */
+
             if (gamepad2.right_bumper){
             OtherPower = 1.0;
             }
