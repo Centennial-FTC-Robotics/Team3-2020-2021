@@ -85,6 +85,11 @@ public class VortechsMethods extends VortechsHardware {
         intakeWheel.setPower(1);
         Thread.sleep(seconds * 1000);
     }
+    public void doEverything(double outtakePower, double conveyorPower, long seconds) throws InterruptedException{
+        launch(outtakePower,seconds);
+        conveyor(conveyorPower,seconds);
+        intake(seconds);
+    }
 
     public void moveRelative(double sideways, double forward) {
         moveAndTurn(sideways, forward, 0);
