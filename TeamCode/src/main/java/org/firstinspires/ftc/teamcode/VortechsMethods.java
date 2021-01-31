@@ -274,19 +274,21 @@ public class VortechsMethods extends VortechsHardware {
         backRight.setTargetPosition(ticks+backRight.getCurrentPosition());
         frontLeft.setTargetPosition(ticks+frontLeft.getCurrentPosition());
         frontRight.setTargetPosition(ticks+frontRight.getCurrentPosition());
+        backLeft.setPower(power);
+        backRight.setPower(power);
+        frontLeft.setPower(power);
+        frontRight.setPower(power);
         while(motorsBusy()) {
-
-            backLeft.setPower(power);
-            backRight.setPower(power);
-            frontLeft.setPower(power);
-            frontRight.setPower(power);
             telemetry.addData("frontLeft:", frontLeft.getCurrentPosition());
             telemetry.addData("frontRight:", frontRight.getCurrentPosition());
             telemetry.addData("backLeft:", backLeft.getCurrentPosition());
             telemetry.addData("backRight:", backRight.getCurrentPosition());
             telemetry.update();
         }
-
+        backLeft.setPower(0);
+        backRight.setPower(0);
+        frontLeft.setPower(0);
+        frontRight.setPower(0);
         resetDriveMotors();
     }
 

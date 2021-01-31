@@ -14,7 +14,10 @@ public class BackupAuto extends VortechsMethods {
         //moveRelative(0, 10); //Park on launch line
         //driveStraightBasic(0.5,2);
         //driveStraightBasic(0.5,2);
-        conveyorLaunch(0.5,2); //Shoot rings
+        launch(0.65,5); //Shoot rings
+        conveyorLaunch(1,3);
+
+
         //driveStraight(1,0.5); //park at line
         telemetry.addData("Front left power:", frontLeft.getPower());
         telemetry.addData("Back left power:", backLeft.getPower());
