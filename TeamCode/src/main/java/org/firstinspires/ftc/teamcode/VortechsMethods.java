@@ -104,11 +104,23 @@ public class VortechsMethods extends VortechsHardware {
     }
 
     public void moveAndTurn(double xTarget, double yTarget, double angleError) {
+
         resetDriveMotors();
+
         double xError = inchesToTicks(xTarget);
-        double prevXError = inchesToTicks(xTarget);
+
         double yError = inchesToTicks(yTarget);
+        /*
+         PIDController xDirection = new PIDController(0.05F,0.035F,0.014F);
+         PIDController yDirection = new PIDController(0.05F,0.035F,0.014F);
+         PIDController angle = new PIDController(0.05F,0.035F,0.014F);
+         xDirection.start();
+         yDirection.start();
+         angle.start();
+         */
+        double prevXError = inchesToTicks(xTarget);
         double prevYError = inchesToTicks(yTarget);
+
         //tune the PID and tolerance here
         double P = 0.05;
         double I = 0.035;
@@ -124,39 +136,37 @@ public class VortechsMethods extends VortechsHardware {
         double xIntegral = 0.0;
         double aIntegral = 0.0;
         ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-        ElapsedTime prevTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-        while (opModeIsActive() && (Math.abs(yError) > tolerance || Math.abs(xError) > tolerance)) {
+        double lastTime = 0.0;
 
+        while (opModeIsActive() && (Math.abs(yError) > tolerance || Math.abs(xError) > tolerance)) {
+            double currentTime = timer.milliseconds();
+
+            /*
             double yProportion = P * yError;
             double xProportion = P * xError;
             double aProportion = angleP * angleError;
+             */
 
-            yIntegral += I * (yError * (timer.milliseconds() - prevTimer.milliseconds()));
-            xIntegral += I * (xError * (timer.milliseconds() - prevTimer.milliseconds()));
-            aIntegral += angleI * (angleError * (timer.milliseconds() - prevTimer.milliseconds()));
+            yIntegral += (yError * (currentTime - lastTime));
+            xIntegral += (xError * (currentTime - lastTime));
+            aIntegral += (angleError * (currentTime - lastTime));
 
-            double yDerivative = D * (yError - prevYError) / (timer.milliseconds() - prevTimer.milliseconds());
-            double xDerivative = D * (xError - prevXError) / (timer.milliseconds() - prevTimer.milliseconds());
-            double aDerivative = angleD * (angleError - prevAngleError) / (timer.milliseconds() - prevTimer.milliseconds());
+            double yDerivative = (yError - prevYError) / (currentTime);
+            double xDerivative = (xError - prevXError) / (currentTime);
+            double aDerivative = (angleError - prevAngleError) / (currentTime);
 
-            prevTimer = timer;
-            prevYError = yError;
-            prevXError = xError;
+            currentTime = lastTime;
+            yError = prevYError;
+            xError = prevXError;
             prevAngleError = angleError;
 
-            double frontRightPower = (P * yProportion + I * yIntegral - D * yDerivative) +
-                    (P * xProportion + I * xIntegral + D * xDerivative);
-            double frontLeftPower = (P * yProportion + I * yIntegral - D * yDerivative) -
-                    (P * xProportion + I * xIntegral + D * xDerivative);
+            double frontRightPower = (P * yError + I * yIntegral - D * yDerivative) +
+                    (P * xError + I * xIntegral + D * xDerivative);
+            double frontLeftPower = (P * yError + I * yIntegral - D * yDerivative) -
+                    (P * xError + I * xIntegral + D * xDerivative);
 
-            double rightTurn = angleP * aProportion + angleI * aIntegral - angleD * aDerivative;
-            double leftTurn = -angleP * aProportion - angleI * aIntegral + angleD * aDerivative;
-
-            frontRight.setPower(frontRightPower + rightTurn);
-            backLeft.setPower(frontRightPower + leftTurn);
-
-            frontLeft.setPower(frontLeftPower + leftTurn);
-            backRight.setPower(frontLeftPower + rightTurn);
+            double rightTurn = angleP * angleError + angleI * aIntegral - angleD * aDerivative;
+            double leftTurn = -angleP * angleError - angleI * aIntegral + angleD * aDerivative;
 
             double negTarget = yTarget - xTarget;
             double posTarget = yTarget + xTarget;
@@ -166,6 +176,17 @@ public class VortechsMethods extends VortechsHardware {
 
             yError = negTarget - currentYPos;
             xError = posTarget - currentXPos;
+
+
+
+
+            frontRight.setPower(frontRightPower + rightTurn);
+            backLeft.setPower(frontRightPower + leftTurn);
+
+            frontLeft.setPower(frontLeftPower + leftTurn);
+            backRight.setPower(frontLeftPower + rightTurn);
+
+
 
             telemetry.addData("P-value:", P);
             telemetry.addData("I-value:", I);
