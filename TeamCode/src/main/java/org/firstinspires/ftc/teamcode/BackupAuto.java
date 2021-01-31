@@ -14,7 +14,7 @@ public class BackupAuto extends VortechsMethods {
         //moveRelative(0, 10); //Park on launch line
         //driveStraightBasic(0.5,2);
         //driveStraightBasic(0.5,2);
-        doEverything(0.7, 0.5,5);
+        doEverything(0.7, 0.3,5);
         driveStraight(12,0.5);
 
 
