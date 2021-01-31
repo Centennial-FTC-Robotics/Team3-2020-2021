@@ -15,12 +15,20 @@ public class MotorsTest extends VortechsMethods {
         while (opModeIsActive()) {
             if (gamepad1.left_bumper)
                 frontLeft.setPower(0.1);
+            else
+                frontLeft.setPower(0);
             if (gamepad1.right_bumper)
                 frontRight.setPower(0.1);
+            else
+                frontRight.setPower(0);
             if (gamepad1.right_trigger > 0.05)
                 backRight.setPower(0.1);
+            else
+                backRight.setPower(0);
             if (gamepad1.left_trigger > 0.05)
                 backLeft.setPower(0.1);
+            else
+                backRight.setPower(0);
 
         }
     }
