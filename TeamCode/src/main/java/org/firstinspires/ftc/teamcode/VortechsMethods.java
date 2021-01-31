@@ -33,7 +33,7 @@ public class VortechsMethods extends VortechsHardware {
 
     public boolean toggle = false;
 
-    protected static final double TICKS_PER_INCH = 35; //(1120.0 / (100.0 * Math.PI)) * 25.4;
+    protected static final double TICKS_PER_INCH = 42; //(1120.0 / (100.0 * Math.PI)) * 25.4;
 
     private TFObjectDetector tfod;
     private VuforiaLocalizer vuforia;
@@ -68,7 +68,7 @@ public class VortechsMethods extends VortechsHardware {
 
     public void launch(double power, long seconds) throws InterruptedException {
         leftOutTake.setPower(-power);
-        rightOutTake.setPower(-power);
+        //rightOutTake.setPower(-power);
         Thread.sleep(seconds * 1000);
     }
     public void conveyorLaunch(double power, long seconds) throws InterruptedException {
@@ -266,6 +266,7 @@ public class VortechsMethods extends VortechsHardware {
         backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        setBasicTolerance(4);
 
         int ticks = (int) (TICKS_PER_INCH * inches);
 
@@ -279,6 +280,11 @@ public class VortechsMethods extends VortechsHardware {
             backRight.setPower(power);
             frontLeft.setPower(power);
             frontRight.setPower(power);
+            telemetry.addData("frontLeft:", frontLeft.getCurrentPosition());
+            telemetry.addData("frontRight:", frontRight.getCurrentPosition());
+            telemetry.addData("backLeft:", backLeft.getCurrentPosition());
+            telemetry.addData("backRight:", backRight.getCurrentPosition());
+            telemetry.update();
         }
 
         resetDriveMotors();
