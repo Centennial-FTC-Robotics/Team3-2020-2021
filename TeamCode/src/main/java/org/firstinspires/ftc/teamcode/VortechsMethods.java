@@ -33,7 +33,7 @@ public class VortechsMethods extends VortechsHardware {
 
     public boolean toggle = false;
 
-    protected static final double TICKS_PER_INCH = 30; //(1120.0 / (100.0 * Math.PI)) * 25.4;
+    protected static final double TICKS_PER_INCH = 35; //(1120.0 / (100.0 * Math.PI)) * 25.4;
 
     private TFObjectDetector tfod;
     private VuforiaLocalizer vuforia;
