@@ -90,7 +90,7 @@ public class TeleOpBasic extends VortechsMethods{
             Toggle();
             telemetry.addData("Boolean", toggle);
             telemetry.update();
-            if (toggle == true){
+            if (toggle){
                 if (leftOutTake.getPower() < 0.05){
                     leftOutTake.setPower(-0.7);
                 }
@@ -107,7 +107,6 @@ public class TeleOpBasic extends VortechsMethods{
                 intakeWheel.setPower(0);
             }
 
-
             if (gamepad2.b){
             conveyor.setPower(-1);
            // leftOutTake.setPower(-OtherPower);
@@ -115,9 +114,7 @@ public class TeleOpBasic extends VortechsMethods{
             }
 
             conveyor.setPower(gamepad2.left_stick_y);
-
-            grabberArm.setPower(gamepad2.right_stick_y);
-
+            
             OtherPower = Range.clip(OtherPower, -0.75,0.75);
 
             if (gamepad2.right_bumper){
@@ -125,6 +122,16 @@ public class TeleOpBasic extends VortechsMethods{
             }
             else{ OtherPower = 0.65;
             }
+
+            if (gamepad2.a) {
+            Toggle();
+            controlWobbleArm();
+            }
+            else {
+            grabberArm.setPosition(0);
+            grabberHand.setPosition(0);
+            }
+
             idle();
         }
     }

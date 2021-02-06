@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -64,6 +65,18 @@ public class VortechsMethods extends VortechsHardware {
     }
     public void Toggle(){
         toggle = !toggle;
+    }
+    public void controlWobbleArm() throws InterruptedException {
+        if (toggle){
+            grabberArm.setPosition(0.5);
+            grabberHand.setPosition(0.5);
+            Thread.sleep(650);
+        }
+        else if (toggle == false){
+            grabberHand.setPosition(-0.5);
+            grabberArm.setPosition(-0.5);
+            Thread.sleep(650);
+        }
     }
 
     public void launch(double power, long seconds) throws InterruptedException {
