@@ -25,6 +25,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.VortechsMethods;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -38,15 +39,14 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 
-@Autonomous
-public class OpenCVAuto extends LinearOpMode
+@Autonomous(group = "Autonomous", name = "Autonomous: Ring Detector")
+public class OpenCVAuto extends VortechsMethods
 {
     OpenCvInternalCamera phoneCam;
     Pipeline pipeline;
 
     @Override
-    public void runOpMode()
-    {
+    public void runOpMode() throws InterruptedException {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
@@ -68,12 +68,29 @@ public class OpenCVAuto extends LinearOpMode
         });
 
         waitForStart();
+        super.runOpMode();
 
-        while (opModeIsActive())
-        {
+        //driveStraight(40,0.5);
+
+        while (opModeIsActive()) {
+
             telemetry.addData("Analysis", pipeline.getAnalysis());
-            telemetry.addData("Position", pipeline.position);
+            telemetry.addData("Number of Rings", pipeline.getNumRings());
             telemetry.update();
+
+            if (pipeline.getNumRings() == 4) {
+                telemetry.addData("Object Detected?", "Target Zone C");
+                //conveyor(0.5,1);
+            } else if (pipeline.getNumRings() == 1) {
+                telemetry.addData("Object Detected?", "Target Zone B");
+            } else if (pipeline.getNumRings() == 0) {
+                telemetry.addData("Object Detected?", "Target Zone A");
+            } else {
+                telemetry.addData("Object Detected", "None");
+            }
+
+            telemetry.update();
+
 
             // Don't burn CPU cycles busy-looping in this sample
             sleep(50);
@@ -85,12 +102,12 @@ public class OpenCVAuto extends LinearOpMode
         /*
          * An enum to define the number of rings
          */
-        public enum RingPosition
+/*        public enum RingPosition
         {
             FOUR,
             ONE,
             NONE
-        }
+        }*/
 
         /*
          * Some color constants
@@ -101,10 +118,10 @@ public class OpenCVAuto extends LinearOpMode
         /*
          * The core values which define the location and size of the sample regions
          */
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(181,10);
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(50,104);
 
-        static final int REGION_WIDTH = 50;
-        static final int REGION_HEIGHT = 50;
+        static final int REGION_WIDTH = 15;
+        static final int REGION_HEIGHT = 15;
 
         final int FOUR_RING_THRESHOLD = 160;
         final int ONE_RING_THRESHOLD = 135;
@@ -123,9 +140,10 @@ public class OpenCVAuto extends LinearOpMode
         Mat YCrCb = new Mat();
         Mat Cb = new Mat();
         int avg1;
+        int numRings = -1;
 
         // Volatile since accessed by OpMode thread w/o synchronization
-        private volatile RingPosition position = RingPosition.FOUR;
+        //private volatile RingPosition position = RingPosition.FOUR;
 
         /*
          * This function takes the RGB frame, converts to YCrCb,
@@ -159,13 +177,16 @@ public class OpenCVAuto extends LinearOpMode
                     BLUE, // The color the rectangle is drawn in
                     2); // Thickness of the rectangle lines
 
-            position = RingPosition.FOUR; // Record our analysis
+            //position = RingPosition.FOUR; // Record our analysis
             if(avg1 > FOUR_RING_THRESHOLD){
-                position = RingPosition.FOUR;
+                //position = RingPosition.FOUR;
+                numRings = 4;
             }else if (avg1 > ONE_RING_THRESHOLD){
-                position = RingPosition.ONE;
+                //position = RingPosition.ONE;
+                numRings = 1;
             }else{
-                position = RingPosition.NONE;
+                //position = RingPosition.NONE;
+                numRings = 0;
             }
 
             Imgproc.rectangle(
@@ -182,5 +203,11 @@ public class OpenCVAuto extends LinearOpMode
         {
             return avg1;
         }
+
+        public int getNumRings(){
+            return numRings;
+        }
+
     }
+
 }
