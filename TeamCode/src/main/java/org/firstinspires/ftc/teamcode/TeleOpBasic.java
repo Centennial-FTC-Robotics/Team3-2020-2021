@@ -93,10 +93,12 @@ public class TeleOpBasic extends VortechsMethods{
             if (toggle){
                 if (leftOutTake.getPower() < 0.05){
                     leftOutTake.setPower(-0.7);
+                    rightOutTake.setPower(0.7);
                 }
             }
             else if (toggle == false){
                 leftOutTake.setPower(0);
+                rightOutTake.setPower(0);
             }
             }
 
@@ -114,7 +116,7 @@ public class TeleOpBasic extends VortechsMethods{
             }
 
             conveyor.setPower(gamepad2.left_stick_y);
-            
+
             OtherPower = Range.clip(OtherPower, -0.75,0.75);
 
             if (gamepad2.right_bumper){
