@@ -20,7 +20,7 @@ public class VortechsHardware extends LinearOpMode {
     public DcMotorEx backRight = null;
     public DcMotorEx backLeft = null;
     public DcMotorEx leftOutTake = null;
-    public DcMotorEx rightOutTake = null;
+    //public DcMotorEx rightOutTake = null;
     public DcMotorEx intakeWheel = null;
     public DcMotorEx conveyor = null;
     public Servo grabberArm;
@@ -36,7 +36,7 @@ public class VortechsHardware extends LinearOpMode {
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
         frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
         leftOutTake = hardwareMap.get(DcMotorEx.class, "leftOutTake");
-        rightOutTake = hardwareMap.get(DcMotorEx.class, "rightOutTake");
+        //rightOutTake = hardwareMap.get(DcMotorEx.class, "rightOutTake");
         intakeWheel = hardwareMap.get(DcMotorEx.class, "intakeWheel");
         conveyor = hardwareMap.get(DcMotorEx.class, "conveyor");
         grabberArm = hardwareMap.get(Servo.class, "grabberArm");
@@ -46,7 +46,7 @@ public class VortechsHardware extends LinearOpMode {
         frontRight.setDirection(DcMotorEx.Direction.REVERSE);
         backRight.setDirection(DcMotorEx.Direction.REVERSE);
         leftOutTake.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        rightOutTake.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        //rightOutTake.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
     }
     public void resetDriveMotors() {
         final DcMotorEx[] driveMotors = {frontLeft, frontRight, backLeft, backRight};

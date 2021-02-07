@@ -24,6 +24,8 @@ public class TeleOpBasic extends VortechsMethods{
         super.runOpMode();
 
         waitForStart();
+        grabberArm.setPosition(0);
+        grabberHand.setPosition(0);
 
         while(opModeIsActive())
         {
@@ -93,12 +95,12 @@ public class TeleOpBasic extends VortechsMethods{
             if (toggle){
                 if (leftOutTake.getPower() < 0.05){
                     leftOutTake.setPower(-0.7);
-                    rightOutTake.setPower(0.7);
+                    //rightOutTake.setPower(-0.7);
                 }
             }
             else if (toggle == false){
                 leftOutTake.setPower(0);
-                rightOutTake.setPower(0);
+                //rightOutTake.setPower(0);
             }
             }
 
@@ -130,7 +132,7 @@ public class TeleOpBasic extends VortechsMethods{
             controlWobbleArm();
             }
             else {
-            grabberArm.setPosition(0);
+            grabberArm.setPosition(1);
             grabberHand.setPosition(0);
             }
 

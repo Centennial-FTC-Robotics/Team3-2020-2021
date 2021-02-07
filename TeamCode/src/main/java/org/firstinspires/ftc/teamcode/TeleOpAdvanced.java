@@ -58,9 +58,9 @@ public class TeleOpAdvanced extends VortechsMethods {
                 leftOutTake.setPower(0);
             }
             if (gamepad2.right_bumper) {
-                rightOutTake.setPower(-1 * speed);
+                //rightOutTake.setPower(-1 * speed);
             } else {
-                rightOutTake.setPower(0);
+                //rightOutTake.setPower(0);
             }
             if(gamepad2.a) {
                 launch(0.5,1);
