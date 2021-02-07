@@ -33,6 +33,7 @@ import java.util.List;
 public class VortechsMethods extends VortechsHardware {
 
     public boolean toggle = false;
+    public boolean toggle2 = false;
 
     protected static final double TICKS_PER_INCH = 42; //(1120.0 / (100.0 * Math.PI)) * 25.4;
 
@@ -66,16 +67,20 @@ public class VortechsMethods extends VortechsHardware {
     public void Toggle(){
         toggle = !toggle;
     }
-    public void controlWobbleArm() throws InterruptedException {
-        if (toggle){
-            grabberArm.setPosition(0.5);
-            grabberHand.setPosition(0.5);
-            Thread.sleep(650);
+    public void Toggle2(){
+        toggle2 = !toggle2;
+    }
+    public void controlWobbleArm() {
+        if (toggle2){
+            if (grabberArm.getPosition() >= 0.8){
+            grabberArm.setPosition(0.2);
+            grabberHand.setPosition(0);
+            }
         }
-        else if (toggle == false){
-            grabberHand.setPosition(-0.5);
-            grabberArm.setPosition(-0.5);
-            Thread.sleep(650);
+        else if (toggle2 == false){
+            grabberHand.setPosition(0.8);
+            grabberArm.setPosition(0.5);
+
         }
     }
 
