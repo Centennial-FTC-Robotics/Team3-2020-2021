@@ -70,18 +70,16 @@ public class VortechsMethods extends VortechsHardware {
     public void Toggle2(){
         toggle2 = !toggle2;
     }
-    public void controlWobbleArm() {
-        if (toggle2){
-            if (grabberArm.getPosition() >= 0.8){
-            grabberArm.setPosition(0.2);
-            grabberHand.setPosition(0);
-            }
-        }
-        else if (toggle2 == false){
-            grabberHand.setPosition(0.8);
-            grabberArm.setPosition(0.5);
+    public void controlWobbleArm(){
+        grabberArm.setPosition(0.05);
+        grabberHand.setPosition(0.65);
+        sleep(1000);
+        grabberHand.setPosition(0.4);
+        sleep(500);
+        grabberArm.setPosition(0.5);
+        sleep(500);
 
-        }
+
     }
 
     public void launch(double power, long seconds) throws InterruptedException {
