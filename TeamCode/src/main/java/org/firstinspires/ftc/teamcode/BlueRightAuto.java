@@ -11,11 +11,11 @@ public class BlueRightAuto extends VortechsMethods {
         super.runOpMode();
         int rings = detectRings();
         if(rings == VortechsMethods.TARGET_A){
-            moveToTargetARight("blue");
+            //moveToTargetARight("blue");
         } else if (rings == VortechsMethods.TARGET_B){
-            moveToTargetBRight("blue");
+            //moveToTargetBRight("blue");
         } else if (rings == VortechsMethods.TARGET_C){
-            moveToTargetCRight("blue");
+            //moveToTargetCRight("blue");
         }
     }
 

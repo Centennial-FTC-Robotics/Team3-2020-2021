@@ -8,6 +8,6 @@ public class AutonomousFinal extends VortechsMethods {
     public void runOpMode() throws InterruptedException {
         super.runOpMode();
         waitForStart();
-        moveRelative(0,24);
+        //moveRelative(0,24);
     }
 }

@@ -35,7 +35,14 @@ public class VortechsMethods extends VortechsHardware {
     public boolean toggle = false;
     public boolean toggle2 = false;
 
-    protected static final double TICKS_PER_INCH = 42; //(1120.0 / (100.0 * Math.PI)) * 25.4;
+    private final PIDController diag1Controller = new PIDController(0.100f,0,0);
+    private final PIDController diag2Controller = new PIDController(0.100f,0,0);
+
+    private final double ticksPerRotation = 537.6;
+    private final double diameter = 3.937;
+    private final double ticksPerWheelRotation = ticksPerRotation;
+    private final double Circumference = diameter * Math.PI;
+    private final double ticksPerInch = Circumference/ticksPerWheelRotation;
 
     private TFObjectDetector tfod;
     private VuforiaLocalizer vuforia;
@@ -59,6 +66,7 @@ public class VortechsMethods extends VortechsHardware {
 
     protected static final double TILE_LENGTH = 24;
 
+
     @Override
     public void runOpMode() throws InterruptedException {
         super.runOpMode();
@@ -78,14 +86,17 @@ public class VortechsMethods extends VortechsHardware {
         sleep(500);
         grabberArm.setPosition(0.5);
         sleep(500);
-
-
     }
 
+    public void sleep(double milliseconds){
+        ElapsedTime time = new ElapsedTime();
+        while (opModeIsActive()&&time.milliseconds()<milliseconds){
+        }
+    }
     public void launch(double power, long seconds) throws InterruptedException {
         leftOutTake.setPower(-power);
         //rightOutTake.setPower(-power);
-        Thread.sleep(seconds * 1000);
+        sleep(1000);
     }
     public void conveyorLaunch(double power, long seconds) throws InterruptedException {
         launch(power,seconds);
@@ -94,19 +105,138 @@ public class VortechsMethods extends VortechsHardware {
 
     public void conveyor(double power, long seconds) throws InterruptedException {
         conveyor.setPower(-power);
-        Thread.sleep(seconds*1000);
+        sleep(1000);
     }
 
     public void intake(long seconds) throws InterruptedException {
         intakeWheel.setPower(1);
-        Thread.sleep(seconds * 1000);
+        sleep(1000);
     }
     public void doEverything(double outtakePower, double conveyorPower, long seconds) throws InterruptedException{
         launch(outtakePower,seconds);
         conveyor(conveyorPower,seconds);
         intake(seconds);
     }
+    public static double clip(double val, double max, double min){
+        int sign;
+        if (val < 0){
+            sign = -1;
+        }
+        else {
+            sign = 1;
+        }
+        if (Math.abs(val)< min){
+            return min * sign;
+        }
+        else if (Math.abs(val)>max){
+            return max * sign;
+        }
+        else {
+            return val;
+        }
+    }
 
+    public void move(double forwardinches, double leftinches){
+        resetDriveMotors();
+        int forward = (int)inchesToTicks(forwardinches);
+        int left = (int)inchesToTicks(leftinches);
+        int tolerance = (int)inchesToTicks(0.8);
+
+        double minimumSpeed = 0.05;
+        double maximumSpeed= 0.3;
+
+        double diag1Speed, diag2Speed;
+        int diag1Pos, diag2Pos;
+        int diag1Error = Integer.MAX_VALUE, diag2Error = Integer.MAX_VALUE;
+        int diag1Target = forward - left;
+        int diag2Target = forward + left;
+        int olddiag1Error = diag1Target, olddiag2Error = diag2Target;
+
+        while (opModeIsActive() && (Math.abs(diag1Error)>tolerance || Math.abs(diag2Error)> tolerance)){
+            diag1Pos = (frontLeft.getCurrentPosition() + backRight.getCurrentPosition());
+            diag2Pos = (frontRight.getCurrentPosition() + backLeft.getCurrentPosition());
+
+            diag1Error = diag1Target - diag1Pos;
+            diag2Error = diag2Target - diag2Pos;
+
+            diag1Speed = diag1Controller.getPower(diag1Error);
+            diag2Speed = diag2Controller.getPower(diag2Error);
+
+            diag1Speed = clip(diag1Speed, maximumSpeed, minimumSpeed);
+            diag2Speed = clip(diag2Speed, maximumSpeed, minimumSpeed);
+
+            frontLeft.setPower(diag1Speed);
+            backRight.setPower(diag1Speed);
+            frontRight.setPower(diag2Speed);
+            backLeft.setPower(diag2Speed);
+
+        }
+        stopDriveMotors();
+        diag1Controller.reset();
+        diag2Controller.reset();
+    }
+
+    public void turnRelative(double targetAngle) {
+        updateIMU();
+        turnAbsolute(AngleUnit.normalizeDegrees(targetAngle + currentAngle));
+    }
+
+    public void turnAbsolute(double targetAngle) {
+
+        int direction;
+        double turnRate;
+        double minSpeed = 0.1;
+        double maxSpeed = 0.5;
+        double tolerance = .4;
+        double error = Double.MAX_VALUE;
+        double P = 1d / 150;
+
+        while (opModeIsActive() && (Math.abs(error) > tolerance)) {
+            updateIMU();
+            error = getAngleDist(currentAngle, targetAngle);
+            direction = getAngleDir(currentAngle, targetAngle);
+            turnRate = clip(P * error, maxSpeed, minSpeed);
+            telemetry.addData("error", error);
+            telemetry.addData("turnRate", turnRate);
+            telemetry.addData("current", currentAngle);
+            telemetry.addData("dir", direction);
+            telemetry.update();
+
+            frontLeft.setPower(turnRate);
+            backLeft.setPower(turnRate);
+            frontRight.setPower(-turnRate);
+            backRight.setPower(-turnRate);
+        }
+        stopDriveMotors();
+    }
+
+    private double getAngleDist(double targetAngle, double currentAngle) {
+        double angleDifference = currentAngle - targetAngle;
+
+        if (Math.abs(angleDifference) > 180) {
+            angleDifference = 360 - Math.abs(angleDifference);
+        } else {
+            angleDifference = Math.abs(angleDifference);
+        }
+
+        return angleDifference;
+    }
+
+
+    private int getAngleDir(double targetAngle, double currentAngle) {
+        double angleDifference = targetAngle - currentAngle;
+        int angleDir = (int) (angleDifference / Math.abs(angleDifference));
+
+        if (Math.abs(angleDifference) > 180) {
+            angleDir *= -1;
+        }
+
+        return angleDir;
+    }
+
+
+
+    /*
     public void moveRelative(double sideways, double forward) {
         moveAndTurn(sideways, forward, 0);
     }
@@ -118,8 +248,8 @@ public class VortechsMethods extends VortechsHardware {
     public void turn(double degrees) {
         moveAndTurn(0, 0, degrees);
     }
-
-    public void moveAndTurn(double xTarget, double yTarget, double angleError) {
+*/
+   /* public void moveAndTurn(double xTarget, double yTarget, double angleError) {
 
         resetDriveMotors();
 
@@ -133,7 +263,7 @@ public class VortechsMethods extends VortechsHardware {
          xDirection.start();
          yDirection.start();
          angle.start();
-         */
+
         double prevXError = inchesToTicks(xTarget);
         double prevYError = inchesToTicks(yTarget);
 
@@ -162,7 +292,7 @@ public class VortechsMethods extends VortechsHardware {
             double xProportion = P * xError;
             double aProportion = angleP * angleError;
              */
-
+/*
             yIntegral += (yError * (currentTime - lastTime));
             xIntegral += (xError * (currentTime - lastTime));
             aIntegral += (angleError * (currentTime - lastTime));
@@ -222,13 +352,13 @@ public class VortechsMethods extends VortechsHardware {
         }
         stopDriveMotors();
     }
-
+*/
     public double ticksToInches(int ticks) {
-        return ticks / TICKS_PER_INCH;
+        return ticksPerInch/ticks;
     }
 
     public double inchesToTicks(double inches) {
-        return Math.round(inches * TICKS_PER_INCH);
+        return (int)(inches / ticksPerInch);
     }
 
     public void updateIMU() {
@@ -273,7 +403,7 @@ public class VortechsMethods extends VortechsHardware {
         frontRight.setPower(power);
         backLeft.setPower(power);
         backRight.setPower(power);
-        Thread.sleep(seconds*1000);
+        sleep(1000*seconds);
     }
     public void driveStraight(double inches, double power) {
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -289,7 +419,7 @@ public class VortechsMethods extends VortechsHardware {
         backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         setBasicTolerance(4);
 
-        int ticks = (int) (TICKS_PER_INCH * inches);
+        int ticks = (int) (ticksPerInch * inches);
 
         backLeft.setTargetPosition(ticks+backLeft.getCurrentPosition());
         backRight.setTargetPosition(ticks+backRight.getCurrentPosition());
@@ -314,7 +444,7 @@ public class VortechsMethods extends VortechsHardware {
     }
 
     public void rotate(double degrees) {
-        double factor = degrees * (TICKS_PER_INCH / 180);
+        double factor = degrees * (ticksPerInch / 180);
 
         backLeft.setTargetPosition((int) factor);
         backRight.setTargetPosition(-(int) factor);
@@ -417,7 +547,7 @@ public class VortechsMethods extends VortechsHardware {
             return targetZone;
         }
 
-        public void moveToTargetALeft (String color) throws InterruptedException {
+    /*    public void moveToTargetALeft (String color) throws InterruptedException {
             waitForStart();
             moveRelative(0, 70); //Move towards square A
             turnRelative(-30); //Turn facing square A
@@ -482,7 +612,7 @@ public class VortechsMethods extends VortechsHardware {
             launch(2, 3); //Shoot the rings
             moveRelative(0, -5); //Park on white line
         }
-
+*/
         /**
          * Initialize the Vuforia localization engine.
          */
