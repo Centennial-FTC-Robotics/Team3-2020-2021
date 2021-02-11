@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.State;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -112,11 +113,20 @@ public class VortechsMethods extends VortechsHardware {
         intakeWheel.setPower(1);
         sleep(1000);
     }
+
+
     public void doEverything(double outtakePower, double conveyorPower, long seconds) throws InterruptedException{
-        launch(outtakePower,seconds);
-        conveyor(conveyorPower,seconds);
-        intake(seconds);
-    }
+        //launch the first two rings
+        conveyor.setPower(-conveyorPower);
+        leftOutTake.setPower(-outtakePower);
+        sleep(seconds * 1000);
+
+            //launch the last ring
+            leftOutTake.setPower(-outtakePower);
+            intakeWheel.setPower(1);
+            conveyor.setPower(-conveyorPower);
+            sleep(1500);
+        }
     public static double clip(double val, double max, double min){
         int sign;
         if (val < 0){
