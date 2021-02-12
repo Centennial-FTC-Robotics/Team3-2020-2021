@@ -74,6 +74,8 @@ public class VortechsMethods extends VortechsHardware {
         initializeIMU();
     }
 
+    // Mechanisms
+
     public void Toggle() {
         toggle = !toggle;
     }
@@ -83,11 +85,11 @@ public class VortechsMethods extends VortechsHardware {
     }
 
     public void controlWobbleArm() {
-        grabberArm.setPosition(0.05);
-        grabberHand.setPosition(0.65);
+        grabberArm.setPosition(0.1);
+        grabberHand.setPosition(0.8);
         sleep(1000);
         grabberHand.setPosition(0.4);
-        sleep(500);
+        sleep(1000);
         grabberArm.setPosition(0.5);
         sleep(500);
     }
@@ -127,6 +129,11 @@ public class VortechsMethods extends VortechsHardware {
         sleep(1000);
     }
 
+    public void outakeWithEncoders(double power){
+        leftOutTake.setPower(-power);
+        leftOutTake.setTargetPosition(100); //change number of ticks accordingly
+    }
+
 
     public void doEverything(double outtakePower, double conveyorPower, long seconds) throws InterruptedException {
 
@@ -164,6 +171,8 @@ public class VortechsMethods extends VortechsHardware {
             return val;
         }
     }
+
+    // Movement and Turning methods
 
     public void move(double forwardinches, double leftinches) {
         resetDriveMotors();
@@ -495,10 +504,17 @@ public class VortechsMethods extends VortechsHardware {
     }
     // AUTONOMOUS METHODS
 
+    // Autonomous Paths
+
     public void moveForwardAndLaunch() throws InterruptedException {
-        turnRelative(90); //turn so that robot faces forward
+        turnRelative(-90); //turn so that robot faces forward
         move(58, 0); //move behind launch line
         doEverything(0.73, 0.4, 5);
+    }
+
+    public void launchAndPark() throws InterruptedException{
+        doEverything(0.73, 0.4, 5); //launch rings
+        move(12,0); //park on launch line
     }
 
     public void backUpAuto() throws InterruptedException {
@@ -507,27 +523,32 @@ public class VortechsMethods extends VortechsHardware {
     }
 
     public void targetZoneABlue() throws InterruptedException {
-        moveForwardAndLaunch();
-        move(10, 0); //drive to target zone A
+        turnRelative(-90); //turn so that robot faces forward
+        move(60,0); //drive to target zone A
         controlWobbleArm(); //drop wobble goal
-        move(-8, 0); //move back to park
+        move(-10, 0); //move back behind launch line
+        launchAndPark();
     }
 
     public void targetZoneBBlue() throws InterruptedException {
-        moveForwardAndLaunch();
-        move(48, -24); //drive to target zone B
+        turnRelative(-90); //turn so that robot faces forward
+        move(80,-24); //drive to target zone B
         controlWobbleArm(); //drop wobble goal
-        move(-40, 0); //move back to park
+        move(-24, 0); //move back behind launch line
+        launchAndPark();
     }
 
     public void targetZoneCBlue() throws InterruptedException {
-        moveForwardAndLaunch();
-        move(72, 0); //drive to target zone C
+        turnRelative(-90); //turn so that robot faces forward
+        move(120,-24); //drive to target zone B
         controlWobbleArm(); //drop wobble goal
-        move(-64, 0); //move back to park
+        move(-64, 0); //move back behind launch line
+        launchAndPark();
     }
 
+/*
     public int detectRings() { return 0;
+*/
 /*
             int targetZone = 0;
 
@@ -704,7 +725,7 @@ public class VortechsMethods extends VortechsHardware {
             tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
         }*/
     }
-}
+
 
 
 
