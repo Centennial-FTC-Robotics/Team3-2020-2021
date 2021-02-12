@@ -11,6 +11,7 @@ public class AutonomousTest extends VortechsMethods{
             super.runOpMode();
             waitForStart();
                 move(24,0);
+                turnRelative(90);
             idle();
         }
     }

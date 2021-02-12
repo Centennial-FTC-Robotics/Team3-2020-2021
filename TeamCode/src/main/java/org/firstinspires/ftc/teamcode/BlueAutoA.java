@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 public class BlueAutoA extends VortechsMethods {
     public void runOpMode() throws InterruptedException{
-
         waitForStart();
         //moveRelative(0,70); //Move towards square A
         turnRelative(-30); //Turn facing square A

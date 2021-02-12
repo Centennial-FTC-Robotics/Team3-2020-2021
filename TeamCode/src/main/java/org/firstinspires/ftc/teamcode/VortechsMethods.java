@@ -39,7 +39,7 @@ public class VortechsMethods extends VortechsHardware {
     private final PIDController diag1Controller = new PIDController(0.100f, 0, 0);
     private final PIDController diag2Controller = new PIDController(0.100f, 0, 0);
 
-    private final double ticksPerRotation = 537.6;
+    private final double ticksPerRotation = 537.6 * 2; //IMPORTANT: for some reason the robot moved half of its distance so i added a *2
     private final double diameter = 3.937;
     private final double ticksPerWheelRotation = ticksPerRotation;
     private final double Circumference = diameter * Math.PI;
@@ -92,11 +92,19 @@ public class VortechsMethods extends VortechsHardware {
         sleep(500);
     }
 
-    public void sleep(double milliseconds) {
+ /*   public void sleep(double milliseconds) {
         ElapsedTime time = new ElapsedTime();
-        while (opModeIsActive() && time.milliseconds() < milliseconds) {
+        while (opModeIsActive()) { sleep();
+            if (time.milliseconds() < milliseconds) {
+                idle();
+            } else {
+                break;
+            }
+        *//*while (opModeIsActive() && time.milliseconds() < milliseconds) {
+        it kept yelling at me for being an idiot that uses while loops
+        }*//*
         }
-    }
+    }*/
 
     public void launch(double power, long seconds) throws InterruptedException {
         leftOutTake.setPower(-power);
@@ -121,11 +129,16 @@ public class VortechsMethods extends VortechsHardware {
 
 
     public void doEverything(double outtakePower, double conveyorPower, long seconds) throws InterruptedException {
-        resetOutTake();
+
         //launch the first two rings
         conveyor.setPower(-conveyorPower);
+        leftOutTake.setPower(-outtakePower);
+
+       /* The sleep methods don't play nice with the velocity pid thing, idk how to fix
+       resetOutTake();
         leftOutTake.setVelocity(1000.0);
         telemetry.addData("velocity:", leftOutTake.getVelocity());
+        */
         sleep(seconds * 1000);
 
         //launch the last ring
@@ -159,7 +172,7 @@ public class VortechsMethods extends VortechsHardware {
         int tolerance = (int) inchesToTicks(0.8);
 
         double minimumSpeed = 0.05;
-        double maximumSpeed = 0.3;
+        double maximumSpeed = 0.3; //TODO: make this value higher
 
         double diag1Speed, diag2Speed;
         int diag1Pos, diag2Pos;
@@ -447,7 +460,7 @@ public class VortechsMethods extends VortechsHardware {
         backRight.setPower(power);
         frontLeft.setPower(power);
         frontRight.setPower(power);
-        while (motorsBusy()) {
+        while (motorsBusy() && opModeIsActive()) {
             telemetry.addData("frontLeft:", frontLeft.getCurrentPosition());
             telemetry.addData("frontRight:", frontRight.getCurrentPosition());
             telemetry.addData("backLeft:", backLeft.getCurrentPosition());
@@ -470,7 +483,7 @@ public class VortechsMethods extends VortechsHardware {
         frontRight.setTargetPosition(-(int) factor);
         setBasicTolerance(4);
         setRunToPosition();
-        while (opModeIsActive() && motorsBusy()) {
+        while (motorsBusy()) {
             backLeft.setPower(1);
             backRight.setPower(1);
             frontLeft.setPower(1);
