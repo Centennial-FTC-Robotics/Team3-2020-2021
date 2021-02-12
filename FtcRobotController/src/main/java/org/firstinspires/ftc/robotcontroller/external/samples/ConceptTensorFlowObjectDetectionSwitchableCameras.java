@@ -131,11 +131,11 @@ public class ConceptTensorFlowObjectDetectionSwitchableCameras extends LinearOpM
                     // step through the list of recognitions and display boundary info.
                     int i = 0;
                     for (Recognition recognition : recognitions) {
-                      telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                      telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                              recognition.getLeft(), recognition.getTop());
-                      telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                              recognition.getRight(), recognition.getBottom());
+                        telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                        telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                                recognition.getLeft(), recognition.getTop());
+                        telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                                recognition.getRight(), recognition.getBottom());
                     }
                     telemetry.update();
                 }
@@ -178,7 +178,7 @@ public class ConceptTensorFlowObjectDetectionSwitchableCameras extends LinearOpM
      */
     private void initTfod() {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-            "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfodParameters.minResultConfidence = 0.8f;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);

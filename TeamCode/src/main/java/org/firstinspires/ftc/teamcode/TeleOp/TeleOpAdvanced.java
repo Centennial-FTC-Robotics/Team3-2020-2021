@@ -6,17 +6,22 @@ Disabled this one, use Teleop Basic instead
 
 
 
- */
-package org.firstinspires.ftc.teamcode;
+ *//*
+
+package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.teamcode.VortechsMethods;
+
 @Disabled
 @TeleOp(name = "Teleop Advanced", group = "Tests")
 public class TeleOpAdvanced extends VortechsMethods {
     //This code is based on the "Controls" spreadsheet we made in the Google Drive
+
+import org.firstinspires.ftc.teamcode.VortechsMethods;
 
 
     double rotation, speed;
@@ -87,3 +92,4 @@ public class TeleOpAdvanced extends VortechsMethods {
         }
     }
 }
+*/

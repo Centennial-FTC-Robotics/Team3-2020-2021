@@ -2,9 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 public class AutoPaths extends VortechsMethods {
 
-    //robot starts on left side
+    // robot starts on left side
 
-    public void moveToTargetALeft() throws InterruptedException {
+    public void moveToTargetALeft(String color) throws InterruptedException {
         waitForStart();
         move(70, 0); //Move towards square A
         turnRelative(-30); //Turn facing square A
@@ -15,7 +15,7 @@ public class AutoPaths extends VortechsMethods {
     //    moveRelative(0, -5); //Back into white line
     }
 
-    public void moveToTargetBLeft() throws InterruptedException {
+    public void moveToTargetBLeft(String color) throws InterruptedException {
         waitForStart();
       //  moveRelative(0, 30); //Moves forward into white line
         turnRelative(30); //Turn towards square B
@@ -26,7 +26,7 @@ public class AutoPaths extends VortechsMethods {
         //moveRelative(0, -10); //Park onto white line
     }
 
-    public void moveToTargetCLeft() throws InterruptedException {
+    public void moveToTargetCLeft(String color) throws InterruptedException {
         //moveRelative(0, 40); //Move towards square C
         turnRelative(-30); //Turn towards square C
         //moveRelative(0, 10); //Move into square C
@@ -38,7 +38,7 @@ public class AutoPaths extends VortechsMethods {
 
     // robot starts on right side
 
-    public void moveToTargetARight() throws InterruptedException {
+    public void moveToTargetARight(String color) throws InterruptedException {
         waitForStart();
         //moveRelative(0,70); //Move towards square A
         turnRelative(-45); //Turn facing square A
@@ -49,7 +49,7 @@ public class AutoPaths extends VortechsMethods {
         //moveRelative(0,-5); //Back into white line
     }
 
-    public void moveToTargetBRight() throws InterruptedException {
+    public void moveToTargetBRight(String color) throws InterruptedException {
         waitForStart();
         //moveRelative(0,30); //Moves forward into white line
         turnRelative(-30); //Turn towards square B
@@ -60,7 +60,7 @@ public class AutoPaths extends VortechsMethods {
         //moveRelative(0,-10); //Park onto white line
     }
 
-    public void moveToTargetCRight() throws InterruptedException {
+    public void moveToTargetCRight(String color) throws InterruptedException {
         //moveRelative(0, 40); //Move towards square C
         //moveRelative(0,40); //Move towards square C
         turnRelative(-45); //Turn towards square C
@@ -72,10 +72,10 @@ public class AutoPaths extends VortechsMethods {
     }
 
     //parks on white launch line
-    //idk if we need this
-    public void backupAuto() throws InterruptedException {
+
+/*    public void backupAuto() throws InterruptedException {
         //moveRelative(0,80);
-    }
+    }*/
 
 
 }

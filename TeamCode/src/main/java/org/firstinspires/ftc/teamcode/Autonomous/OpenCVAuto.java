@@ -124,7 +124,7 @@ public class OpenCVAuto extends VortechsMethods
         /*
          * The core values which define the location and size of the sample regions
          */
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(50,104);
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(70,86);
 
         static final int REGION_WIDTH = 15;
         static final int REGION_HEIGHT = 15;

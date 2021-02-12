@@ -21,7 +21,6 @@ public class BlueAutoC extends VortechsMethods {
         moveRelative(0,10); //Move behind white line
         launch(2,3); //Shoot the rings
         moveRelative(0,-5); //Park on white line
-
         */
 
     }

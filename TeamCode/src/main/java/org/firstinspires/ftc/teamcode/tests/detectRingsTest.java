@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -19,3 +20,4 @@ public class detectRingsTest extends VortechsMethods {
         }
     }
 }
+*/
