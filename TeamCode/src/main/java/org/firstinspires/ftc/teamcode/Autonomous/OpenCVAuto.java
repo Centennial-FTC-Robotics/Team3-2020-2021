@@ -70,23 +70,25 @@ public class OpenCVAuto extends VortechsMethods
         waitForStart();
         super.runOpMode();
 
-        //driveStraight(40,0.5);
-
         while (opModeIsActive()) {
 
             telemetry.addData("Analysis", pipeline.getAnalysis());
             telemetry.addData("Number of Rings", pipeline.getNumRings());
             telemetry.update();
 
+            // just for blue side
             if (pipeline.getNumRings() == 4) {
                 telemetry.addData("Object Detected?", "Target Zone C");
-                //conveyor(0.5,1);
+                targetZoneCBlue();
             } else if (pipeline.getNumRings() == 1) {
                 telemetry.addData("Object Detected?", "Target Zone B");
+                targetZoneBBlue();
             } else if (pipeline.getNumRings() == 0) {
                 telemetry.addData("Object Detected?", "Target Zone A");
+                targetZoneABlue();
             } else {
                 telemetry.addData("Object Detected", "None");
+                backUpAuto();
             }
 
             telemetry.update();

@@ -464,9 +464,39 @@ public class VortechsMethods extends VortechsHardware {
     }
         // AUTONOMOUS METHODS
 
-        // returns which target zone to go to
+    public void moveForwardAndLaunch() throws InterruptedException {
+        turnRelative(90); //turn so that robot faces forward
+        move(58,0); //move behind launch line
+        doEverything(0.73, 0.4,5);
+    }
 
-        public int detectRings (){
+    public void backUpAuto() throws InterruptedException{
+        moveForwardAndLaunch();
+        move(12,0); //move forward to park
+    }
+
+    public void targetZoneABlue() throws InterruptedException {
+        moveForwardAndLaunch();
+        move(10,0); //drive to target zone A
+        controlWobbleArm(); //drop wobble goal
+        move(-8,0); //move back to park
+    }
+
+    public void targetZoneBBlue() throws InterruptedException {
+        moveForwardAndLaunch();
+        move(48,-24); //drive to target zone B
+        controlWobbleArm(); //drop wobble goal
+        move(-40,0); //move back to park
+    }
+
+    public void targetZoneCBlue() throws InterruptedException {
+        moveForwardAndLaunch();
+        move(72,0); //drive to target zone C
+        controlWobbleArm(); //drop wobble goal
+        move(-64,0); //move back to park
+    }
+
+/*        public int detectRings (){
 
             int targetZone = 0;
 
@@ -481,8 +511,8 @@ public class VortechsMethods extends VortechsHardware {
             } catch (Exception e){
                 e.printStackTrace();
             }
- /*           initTfod();
-            initVuforia();*/
+ *//*           initTfod();
+            initVuforia();*//*
 
             if (tfod != null) {
                 tfod.activate();
@@ -545,7 +575,7 @@ public class VortechsMethods extends VortechsHardware {
             }
 
             return targetZone;
-        }
+        }*/
 
     /*    public void moveToTargetALeft (String color) throws InterruptedException {
             waitForStart();
