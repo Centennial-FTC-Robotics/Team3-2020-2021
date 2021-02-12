@@ -36,14 +36,14 @@ public class VortechsMethods extends VortechsHardware {
     public boolean toggle = false;
     public boolean toggle2 = false;
 
-    private final PIDController diag1Controller = new PIDController(0.100f,0,0);
-    private final PIDController diag2Controller = new PIDController(0.100f,0,0);
+    private final PIDController diag1Controller = new PIDController(0.100f, 0, 0);
+    private final PIDController diag2Controller = new PIDController(0.100f, 0, 0);
 
     private final double ticksPerRotation = 537.6;
     private final double diameter = 3.937;
     private final double ticksPerWheelRotation = ticksPerRotation;
     private final double Circumference = diameter * Math.PI;
-    private final double ticksPerInch = Circumference/ticksPerWheelRotation;
+    private final double ticksPerInch = Circumference / ticksPerWheelRotation;
 
     private TFObjectDetector tfod;
     private VuforiaLocalizer vuforia;
@@ -73,13 +73,16 @@ public class VortechsMethods extends VortechsHardware {
         super.runOpMode();
         initializeIMU();
     }
-    public void Toggle(){
+
+    public void Toggle() {
         toggle = !toggle;
     }
-    public void Toggle2(){
+
+    public void Toggle2() {
         toggle2 = !toggle2;
     }
-    public void controlWobbleArm(){
+
+    public void controlWobbleArm() {
         grabberArm.setPosition(0.05);
         grabberHand.setPosition(0.65);
         sleep(1000);
@@ -89,19 +92,21 @@ public class VortechsMethods extends VortechsHardware {
         sleep(500);
     }
 
-    public void sleep(double milliseconds){
+    public void sleep(double milliseconds) {
         ElapsedTime time = new ElapsedTime();
-        while (opModeIsActive()&&time.milliseconds()<milliseconds){
+        while (opModeIsActive() && time.milliseconds() < milliseconds) {
         }
     }
+
     public void launch(double power, long seconds) throws InterruptedException {
         leftOutTake.setPower(-power);
         //rightOutTake.setPower(-power);
         sleep(1000);
     }
+
     public void conveyorLaunch(double power, long seconds) throws InterruptedException {
-        launch(power,seconds);
-        conveyor(1,seconds);
+        launch(power, seconds);
+        conveyor(1, seconds);
     }
 
     public void conveyor(double power, long seconds) throws InterruptedException {
@@ -115,45 +120,46 @@ public class VortechsMethods extends VortechsHardware {
     }
 
 
-    public void doEverything(double outtakePower, double conveyorPower, long seconds) throws InterruptedException{
+    public void doEverything(double outtakePower, double conveyorPower, long seconds) throws InterruptedException {
+        resetOutTake();
         //launch the first two rings
         conveyor.setPower(-conveyorPower);
-        leftOutTake.setPower(-outtakePower);
+        leftOutTake.setVelocity(1000.0);
+        telemetry.addData("velocity:", leftOutTake.getVelocity());
         sleep(seconds * 1000);
 
-            //launch the last ring
-            leftOutTake.setPower(-outtakePower);
-            intakeWheel.setPower(1);
-            conveyor.setPower(-conveyorPower);
-            sleep(1500);
-        }
-    public static double clip(double val, double max, double min){
+        //launch the last ring
+        leftOutTake.setPower(-outtakePower);
+        intakeWheel.setPower(1);
+        conveyor.setPower(-conveyorPower);
+        telemetry.addData("velocity:", leftOutTake.getVelocity());
+        sleep(1500);
+    }
+
+    public static double clip(double val, double max, double min) {
         int sign;
-        if (val < 0){
+        if (val < 0) {
             sign = -1;
-        }
-        else {
+        } else {
             sign = 1;
         }
-        if (Math.abs(val)< min){
+        if (Math.abs(val) < min) {
             return min * sign;
-        }
-        else if (Math.abs(val)>max){
+        } else if (Math.abs(val) > max) {
             return max * sign;
-        }
-        else {
+        } else {
             return val;
         }
     }
 
-    public void move(double forwardinches, double leftinches){
+    public void move(double forwardinches, double leftinches) {
         resetDriveMotors();
-        int forward = (int)inchesToTicks(forwardinches);
-        int left = (int)inchesToTicks(leftinches);
-        int tolerance = (int)inchesToTicks(0.8);
+        int forward = (int) inchesToTicks(forwardinches);
+        int left = (int) inchesToTicks(leftinches);
+        int tolerance = (int) inchesToTicks(0.8);
 
         double minimumSpeed = 0.05;
-        double maximumSpeed= 0.3;
+        double maximumSpeed = 0.3;
 
         double diag1Speed, diag2Speed;
         int diag1Pos, diag2Pos;
@@ -162,7 +168,7 @@ public class VortechsMethods extends VortechsHardware {
         int diag2Target = forward + left;
         int olddiag1Error = diag1Target, olddiag2Error = diag2Target;
 
-        while (opModeIsActive() && (Math.abs(diag1Error)>tolerance || Math.abs(diag2Error)> tolerance)){
+        while (opModeIsActive() && (Math.abs(diag1Error) > tolerance || Math.abs(diag2Error) > tolerance)) {
             diag1Pos = (frontLeft.getCurrentPosition() + backRight.getCurrentPosition());
             diag2Pos = (frontRight.getCurrentPosition() + backLeft.getCurrentPosition());
 
@@ -243,7 +249,6 @@ public class VortechsMethods extends VortechsHardware {
 
         return angleDir;
     }
-
 
 
     /*
@@ -364,11 +369,11 @@ public class VortechsMethods extends VortechsHardware {
     }
 */
     public double ticksToInches(int ticks) {
-        return ticksPerInch/ticks;
+        return ticksPerInch / ticks;
     }
 
     public double inchesToTicks(double inches) {
-        return (int)(inches / ticksPerInch);
+        return (int) (inches / ticksPerInch);
     }
 
     public void updateIMU() {
@@ -402,19 +407,22 @@ public class VortechsMethods extends VortechsHardware {
         this.XPos = XPos;
         this.YPos = YPos;
     }
+
     public void setBasicTolerance(int ticks) {
         backLeft.setTargetPositionTolerance(ticks);
         backRight.setTargetPositionTolerance(ticks);
         frontLeft.setTargetPositionTolerance(ticks);
         frontRight.setTargetPositionTolerance(ticks);
     }
-    public void driveStraightBasic(double power, long seconds) throws InterruptedException{
+
+    public void driveStraightBasic(double power, long seconds) throws InterruptedException {
         frontLeft.setPower(power);
         frontRight.setPower(power);
         backLeft.setPower(power);
         backRight.setPower(power);
-        sleep(1000*seconds);
+        sleep(1000 * seconds);
     }
+
     public void driveStraight(double inches, double power) {
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -431,15 +439,15 @@ public class VortechsMethods extends VortechsHardware {
 
         int ticks = (int) (ticksPerInch * inches);
 
-        backLeft.setTargetPosition(ticks+backLeft.getCurrentPosition());
-        backRight.setTargetPosition(ticks+backRight.getCurrentPosition());
-        frontLeft.setTargetPosition(ticks+frontLeft.getCurrentPosition());
-        frontRight.setTargetPosition(ticks+frontRight.getCurrentPosition());
+        backLeft.setTargetPosition(ticks + backLeft.getCurrentPosition());
+        backRight.setTargetPosition(ticks + backRight.getCurrentPosition());
+        frontLeft.setTargetPosition(ticks + frontLeft.getCurrentPosition());
+        frontRight.setTargetPosition(ticks + frontRight.getCurrentPosition());
         backLeft.setPower(power);
         backRight.setPower(power);
         frontLeft.setPower(power);
         frontRight.setPower(power);
-        while(motorsBusy()) {
+        while (motorsBusy()) {
             telemetry.addData("frontLeft:", frontLeft.getCurrentPosition());
             telemetry.addData("frontRight:", frontRight.getCurrentPosition());
             telemetry.addData("backLeft:", backLeft.getCurrentPosition());
@@ -472,42 +480,42 @@ public class VortechsMethods extends VortechsHardware {
         }
         resetDriveMotors();
     }
-        // AUTONOMOUS METHODS
+    // AUTONOMOUS METHODS
 
     public void moveForwardAndLaunch() throws InterruptedException {
         turnRelative(90); //turn so that robot faces forward
-        move(58,0); //move behind launch line
-        doEverything(0.73, 0.4,5);
+        move(58, 0); //move behind launch line
+        doEverything(0.73, 0.4, 5);
     }
 
-    public void backUpAuto() throws InterruptedException{
+    public void backUpAuto() throws InterruptedException {
         moveForwardAndLaunch();
-        move(12,0); //move forward to park
+        move(12, 0); //move forward to park
     }
 
     public void targetZoneABlue() throws InterruptedException {
         moveForwardAndLaunch();
-        move(10,0); //drive to target zone A
+        move(10, 0); //drive to target zone A
         controlWobbleArm(); //drop wobble goal
-        move(-8,0); //move back to park
+        move(-8, 0); //move back to park
     }
 
     public void targetZoneBBlue() throws InterruptedException {
         moveForwardAndLaunch();
-        move(48,-24); //drive to target zone B
+        move(48, -24); //drive to target zone B
         controlWobbleArm(); //drop wobble goal
-        move(-40,0); //move back to park
+        move(-40, 0); //move back to park
     }
 
     public void targetZoneCBlue() throws InterruptedException {
         moveForwardAndLaunch();
-        move(72,0); //drive to target zone C
+        move(72, 0); //drive to target zone C
         controlWobbleArm(); //drop wobble goal
-        move(-64,0); //move back to park
+        move(-64, 0); //move back to park
     }
 
-/*        public int detectRings (){
-
+    public int detectRings() { return 0;
+/*
             int targetZone = 0;
 
             try {
@@ -652,14 +660,14 @@ public class VortechsMethods extends VortechsHardware {
             launch(2, 3); //Shoot the rings
             moveRelative(0, -5); //Park on white line
         }
-*/
+
         /**
          * Initialize the Vuforia localization engine.
-         */
+         *
         private void initVuforia () {
             /*
              * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
-             */
+             *
             VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
             parameters.vuforiaLicenseKey = VUFORIA_KEY;
@@ -673,7 +681,7 @@ public class VortechsMethods extends VortechsHardware {
 
         /**
          * Initialize the TensorFlow Object Detection engine.
-         */
+         *
         private void initTfod () {
             int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                     "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -681,7 +689,9 @@ public class VortechsMethods extends VortechsHardware {
             tfodParameters.minResultConfidence = 0.8f;
             tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
             tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
-        }
+        }*/
     }
+}
+
 
 

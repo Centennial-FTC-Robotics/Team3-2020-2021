@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-
+@Disabled
 @TeleOp(name = "Teleop Advanced", group = "Tests")
 public class TeleOpAdvanced extends VortechsMethods {
     //This code is based on the "Controls" spreadsheet we made in the Google Drive

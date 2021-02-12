@@ -17,6 +17,7 @@ public class EncodersTest extends VortechsMethods {
             telemetry.addData("frontRightPosition:", frontRight.getCurrentPosition());
             telemetry.addData("backLeftPosition:", backLeft.getCurrentPosition());
             telemetry.addData("backRightPosition:", backRight.getCurrentPosition());
+            telemetry.addData("outTakePosition:", leftOutTake.getCurrentPosition());
             telemetry.update();
         }
     }
