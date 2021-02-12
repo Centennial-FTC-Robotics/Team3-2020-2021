@@ -38,7 +38,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-
+//for red side
 @Autonomous(group = "Autonomous", name = "Autonomous: Ring Detector")
 public class OpenCVAuto extends VortechsMethods
 {
@@ -83,13 +83,13 @@ public class OpenCVAuto extends VortechsMethods
             // just for blue side
             if (pipeline.getNumRings() == 4) {
                 telemetry.addData("Object Detected?", "Target Zone C");
-                targetZoneCBlue();
+                targetZoneCRed();
             } else if (pipeline.getNumRings() == 1) {
                 telemetry.addData("Object Detected?", "Target Zone B");
-                targetZoneBBlue();
+                targetZoneBRed();
             } else if (pipeline.getNumRings() == 0) {
                 telemetry.addData("Object Detected?", "Target Zone A");
-                targetZoneABlue();
+                targetZoneARed();
             } else {
                 telemetry.addData("Object Detected", "None");
                 backUpAuto();

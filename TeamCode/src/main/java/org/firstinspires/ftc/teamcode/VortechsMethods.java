@@ -88,10 +88,27 @@ public class VortechsMethods extends VortechsHardware {
         grabberArm.setPosition(0.1);
         grabberHand.setPosition(0.8);
         sleep(1000);
+        grabberHand.setPosition(0.25);
+        sleep(1000);
+        grabberArm.setPosition(0.6);
+        sleep(500);
+    }
+    public void autoControlWobbleArm(){
+        grabberHand.setPosition(0.4);
+        grabberArm.setPosition(0.1);
+        sleep(1000);
+        grabberHand.setPosition(0.8);
+        sleep(1000);
         grabberHand.setPosition(0.4);
         sleep(1000);
-        grabberArm.setPosition(0.5);
+        grabberArm.setPosition(0.6);
         sleep(500);
+    }
+
+    public void initWobbleArm(){
+        grabberArm.setPosition(.8);
+        grabberHand.setPosition(0);
+        sleep(1000);
     }
 
  /*   public void sleep(double milliseconds) {
@@ -522,25 +539,28 @@ public class VortechsMethods extends VortechsHardware {
         move(12, 0); //move forward to park
     }
 
-    public void targetZoneABlue() throws InterruptedException {
+    public void targetZoneARed() throws InterruptedException {
         turnRelative(-90); //turn so that robot faces forward
         move(60,0); //drive to target zone A
+        turnRelative(-180);
         controlWobbleArm(); //drop wobble goal
         move(-10, 0); //move back behind launch line
         launchAndPark();
     }
 
-    public void targetZoneBBlue() throws InterruptedException {
+    public void targetZoneBRed() throws InterruptedException {
         turnRelative(-90); //turn so that robot faces forward
         move(80,-24); //drive to target zone B
+        turnRelative(-180);
         controlWobbleArm(); //drop wobble goal
         move(-24, 0); //move back behind launch line
         launchAndPark();
     }
 
-    public void targetZoneCBlue() throws InterruptedException {
+    public void targetZoneCRed() throws InterruptedException {
         turnRelative(-90); //turn so that robot faces forward
         move(120,-24); //drive to target zone B
+        turnRelative(-180);
         controlWobbleArm(); //drop wobble goal
         move(-64, 0); //move back behind launch line
         launchAndPark();

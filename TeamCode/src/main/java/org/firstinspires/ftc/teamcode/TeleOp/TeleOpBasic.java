@@ -1,10 +1,12 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.VortechsMethods;
+
 @TeleOp(name = "Teleop Basic", group = "Tests")
-public class TeleOpBasic extends VortechsMethods{
+public class TeleOpBasic extends VortechsMethods {
 
     double y = 0.0;   //throttle forward/back
     double x = 0.0;   //throttle left/right
