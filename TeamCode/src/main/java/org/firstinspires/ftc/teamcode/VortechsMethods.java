@@ -105,12 +105,6 @@ public class VortechsMethods extends VortechsHardware {
         sleep(500);
     }
 
-    public void initWobbleArm(){
-        grabberArm.setPosition(.8);
-        grabberHand.setPosition(0);
-        sleep(1000);
-    }
-
  /*   public void sleep(double milliseconds) {
         ElapsedTime time = new ElapsedTime();
         while (opModeIsActive()) { sleep();
@@ -160,8 +154,9 @@ public class VortechsMethods extends VortechsHardware {
     public void doEverything(double outtakePower, double conveyorPower, long seconds) throws InterruptedException {
 
         //launch the first two rings
-        conveyor.setPower(-conveyorPower);
         leftOutTake.setPower(-outtakePower);
+        sleep(1000);
+        conveyor.setPower(-conveyorPower);
 
        /* The sleep methods don't play nice with the velocity pid thing, idk how to fix
        resetOutTake();
@@ -531,13 +526,12 @@ public class VortechsMethods extends VortechsHardware {
     public void moveForwardAndLaunch() throws InterruptedException {
         turnRelative(-90); //turn so that robot faces forward
         move(58, 0); //move behind launch line
-        doEverything(0.73, 0.4, 5);
+        doEverything(0.6, 0.4, 5);
     }
 
     public void launchAndPark() throws InterruptedException{
-        doEverything(0.73, 0.4, 5); //launch rings
-        //move(12,0); //park on launch line
-        telemetry.addData("launch and park?", "yes");
+        doEverything(0.65, 0.7, 5); //launch rings
+        move(12,0); //park on launch line
     }
 
     public void backUpAuto() throws InterruptedException {
@@ -551,18 +545,20 @@ public class VortechsMethods extends VortechsHardware {
         move(0,-24); //strafe right to target zone A
         turnRelative(180);
         autoControlWobbleArm(); //drop wobble goal
-        move(10, 0); //move "back" behind launch line
-        turnRelative(180);
-        sleep(500);
-        //launchAndPark();
+        move(5, 0); //move "back" behind launch line
+        turnRelative(170);
+        launchAndPark();
     }
 
     public void targetZoneBRed() throws InterruptedException {
         turnRelative(-90); //turn so that robot faces forward
-        move(80,-24); //drive to target zone B
+        move(80,0); //drive to target zone B
+        move(0,10);
+        move(10,0);
         turnRelative(180);
         autoControlWobbleArm(); //drop wobble goal
-        move(24, 0); //move "back" behind launch line
+        move(40, 0); //move "back" behind launch line
+        move(0,20);
         turnRelative(180);
         launchAndPark();
     }

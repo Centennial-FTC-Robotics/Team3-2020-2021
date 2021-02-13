@@ -40,8 +40,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 //for red side
 @Autonomous(group = "Autonomous", name = "Autonomous: Ring Detector")
-public class OpenCVAuto extends VortechsMethods
-{
+public class OpenCVAuto extends VortechsMethods {
     OpenCvInternalCamera phoneCam;
     Pipeline pipeline;
 
@@ -58,12 +57,10 @@ public class OpenCVAuto extends VortechsMethods
         // landscape orientation, though.
         phoneCam.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
 
-        phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
-                phoneCam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+            public void onOpened() {
+                phoneCam.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT);
             }
         });
 
@@ -71,40 +68,38 @@ public class OpenCVAuto extends VortechsMethods
 
         super.runOpMode();
 
-        while (opModeIsActive()) {
 
-            telemetry.addData("Analysis", pipeline.getAnalysis());
-            telemetry.addData("Number of Rings", pipeline.getNumRings());
-            telemetry.update();
+        telemetry.addData("Analysis", pipeline.getAnalysis());
+        telemetry.addData("Number of Rings", pipeline.getNumRings());
+        telemetry.update();
 
-            grabberArm.setPosition(.8);
-            grabberHand.setPosition(0);
+        grabberArm.setPosition(.8);
+        grabberHand.setPosition(0);
 
-            // just for blue side
-            if (pipeline.getNumRings() == 4) {
-                telemetry.addData("Object Detected?", "Target Zone C");
-                targetZoneCRed();
-            } else if (pipeline.getNumRings() == 1) {
-                telemetry.addData("Object Detected?", "Target Zone B");
-                targetZoneBRed();
-            } else if (pipeline.getNumRings() == 0) {
-                telemetry.addData("Object Detected?", "Target Zone A");
-                targetZoneARed();
-            } else {
-                telemetry.addData("Object Detected", "None");
-                backUpAuto();
-            }
-
-            telemetry.update();
-
-
-            // Don't burn CPU cycles busy-looping in this sample
-            sleep(50);
+        // just for blue side
+        if (pipeline.getNumRings() == 4) {
+            telemetry.addData("Object Detected?", "Target Zone C");
+            targetZoneCRed();
+        } else if (pipeline.getNumRings() == 1) {
+            telemetry.addData("Object Detected?", "Target Zone B");
+            targetZoneBRed();
+        } else if (pipeline.getNumRings() == 0) {
+            telemetry.addData("Object Detected?", "Target Zone A");
+            targetZoneARed();
+        } else {
+            telemetry.addData("Object Detected", "None");
+            backUpAuto();
         }
+
+        telemetry.update();
+
+
+        // Don't burn CPU cycles busy-looping in this sample
+        sleep(50);
+
     }
 
-    public static class Pipeline extends OpenCvPipeline
-    {
+    public static class Pipeline extends OpenCvPipeline {
         /*
          * An enum to define the number of rings
          */
@@ -124,7 +119,7 @@ public class OpenCVAuto extends VortechsMethods
         /*
          * The core values which define the location and size of the sample regions
          */
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(70,86);
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(60, 80);
 
         static final int REGION_WIDTH = 15;
         static final int REGION_HEIGHT = 15;
@@ -155,23 +150,20 @@ public class OpenCVAuto extends VortechsMethods
          * This function takes the RGB frame, converts to YCrCb,
          * and extracts the Cb channel to the 'Cb' variable
          */
-        void inputToCb(Mat input)
-        {
+        void inputToCb(Mat input) {
             Imgproc.cvtColor(input, YCrCb, Imgproc.COLOR_RGB2YCrCb);
             Core.extractChannel(YCrCb, Cb, 1);
         }
 
         @Override
-        public void init(Mat firstFrame)
-        {
+        public void init(Mat firstFrame) {
             inputToCb(firstFrame);
 
             region1_Cb = Cb.submat(new Rect(region1_pointA, region1_pointB));
         }
 
         @Override
-        public Mat processFrame(Mat input)
-        {
+        public Mat processFrame(Mat input) {
             inputToCb(input);
 
             avg1 = (int) Core.mean(region1_Cb).val[0];
@@ -184,13 +176,13 @@ public class OpenCVAuto extends VortechsMethods
                     2); // Thickness of the rectangle lines
 
             //position = RingPosition.FOUR; // Record our analysis
-            if(avg1 > FOUR_RING_THRESHOLD){
+            if (avg1 > FOUR_RING_THRESHOLD) {
                 //position = RingPosition.FOUR;
                 numRings = 4;
-            }else if (avg1 > ONE_RING_THRESHOLD){
+            } else if (avg1 > ONE_RING_THRESHOLD) {
                 //position = RingPosition.ONE;
                 numRings = 1;
-            }else{
+            } else {
                 //position = RingPosition.NONE;
                 numRings = 0;
             }
@@ -205,12 +197,11 @@ public class OpenCVAuto extends VortechsMethods
             return input;
         }
 
-        public int getAnalysis()
-        {
+        public int getAnalysis() {
             return avg1;
         }
 
-        public int getNumRings(){
+        public int getNumRings() {
             return numRings;
         }
 

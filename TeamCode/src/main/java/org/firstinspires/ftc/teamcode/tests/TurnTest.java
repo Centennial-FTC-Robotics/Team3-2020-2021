@@ -12,9 +12,9 @@ public class TurnTest extends VortechsMethods {
 
         waitForStart();
 
-        turnRelative(180);
-        sleep(500);
-        move(4,0);
+        turnRelative(120);
+/*        sleep(500);
+        move(4,0);*/
         //move(-10,0);
     }
 }
