@@ -156,7 +156,7 @@ public class VortechsMethods extends VortechsHardware {
         //launch the first two rings
         leftOutTake.setPower(-outtakePower);
         sleep(1500);
-        conveyor.setPower(-conveyorPower);
+        conveyor.setPower(-0.9*conveyorPower);
 
        /* The sleep methods don't play nice with the velocity pid thing, idk how to fix
        resetOutTake();+
@@ -168,7 +168,7 @@ public class VortechsMethods extends VortechsHardware {
         //launch the last ring
         leftOutTake.setPower(-outtakePower);
         intakeWheel.setPower(.5);
-        conveyor.setPower(-conveyorPower);
+        conveyor.setPower(-0.9*conveyorPower);
         telemetry.addData("velocity:", leftOutTake.getVelocity());
         sleep(1500);
     }
@@ -530,7 +530,7 @@ public class VortechsMethods extends VortechsHardware {
     }
 
     public void launchAndPark() throws InterruptedException{
-        doEverything(0.65, 0.7, 5); //launch rings
+        doEverything(0.73, 0.7, 5); //launch rings
         move(12,0); //park on launch line
     }
 
@@ -563,8 +563,8 @@ public class VortechsMethods extends VortechsHardware {
         move(-96,0); //drive to target zone C
         move(0,24); //strafe right to target zone C
         controlWobbleArm(); //drop wobble goal
-        move(60, 0); //move "back" behind launch line
-        turnRelative(165);
+        move(50, 0); //move "back" behind launch line
+        turnRelative(170);
         launchAndPark();
     }
 

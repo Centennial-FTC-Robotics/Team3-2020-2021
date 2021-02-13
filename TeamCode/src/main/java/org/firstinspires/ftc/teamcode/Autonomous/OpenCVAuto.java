@@ -43,9 +43,10 @@ import org.openftc.easyopencv.OpenCvPipeline;
 public class OpenCVAuto extends VortechsMethods {
     OpenCvInternalCamera phoneCam;
     Pipeline pipeline;
-
+    LinearOpMode opMode;
     @Override
     public void runOpMode() throws InterruptedException {
+        this.opMode = this;
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
@@ -99,7 +100,7 @@ public class OpenCVAuto extends VortechsMethods {
 
     }
 
-    public static class Pipeline extends OpenCvPipeline {
+    public class Pipeline extends OpenCvPipeline {
         /*
          * An enum to define the number of rings
          */
@@ -113,19 +114,19 @@ public class OpenCVAuto extends VortechsMethods {
         /*
          * Some color constants
          */
-        static final Scalar BLUE = new Scalar(0, 0, 255);
-        static final Scalar GREEN = new Scalar(0, 255, 0);
+         final Scalar BLUE = new Scalar(0, 0, 255);
+         final Scalar GREEN = new Scalar(0, 255, 0);
 
         /*
          * The core values which define the location and size of the sample regions
          */
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(50, 77);
+         final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(50, 77);
 
-        static final int REGION_WIDTH = 30;
-        static final int REGION_HEIGHT = 30;
+        static final int REGION_WIDTH = 25;
+        static final int REGION_HEIGHT = 25;
 
-        final int FOUR_RING_THRESHOLD = 160;
-        final int ONE_RING_THRESHOLD = 135;
+        final int FOUR_RING_THRESHOLD = 145;
+        final int ONE_RING_THRESHOLD = 125;
 
         Point region1_pointA = new Point(
                 REGION1_TOPLEFT_ANCHOR_POINT.x,
@@ -167,6 +168,8 @@ public class OpenCVAuto extends VortechsMethods {
             inputToCb(input);
 
             avg1 = (int) Core.mean(region1_Cb).val[0];
+            opMode.telemetry.addData("avg",avg1);
+            opMode.telemetry.update();
 
             Imgproc.rectangle(
                     input, // Buffer to draw on
