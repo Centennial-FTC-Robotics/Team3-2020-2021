@@ -73,7 +73,7 @@ public class OpenCVAuto extends VortechsMethods {
         telemetry.addData("Number of Rings", pipeline.getNumRings());
         telemetry.update();
 
-        grabberArm.setPosition(.8);
+        grabberArm.setPosition(1);
         grabberHand.setPosition(0);
 
         // just for blue side
@@ -119,10 +119,10 @@ public class OpenCVAuto extends VortechsMethods {
         /*
          * The core values which define the location and size of the sample regions
          */
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(60, 80);
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(50, 77);
 
-        static final int REGION_WIDTH = 15;
-        static final int REGION_HEIGHT = 15;
+        static final int REGION_WIDTH = 30;
+        static final int REGION_HEIGHT = 30;
 
         final int FOUR_RING_THRESHOLD = 160;
         final int ONE_RING_THRESHOLD = 135;

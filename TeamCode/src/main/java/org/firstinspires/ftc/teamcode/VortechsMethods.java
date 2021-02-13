@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.State;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -85,22 +86,23 @@ public class VortechsMethods extends VortechsHardware {
     }
 
     public void controlWobbleArm() {
-        grabberArm.setPosition(0.1);
+        grabberArm.setPosition(0.3);
         grabberHand.setPosition(0.8);
-        sleep(500);
+        sleep(1000);
         grabberHand.setPosition(0.25);
-        sleep(500);
-        grabberArm.setPosition(0.6);
+        sleep(1000);
+        grabberArm.setPosition(0.9);
     }
     public void autoControlWobbleArm(){
 //        grabberHand.setPosition(0.4);
-        grabberArm.setPosition(0.1);
+        grabberArm.setPosition(0.3);
         sleep(1000);
         grabberHand.setPosition(0.8);
         sleep(1000);
-        grabberHand.setPosition(0.4);
+        grabberArm.setPosition(0.9);
         sleep(1000);
-        grabberArm.setPosition(0.6);
+        grabberHand.setPosition(0.25);
+
     }
 
  /*   public void sleep(double milliseconds) {
@@ -153,11 +155,11 @@ public class VortechsMethods extends VortechsHardware {
 
         //launch the first two rings
         leftOutTake.setPower(-outtakePower);
-        sleep(1000);
+        sleep(1500);
         conveyor.setPower(-conveyorPower);
 
        /* The sleep methods don't play nice with the velocity pid thing, idk how to fix
-       resetOutTake();
+       resetOutTake();+
         leftOutTake.setVelocity(1000.0);
         telemetry.addData("velocity:", leftOutTake.getVelocity());
         */
@@ -196,7 +198,7 @@ public class VortechsMethods extends VortechsHardware {
         int tolerance = (int) inchesToTicks(0.8);
 
         double minimumSpeed = 0.05;
-        double maximumSpeed = 0.3; //TODO: make this value higher
+        double maximumSpeed = 0.5; //TODO: make this value higher
 
         double diag1Speed, diag2Speed;
         int diag1Pos, diag2Pos;
@@ -534,39 +536,35 @@ public class VortechsMethods extends VortechsHardware {
 
     public void backUpAuto() throws InterruptedException {
         moveForwardAndLaunch();
-        move(12, 0); //move forward to park
+        move(14, 0); //move forward to park
     }
 
     public void targetZoneARed() throws InterruptedException {
-        turnRelative(-90); //turn so that robot faces forward
-        move(60,0); //drive to target zone A
-        move(0,-24); //strafe right to target zone A
-        turnRelative(180);
+        turnRelative(90); //turn so that robot faces forward
+        move(-50,0); //drive to target zone A
+        move(0,24); //strafe right to target zone A
         autoControlWobbleArm(); //drop wobble goal
-        move(5, 0); //move "back" behind launch line
-        turnRelative(170);
+        move(8, 0); //move "back" behind launch line
+        turnRelative(160);
         launchAndPark();
     }
 
     public void targetZoneBRed() throws InterruptedException {
-        turnRelative(-90); //turn so that robot faces forward
-        move(90,0); //drive to target zone B
-        move(0,10);
-        turnRelative(180);
+        turnRelative(90); //turn so that robot faces forward
+        move(-90,0); //drive to target zone B
         autoControlWobbleArm(); //drop wobble goal
         move(40, 0); //move "back" behind launch line
-        move(0,20); //strafe "left" to align with goal
-        turnRelative(180);
+        turnRelative(155);
         launchAndPark();
     }
 
     public void targetZoneCRed() throws InterruptedException {
-        turnRelative(-90); //turn so that robot faces forward
-        move(120,-24); //drive to target zone B
-        turnRelative(180);
+        turnRelative(90); //turn so that robot faces forward
+        move(-96,0); //drive to target zone C
+        move(0,24); //strafe right to target zone C
         controlWobbleArm(); //drop wobble goal
-        move(64, 0); //move "back" behind launch line
-        turnRelative(180);
+        move(60, 0); //move "back" behind launch line
+        turnRelative(165);
         launchAndPark();
     }
 

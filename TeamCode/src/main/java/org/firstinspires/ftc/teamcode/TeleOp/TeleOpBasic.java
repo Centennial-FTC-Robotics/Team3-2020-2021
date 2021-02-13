@@ -26,7 +26,7 @@ public class TeleOpBasic extends VortechsMethods {
         super.runOpMode();
 
         waitForStart();
-        grabberArm.setPosition(.8);
+        grabberArm.setPosition(1);
         grabberHand.setPosition(0);
 
         while(opModeIsActive())
