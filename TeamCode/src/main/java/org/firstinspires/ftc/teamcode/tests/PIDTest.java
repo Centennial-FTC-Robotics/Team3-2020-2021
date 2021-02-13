@@ -10,8 +10,10 @@ public class PIDTest extends VortechsMethods {
         waitForStart();
         super.runOpMode();
 
-        move(24,0);
-        autoControlWobbleArm();
+        /*move(24,0);
+        autoControlWobbleArm();*/
+
+        outakeWithEncoders(0.7);
 
 /*        telemetry.addData("Distance traveled:", frontLeft.getPower());
         telemetry.update();*/
