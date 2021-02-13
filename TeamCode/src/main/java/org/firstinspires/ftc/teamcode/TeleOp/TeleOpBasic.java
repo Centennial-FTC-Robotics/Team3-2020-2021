@@ -39,7 +39,7 @@ public class TeleOpBasic extends VortechsMethods {
             LeftPower = y + x;
 
             if(gamepad1.a) {
-                speed = 0.5;        //slowmode
+                speed = 0.25;        //slowmode
             } else {
                 speed = 1.0;
             }
@@ -107,7 +107,7 @@ public class TeleOpBasic extends VortechsMethods {
             }
 
             if (gamepad2.x || gamepad1.x){
-                intakeWheel.setPower(2);
+                intakeWheel.setPower(0.75);
             }
             else {
                 intakeWheel.setPower(0);

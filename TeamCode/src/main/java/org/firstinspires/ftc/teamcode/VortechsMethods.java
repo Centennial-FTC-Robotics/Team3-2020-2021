@@ -167,7 +167,7 @@ public class VortechsMethods extends VortechsHardware {
 
         //launch the last ring
         leftOutTake.setPower(-outtakePower);
-        intakeWheel.setPower(1);
+        intakeWheel.setPower(.5);
         conveyor.setPower(-conveyorPower);
         telemetry.addData("velocity:", leftOutTake.getVelocity());
         sleep(1500);
