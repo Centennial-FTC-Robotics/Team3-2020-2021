@@ -77,7 +77,11 @@ public class TeleOpBasic extends VortechsMethods {
             backLeft.setPower(1 * speed);
             backRight.setPower(-1 * speed);
             }
-            
+
+            if (gamepad2.left_bumper){
+            grabberArm.setPosition(1);
+            grabberHand.setPosition(0);
+            }
         /*  frontLeft.setPower(LeftPower);         //strafe controlled by left stick
             backLeft.setPower(RightPower);
             frontRight.setPower(RightPower);
@@ -146,6 +150,13 @@ public class TeleOpBasic extends VortechsMethods {
             }
             if (gamepad2.a){ controlWobbleArm();}
             idle();
+            if(gamepad2.left_bumper){
+                grabberArm.setPosition(1);
+                grabberHand.setPosition(0);
+            }
+            if(gamepad2.right_stick_button){
+                doEverything(0.73, 0.7, 0.3);
+            }
         }
     }
 }

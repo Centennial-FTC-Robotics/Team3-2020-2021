@@ -105,19 +105,19 @@ public class VortechsMethods extends VortechsHardware {
 
     }
 
- /*   public void sleep(double milliseconds) {
+  public void Timer(double milliseconds) {
         ElapsedTime time = new ElapsedTime();
-        while (opModeIsActive()) { sleep();
-            if (time.milliseconds() < milliseconds) {
-                idle();
-            } else {
-                break;
-            }
-        *//*while (opModeIsActive() && time.milliseconds() < milliseconds) {
-        it kept yelling at me for being an idiot that uses while loops
-        }*//*
+        while (time.milliseconds() < milliseconds && opModeIsActive()) {
         }
-    }*/
+    }
+
+    public void conveyorSleep(double milliseconds){
+        ElapsedTime time2 = new ElapsedTime();
+        while (time2.milliseconds() < milliseconds && opModeIsActive()){
+            conveyor.setPower(0);
+        }
+
+    }
 
     public void launch(double power, long seconds) throws InterruptedException {
         leftOutTake.setPower(-power);
@@ -151,26 +151,24 @@ public class VortechsMethods extends VortechsHardware {
     }
 
 
-    public void doEverything(double outtakePower, double conveyorPower, long seconds) throws InterruptedException {
+    public void doEverything(double outtakePower, double conveyorPower, double conveyorSleepSeconds) throws InterruptedException {
 
         //launch the first two rings
         leftOutTake.setPower(-outtakePower);
-        sleep(1500);
+        Timer(1000);
         conveyor.setPower(-0.9*conveyorPower);
-
-       /* The sleep methods don't play nice with the velocity pid thing, idk how to fix
-       resetOutTake();+
-        leftOutTake.setVelocity(1000.0);
-        telemetry.addData("velocity:", leftOutTake.getVelocity());
-        */
-        sleep(seconds * 1000);
-
+        Timer(conveyorSleepSeconds * 500); //Lets conveyor run for 1 second
+        conveyorSleep(1000); //Lets conveyor stop for 1 second
+        conveyor.setPower(-0.9*conveyorPower);
+        Timer(conveyorSleepSeconds * 1000);
+        conveyorSleep(1000);
         //launch the last ring
         leftOutTake.setPower(-outtakePower);
         intakeWheel.setPower(.5);
         conveyor.setPower(-0.9*conveyorPower);
+        Timer(2000);
         telemetry.addData("velocity:", leftOutTake.getVelocity());
-        sleep(1500);
+        leftOutTake.setPower(0);
     }
 
     public static double clip(double val, double max, double min) {
@@ -526,11 +524,11 @@ public class VortechsMethods extends VortechsHardware {
     public void moveForwardAndLaunch() throws InterruptedException {
         turnRelative(-90); //turn so that robot faces forward
         move(58, 0); //move behind launch line
-        doEverything(0.6, 0.4, 5);
+        doEverything(0.6, 0.4, 0.3);
     }
 
     public void launchAndPark() throws InterruptedException{
-        doEverything(0.73, 0.7, 5); //launch rings
+        doEverything(0.73, 0.7, 0.3); //launch rings
         move(12,0); //park on launch line
     }
 
@@ -562,9 +560,9 @@ public class VortechsMethods extends VortechsHardware {
         turnRelative(90); //turn so that robot faces forward
         move(-96,0); //drive to target zone C
         move(0,24); //strafe right to target zone C
-        controlWobbleArm(); //drop wobble goal
+        autoControlWobbleArm(); //drop wobble goal
         move(50, 0); //move "back" behind launch line
-        turnRelative(170);
+        turnRelative(180);
         launchAndPark();
     }
 
