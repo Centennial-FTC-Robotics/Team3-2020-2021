@@ -94,7 +94,7 @@ public class TeleOpBasic extends VortechsMethods {
 
             // toggle intake
 
-          if (gamepad2.y){
+         /* if (gamepad2.y){                       //toggle system
             Toggle();
             telemetry.addData("Boolean", toggle);
             telemetry.update();
@@ -109,8 +109,16 @@ public class TeleOpBasic extends VortechsMethods {
                 //rightOutTake.setPower(0);
             }
             }
+            */
 
-            if (gamepad2.x || gamepad1.x){
+            if (gamepad2.y){
+                leftOutTake.setPower(0.75);
+            }
+            else {
+                leftOutTake.setPower(0);
+            }
+
+            if (gamepad2.b || gamepad1.b){
                 intakeWheel.setPower(0.75);
             }
             else {
@@ -119,13 +127,13 @@ public class TeleOpBasic extends VortechsMethods {
 
             //OtherPower = Range.clip(OtherPower, -0.75,0.75);
 
-            if (gamepad2.right_bumper){
+            if (gamepad2.left_bumper){
             OtherPower = 0.5;
             }
             else{ OtherPower = 1.0;
             }
 
-            conveyor.setPower(gamepad2.left_stick_y * OtherPower);
+            conveyor.setPower(gamepad2.left_stick_y * 0.75* OtherPower);
 
             if (gamepad2.dpad_down) {
 
@@ -146,14 +154,25 @@ public class TeleOpBasic extends VortechsMethods {
                     telemetry.update();
                 }
 
+            /*if (gamepad2.b){
+                doEverything(.7,0.75,1);
+            }
+            */
             if (gamepad2.dpad_left){
                 grabberHand.setPosition(0.7);
             }
             else if (gamepad2.dpad_right){
                 grabberHand.setPosition(0.25);
             }
+            if (gamepad2.x){
+                intakeWheel.setPower(-0.75);
+            }
+            else{
+                intakeWheel.setPower(0);
+            }
 
-            if (gamepad2.a){ controlWobbleArm();}
+
+           // if (gamepad2.a){ controlWobbleArm();}
             idle();
             if(gamepad2.left_bumper){
                 grabberArm.setPosition(1);
