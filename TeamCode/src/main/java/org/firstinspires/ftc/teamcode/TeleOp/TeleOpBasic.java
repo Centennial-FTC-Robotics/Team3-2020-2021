@@ -119,7 +119,7 @@ public class TeleOpBasic extends VortechsMethods {
             }
 
             if (gamepad2.b || gamepad1.b){
-                intakeWheel.setPower(0.75);
+                intakeWheel.setPower(1);
             }
             else {
                 intakeWheel.setPower(0);
@@ -135,7 +135,7 @@ public class TeleOpBasic extends VortechsMethods {
 
             conveyor.setPower(gamepad2.left_stick_y * 0.75* OtherPower);
 
-            if (gamepad2.dpad_down) {
+            if (gamepad1.dpad_down) {
 
                     grabberArm.setPosition(0.3);
                     grabberHand.setPosition(0.7);
@@ -144,7 +144,7 @@ public class TeleOpBasic extends VortechsMethods {
                     telemetry.addData("Handpos",grabberHand.getPosition());
                     telemetry.update();
                 }
-                else if (gamepad2.dpad_up){
+                else if (gamepad1.dpad_up){
                     grabberHand.setPosition(0.25);
                     Timer(500);
                     grabberArm.setPosition(0.9);
@@ -158,14 +158,14 @@ public class TeleOpBasic extends VortechsMethods {
                 doEverything(.7,0.75,1);
             }
             */
-            if (gamepad2.dpad_left){
+            if (gamepad1.dpad_left){
                 grabberHand.setPosition(0.7);
             }
-            else if (gamepad2.dpad_right){
+            else if (gamepad1.dpad_right){
                 grabberHand.setPosition(0.25);
             }
             if (gamepad2.x){
-                intakeWheel.setPower(-0.75);
+                intakeWheel.setPower(-1);
             }
             else{
                 intakeWheel.setPower(0);

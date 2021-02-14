@@ -155,9 +155,9 @@ public class VortechsMethods extends VortechsHardware {
 
         //launch the first two rings
         leftOutTake.setPower(-outtakePower);
-        Timer(1000);
+        Timer(2000);
         conveyor.setPower(-0.9*conveyorPower);
-        Timer(conveyorSleepSeconds * 500); //Lets conveyor run for 1 second
+        Timer(conveyorSleepSeconds * 250); //Lets conveyor run for 1 second
         conveyorSleep(1000); //Lets conveyor stop for 1 second
         conveyor.setPower(-0.9*conveyorPower);
         Timer(conveyorSleepSeconds * 1000);
@@ -528,7 +528,7 @@ public class VortechsMethods extends VortechsHardware {
     }
 
     public void launchAndPark() throws InterruptedException{
-        doEverything(0.73, 0.7, 0.3); //launch rings
+        doEverything(0.69, 0.7, 0.3); //launch rings
         move(12,0); //park on launch line
     }
 
@@ -539,8 +539,8 @@ public class VortechsMethods extends VortechsHardware {
 
     public void targetZoneARed() throws InterruptedException {
         turnRelative(90); //turn so that robot faces forward
-        move(-50,0); //drive to target zone A
-        move(0,24); //strafe right to target zone A
+        move(-55,0); //drive to target zone A
+        move(0,26); //strafe right to target zone A
         autoControlWobbleArm(); //drop wobble goal
         move(8, 0); //move "back" behind launch line
         turnRelative(160);
@@ -558,11 +558,11 @@ public class VortechsMethods extends VortechsHardware {
 
     public void targetZoneCRed() throws InterruptedException {
         turnRelative(90); //turn so that robot faces forward
-        move(-96,0); //drive to target zone C
-        move(0,24); //strafe right to target zone C
+        move(-99,0); //drive to target zone C
+        move(0,27); //strafe right to target zone C
         autoControlWobbleArm(); //drop wobble goal
         move(50, 0); //move "back" behind launch line
-        turnRelative(180);
+        turnRelative(170);
         launchAndPark();
     }
 
