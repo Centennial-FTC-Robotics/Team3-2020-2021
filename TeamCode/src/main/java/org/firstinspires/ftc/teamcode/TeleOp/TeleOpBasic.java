@@ -100,7 +100,7 @@ public class TeleOpBasic extends VortechsMethods {
             telemetry.update();
             if (toggle){
                 if (leftOutTake.getPower() < 0.05){
-                    leftOutTake.setPower(-0.7);
+                    leftOutTake.setPower(-0.64);
                     //rightOutTake.setPower(-0.7);
                 }
             }
@@ -117,37 +117,42 @@ public class TeleOpBasic extends VortechsMethods {
                 intakeWheel.setPower(0);
             }
 
-
-
-            conveyor.setPower(gamepad2.left_stick_y);
-
-            OtherPower = Range.clip(OtherPower, -0.75,0.75);
+            //OtherPower = Range.clip(OtherPower, -0.75,0.75);
 
             if (gamepad2.right_bumper){
-            OtherPower = 1.0;
+            OtherPower = 0.5;
             }
-            else{ OtherPower = 0.65;
+            else{ OtherPower = 1.0;
             }
 
-            if (gamepad2.right_bumper) {
-            Toggle2();
-                if (toggle2){
-                    grabberArm.setPosition(0.05);
-                    grabberHand.setPosition(0.65);
+            conveyor.setPower(gamepad2.left_stick_y * OtherPower);
+
+            if (gamepad2.dpad_down) {
+
+                    grabberArm.setPosition(0.3);
+                    grabberHand.setPosition(0.7);
                     telemetry.addData("toggle2",toggle2);
                     telemetry.addData("Armpos",grabberArm.getPosition());
                     telemetry.addData("Handpos",grabberHand.getPosition());
                     telemetry.update();
                 }
-                else if (toggle2 == false){
-                    grabberHand.setPosition(0.4);
-                    grabberArm.setPosition(0.5);
+                else if (gamepad2.dpad_up){
+                    grabberHand.setPosition(0.25);
+                    Timer(500);
+                    grabberArm.setPosition(0.9);
                     telemetry.addData("toggle2",toggle2);
                     telemetry.addData("Armpos",grabberArm.getPosition());
                     telemetry.addData("Handpos",grabberHand.getPosition());
                     telemetry.update();
                 }
+
+            if (gamepad2.dpad_left){
+                grabberHand.setPosition(0.7);
             }
+            else if (gamepad2.dpad_right){
+                grabberHand.setPosition(0.25);
+            }
+
             if (gamepad2.a){ controlWobbleArm();}
             idle();
             if(gamepad2.left_bumper){
