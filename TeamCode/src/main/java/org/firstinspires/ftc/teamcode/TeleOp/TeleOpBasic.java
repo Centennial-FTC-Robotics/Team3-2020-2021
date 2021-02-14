@@ -112,7 +112,7 @@ public class TeleOpBasic extends VortechsMethods {
             */
 
             if (gamepad2.y){
-                leftOutTake.setPower(0.75);
+                leftOutTake.setPower(-0.75);
             }
             else {
                 leftOutTake.setPower(0);
