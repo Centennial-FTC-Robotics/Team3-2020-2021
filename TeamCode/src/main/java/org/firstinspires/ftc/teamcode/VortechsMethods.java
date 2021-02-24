@@ -528,7 +528,7 @@ public class VortechsMethods extends VortechsHardware {
     }
 
     public void launchAndPark() throws InterruptedException{
-        doEverything(0.69, 0.7, 0.3); //launch rings
+        doEverything(0.71, 0.7, 0.3); //launch rings
         move(12,0); //park on launch line
     }
 
