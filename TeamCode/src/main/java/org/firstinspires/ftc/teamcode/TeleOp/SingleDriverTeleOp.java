@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.VortechsMethods;
 
-@TeleOp(name = "Teleop Basic", group = "Tests")
+@TeleOp(name = "Single Driver TeleOp", group = "Tests")
 public class SingleDriverTeleOp extends VortechsMethods {
 
     double y = 0.0;   //throttle forward/back
@@ -78,7 +78,7 @@ public class SingleDriverTeleOp extends VortechsMethods {
             backRight.setPower(-1 * speed);
             }
             if (gamepad1.y){
-                leftOutTake.setPower(-0.75);
+                leftOutTake.setPower(-0.7);
             }
             else {
                 leftOutTake.setPower(0);
