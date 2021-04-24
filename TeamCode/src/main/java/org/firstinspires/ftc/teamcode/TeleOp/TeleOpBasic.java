@@ -26,8 +26,8 @@ public class TeleOpBasic extends VortechsMethods {
         super.runOpMode();
 
         waitForStart();
-        grabberArm.setPosition(1);
-        grabberHand.setPosition(0);
+        grabberArm.setPosition(0);
+        grabberHand.setPosition(.25);
 
         while(opModeIsActive())
         {
@@ -112,7 +112,7 @@ public class TeleOpBasic extends VortechsMethods {
             */
 
             if (gamepad2.y){
-                leftOutTake.setPower(-0.75);
+                leftOutTake.setPower(-0.71);
             }
             else {
                 leftOutTake.setPower(0);
@@ -133,21 +133,21 @@ public class TeleOpBasic extends VortechsMethods {
             else{ OtherPower = 1.0;
             }
 
-            conveyor.setPower(gamepad2.left_stick_y * 0.75* OtherPower);
+            conveyor.setPower(gamepad2.left_stick_y * 0.75);
 
-            if (gamepad1.dpad_down) {
-
-                    grabberArm.setPosition(0.3);
-                    grabberHand.setPosition(0.7);
+            if (gamepad1.dpad_up) {
+                    grabberHand.setPosition(0.25);
+                    Timer(500);
+                    grabberArm.setPosition(0.2);
                     telemetry.addData("toggle2",toggle2);
                     telemetry.addData("Armpos",grabberArm.getPosition());
                     telemetry.addData("Handpos",grabberHand.getPosition());
                     telemetry.update();
                 }
-                else if (gamepad1.dpad_up){
-                    grabberHand.setPosition(0.25);
+                else if (gamepad1.dpad_down){
+                    grabberArm.setPosition(0.95);
                     Timer(500);
-                    grabberArm.setPosition(0.9);
+                    grabberHand.setPosition(0.7);
                     telemetry.addData("toggle2",toggle2);
                     telemetry.addData("Armpos",grabberArm.getPosition());
                     telemetry.addData("Handpos",grabberHand.getPosition());
