@@ -74,7 +74,7 @@ public class OpenCVAuto extends VortechsMethods {
         telemetry.addData("Number of Rings", pipeline.getNumRings());
         telemetry.update();
 
-        grabberArm.setPosition(0);
+        grabberArm.setPosition(.2);
         grabberHand.setPosition(0.25);
 
         // just for blue side

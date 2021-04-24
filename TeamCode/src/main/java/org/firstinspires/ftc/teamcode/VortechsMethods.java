@@ -96,11 +96,11 @@ public class VortechsMethods extends VortechsHardware {
     public void autoControlWobbleArm(){
 //        grabberHand.setPosition(0.4);
         grabberArm.setPosition(0.9);
-        sleep(750);
+        sleep(1000);
         grabberHand.setPosition(0.7);
-        sleep(750);
+        sleep(1000);
         grabberArm.setPosition(.2);
-        sleep(750);
+        sleep(1000);
         grabberHand.setPosition(0.25);
 
     }
